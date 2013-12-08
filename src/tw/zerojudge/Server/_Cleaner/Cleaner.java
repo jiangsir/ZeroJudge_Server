@@ -1,4 +1,4 @@
-package tw.zerojudge.Server._Clean;
+package tw.zerojudge.Server._Cleaner;
 
 import java.io.*;
 import java.util.ArrayList;
