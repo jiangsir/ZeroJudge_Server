@@ -1,4 +1,4 @@
-package tw.zerojudge.Server._Cleaner;
+package tw.zerojudge.Server.Cleaner;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
-public class _Cleaner {
+public class Cleaner {
     public class FileNameSelector implements FilenameFilter {
 	String regex;
 
@@ -45,12 +45,12 @@ public class _Cleaner {
     private File WEB_INF;
     private File META_INF;
 
-    public _Cleaner(File BASE_DIR) {
+    public Cleaner(File BASE_DIR) {
 	if (!BASE_DIR.isDirectory()) {
 	    return;
 	}
 	this.BASE_DIR = BASE_DIR;
-	this.CONSOLE_DIR = new File(BASE_DIR, "/WebContent/CONSOLE");
+	this.CONSOLE_DIR = new File(BASE_DIR, "/WebContent/JudgeServer_CONSOLE");
 	this.TESTDATA_DIR = new File(CONSOLE_DIR, "Testdata");
 	this.BIN_DIR = new File(CONSOLE_DIR, "Bin");
 	this.SPECIAL_DIR = new File(CONSOLE_DIR, "Special");
@@ -69,125 +69,54 @@ public class _Cleaner {
     }
 
     private void deleteFiles() {
-	System.out.println("接下來將清理");
-
 	ArrayList<File> delFiles = new ArrayList<File>();
-	delFiles.add(new File(BASE_DIR, ".cvsignore"));
-	delFiles.add(new File(BASE_DIR, ".tomcatplugin"));
-	delFiles.add(new File(BASE_DIR, "style2.css"));
+	delFiles.addAll(this.getFileList(BASE_DIR, ".cvsignore"));
+	delFiles.addAll(this.getFileList(BASE_DIR, ".tomcatplugin"));
+	delFiles.addAll(this.getFileList(BASE_DIR, ".style2.css"));
 	delFiles.addAll(this.getFileList(BASE_DIR, ".*\\.bak$"));
 	delFiles.addAll(this.getFileList(BASE_DIR, ".*\\.zip$"));
+	delFiles.addAll(this.getFileList(BASE_DIR, ".*\\.html$"));
+	delFiles.addAll(this.getFileList(BASE_DIR, "^Untitled.*"));
 	delFiles.addAll(this.getFileList(BASE_DIR, "^_.*"));
 
-	System.out.println("接下來將刪除以下檔案");
-	for (File file : delFiles) {
-	    System.out.println(file);
-	}
-	System.out.print("確定？(Y/n)");
-	if ("Y".equals(cin.next())) {
+	if (delFiles.size() > 0) {
+	    System.out.println("接下來將刪除以下檔案");
 	    for (File file : delFiles) {
-		this.delFiles(file.getPath());
+		System.out.println(file);
 	    }
-	    // this.delDIR(BASE_DIR +
-	    // "/WEB-INF/src/idv/jiangsir/utils/testing/");
-	    // System.out.println("刪除目錄: " + BASE_DIR
-	    // + "WEB-INF/src/idv/jiangsir/utils/testing/");
-	    // this.delFiles(BASE_DIR + ".cvsignore");
-	    // this.delFiles(BASE_DIR + ".tomcatplugin");
-	    // this.delFiles(BASE_DIR + "style2.css");
-	    // this.delFiles(BASE_DIR + "開發日誌.txt");
-
-	} else {
-	    System.out.println("不清理這些檔案");
-	}
-	System.out.println("下一步，清理 .bak .log and Untitled 以及 "
-		+ "/bin/裡的 .java && .class 的無用檔");
-	if ("Y".equals(cin.next())) {
-	    // @TODO 應該改成，保留某些必須 release 的檔，其它都刪除
-	    ArrayList<File> filelistbin = this.getFileList(this.BIN_DIR, ".*");
-	    for (int i = 0; i < filelistbin.size(); i++) {
-		String filename = filelistbin.get(i).toString();
-		if (!filename.matches(".*base\\..*")
-			&& !filename.matches(".*pas_base.*")
-			&& !filename.matches(".*Setup\\..*")
-			&& !filename.matches(".*jdom\\..*")
-			&& !filename.matches(".*shell\\..*")
-			&& !filename.matches(".*shell-gcc3\\..*")
-			&& !filename.matches(".*shell-gcc4\\..*")
-			&& !filename.matches(".*Compiler.*")) {
-		    this.delFiles(filename);
+	    System.out.print("確定？(Y/n)");
+	    if ("Y".equals(cin.next())) {
+		for (File file : delFiles) {
+		    this.delDirFiles(file);
 		}
+	    } else {
+		System.out.println("不清理這些檔案");
 	    }
-	    // ArrayList<File> filelistSpecial = this.getFileList(
-	    // this.SPECIAL_DIR, ".*");
-	    // for (int i = 0; i < filelistSpecial.size(); i++) {
-	    // String filename = filelistSpecial.get(i).toString();
-	    // if (!filename.matches(".*a001.*$")
-	    // && !filename.matches(".*a001.*$")) {
-	    // this.delFiles(filename);
-	    // }
-	    // }
-	    ArrayList<File> baks = this.getFileList(this.BASE_DIR, ".*\\.bak$");
-	    for (int i = 0; i < baks.size(); i++) {
-		this.delFiles(baks.get(i).toString());
-	    }
-	    ArrayList<File> untitles = this.getFileList(this.BASE_DIR,
-		    "^Untitled.*");
-	    for (int i = 0; i < untitles.size(); i++) {
-		this.delFiles(untitles.get(i).toString());
-	    }
-	    ArrayList<File> logs = this.getFileList(this.BASE_DIR, ".*\\.log$");
-	    for (int i = 0; i < logs.size(); i++) {
-		this.delFiles(logs.get(i).toString());
-	    }
-	    this.delFiles(BASE_DIR + "jQueryTest.html");
-	} else {
-	    System.out.println("沒有刪除檔案!");
 	}
 
-	// System.out.println("測資檔(留下a001.in/out)");
-	// System.out.println("題目圖片檔");
-	// System.out.println("miscs/ 資料夾");
-	// System.out.println("清理以上資料!!!");
-	// if ("Y".equals(cin.next())) {
-	// // qx 底下兩個行, 若刪除, 就不能正常運作, 當真正要 Release 時才用
-	// // cleaner.delTestData(BasePath + "testdata/");
-	// this.delTestData(PATH_TESTDATA);
-	// this.delFiles(this.BASE_DIR + "images/problems/");
-	// this.delDIR(this.BASE_DIR + "miscs/");
-	// } else {
-	// System.out.println("沒有刪除題目相關的檔案!");
-	// }
-	// System.out.println("清除 properties.xml 裡不需 release 的設定!");
-	// this.cleanMyProperties();
+	ArrayList<File> consoles = new ArrayList<File>();
+	consoles.addAll(this.getFileList(this.BIN_DIR, ".*"));
+	consoles.removeAll(this.getFileList(this.BIN_DIR, "base.*\\..*"));
+	consoles.removeAll(this.getFileList(this.BIN_DIR, "Setup\\..*"));
+	consoles.removeAll(this.getFileList(this.BIN_DIR, "jdom\\..*"));
+	consoles.removeAll(this.getFileList(this.BIN_DIR, "shell.*\\..*"));
+	consoles.removeAll(this.getFileList(this.BIN_DIR, "Compiler.*"));
 
-	System.out.println("清除所有 *.zip 的檔案!");
-	ArrayList<File> zips = this.getFileList(this.BASE_DIR, ".*\\.zip$");
-	for (int i = 0; i < zips.size(); i++) {
-	    this.delFiles(zips.get(i).toString());
+	if (consoles.size() > 0) {
+	    System.out.println("接下來要清除 CONSOLE 內的多餘檔案。");
+	    for (File file : consoles) {
+		System.out.println(file);
+	    }
+	    if ("Y".equals(cin.next())) {
+		for (File file : consoles) {
+		    this.delDirFiles(file);
+		}
+	    } else {
+		System.out.println("沒有刪除檔案!");
+	    }
+
 	}
 
-	// System.out.println("最後將所有 .class 檔刪除，然後進入eclipse 重新編譯!");
-	// if ("Y".equals(cin.next())) {
-	// ArrayList<File> classes = this.getFileList(new File(this.BASE_DIR
-	// + "WEB-INF/classes/"), ".*\\.class$");
-	// System.out.println("共找到 " + classes.size() + " 個 .class 檔");
-	// for (int i = 0; i < classes.size(); i++) {
-	// this.delFiles(classes.get(i).toString());
-	// }
-	// } else {
-	// System.out.println("未刪除 .class 檔!");
-	// }
-
-	System.out.println("進行發布版檔案初始化。");
-	this.releaseVersion();
-	// String oldversion = this.readFile(this.BASE_DIR +
-	// "Version.txt").trim();
-	// System.out.println("請填入希望的 VERSION 字串, 例如：" + oldversion + ":");
-	// // cin.nextLine(); // 清除最後一個換行符號
-	// String VERSION = cin.nextLine();
-	// // cleaner.delFiles(PATH_BASE + "Version.txt");
-	// this.createfile(this.BASE_DIR + "Version.txt", VERSION);
 	System.out.println("恭喜您清理完畢！"
 		+ "接下來請到 Eclipse 開啟 ZeroJudge 專案，並重新編譯產生新的 class ");
 
@@ -1016,7 +945,7 @@ public class _Cleaner {
     public static void main(String[] args) {
 	System.out.println("args.length=" + args.length + ", args=" + args[0]);
 	if (args.length == 1 && new File(args[0]).exists()) {
-	    new _Cleaner(new File(args[0])).run();
+	    new Cleaner(new File(args[0])).run();
 	}
     }
 }
