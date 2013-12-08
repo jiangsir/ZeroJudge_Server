@@ -11,7 +11,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
-public class Cleaner {
+public class _Cleaner {
     public class FileNameSelector implements FilenameFilter {
 	String regex;
 
@@ -42,8 +42,10 @@ public class Cleaner {
     private File SPECIAL_DIR;
     private File WEBXML;
     private File CONTEXTXML;
+    private File WEB_INF;
+    private File META_INF;
 
-    public Cleaner(File BASE_DIR) {
+    public _Cleaner(File BASE_DIR) {
 	if (!BASE_DIR.isDirectory()) {
 	    return;
 	}
@@ -55,6 +57,8 @@ public class Cleaner {
 	this.WEBXML = new File(BASE_DIR + "/WebContent/WEB-INF", "web.xml");
 	this.CONTEXTXML = new File(BASE_DIR + "/WebContent/META-INF",
 		"context.xml");
+	this.WEB_INF = new File(BASE_DIR, "/WebContent/WEB-INF");
+	this.META_INF = new File(BASE_DIR, "/WebContent/META-INF");
     }
 
     public void run() {
@@ -66,46 +70,33 @@ public class Cleaner {
 
     private void deleteFiles() {
 	System.out.println("接下來將清理");
-	System.out.println("utils/testing/ 目錄全部刪除");
-	System.out.println(BASE_DIR + ".settings/ 目錄全部刪除");
-	System.out.println(BASE_DIR + ".classpath 檔案刪除");
-	System.out.println(BASE_DIR + ".cvsignore 檔案刪除");
-	System.out.println(BASE_DIR + ".project 檔案刪除");
-	System.out.println(BASE_DIR + ".tomcatplugin 檔案刪除");
-	System.out.println(BASE_DIR + "work/ 目錄內的檔案刪除");
-	System.out.println(BASE_DIR + "style2.css 檔案刪除");
-	System.out.println(BASE_DIR + "開發日誌.txt 檔案刪除");
-	if ("Y".equals(cin.next())) {
-	    this.delDIR(BASE_DIR + "/WEB-INF/src/idv/jiangsir/utils/testing/");
-	    System.out.println("刪除目錄: " + BASE_DIR
-		    + "WEB-INF/src/idv/jiangsir/utils/testing/");
-	    this.delDIR(BASE_DIR + ".settings/");
-	    System.out.println("刪除目錄: " + BASE_DIR + ".settings/");
-	    this.delFiles(BASE_DIR + ".classpath");
-	    this.delFiles(BASE_DIR + ".cvsignore");
-	    this.delFiles(BASE_DIR + ".project");
-	    this.delFiles(BASE_DIR + ".tomcatplugin");
-	    this.delFiles(BASE_DIR + "work/");
-	    this.delFiles(BASE_DIR + "style2.css");
-	    this.delFiles(BASE_DIR + "開發日誌.txt");
-	    this.delFiles(BASE_DIR
-		    + "/WEB-INF/src/idv/jiangsir/DAOs/PagelogDAO.java");
-	    this.delFiles(BASE_DIR
-		    + "/WEB-INF/classes/idv/jiangsir/DAOs/PagelogDAO.class");
-	    this.delFiles(BASE_DIR + "/WEB-INF/src/Setup_ZeroJudge.java");
-	    this.delFiles(BASE_DIR + "/WEB-INF/classes/Setup_ZeroJudge.class");
-	    // cleaner
-	    // .delFiles(BasePath
-	    // +
-	    // "/WEB-INF/src/idv/jiangsir/utils/controller/SystemMonitorServlet.java");
-	    // cleaner
-	    // .delFiles(BasePath
-	    // +
-	    // "/WEB-INF/classes/idv/jiangsir/utils/controller/SystemMonitorServlet.class");
 
-	    this.delFiles(BASE_DIR + "/jQueryTest.html");
-	    this.delFiles(BASE_DIR + "/install.sh");
-	    this.delFiles(BASE_DIR + "/Install_tmp.jsp");
+	ArrayList<File> delFiles = new ArrayList<File>();
+	delFiles.add(new File(BASE_DIR, ".cvsignore"));
+	delFiles.add(new File(BASE_DIR, ".tomcatplugin"));
+	delFiles.add(new File(BASE_DIR, "style2.css"));
+	delFiles.addAll(this.getFileList(BASE_DIR, ".*\\.bak$"));
+	delFiles.addAll(this.getFileList(BASE_DIR, ".*\\.zip$"));
+	delFiles.addAll(this.getFileList(BASE_DIR, "^_.*"));
+
+	System.out.println("接下來將刪除以下檔案");
+	for (File file : delFiles) {
+	    System.out.println(file);
+	}
+	System.out.print("確定？(Y/n)");
+	if ("Y".equals(cin.next())) {
+	    for (File file : delFiles) {
+		this.delFiles(file.getPath());
+	    }
+	    // this.delDIR(BASE_DIR +
+	    // "/WEB-INF/src/idv/jiangsir/utils/testing/");
+	    // System.out.println("刪除目錄: " + BASE_DIR
+	    // + "WEB-INF/src/idv/jiangsir/utils/testing/");
+	    // this.delFiles(BASE_DIR + ".cvsignore");
+	    // this.delFiles(BASE_DIR + ".tomcatplugin");
+	    // this.delFiles(BASE_DIR + "style2.css");
+	    // this.delFiles(BASE_DIR + "開發日誌.txt");
+
 	} else {
 	    System.out.println("不清理這些檔案");
 	}
@@ -332,21 +323,16 @@ public class Cleaner {
 	ArrayList<File> fileList = new ArrayList<File>();
 	for (File file : path.listFiles()) {
 	    // 先列出目錄
-	    if (file.isDirectory()) { // 是否為目錄
+	    if (file.isDirectory() && !file.getName().matches(regex)) { // 是否為目錄
 		// 取得路徑名
 		// System.out.println("[" + files[i].getPath() + "]");
 		fileList.addAll(getFileList(file, regex));
-	    } else if (file.toString().matches(regex)) {
+	    } else if (file.getName().matches(regex)) {
 		// 檔案先存入fileList，待會再列出
 		// System.out.println(files[i].toString());
 		fileList.add(file);
 	    }
 	}
-	// 列出檔案
-	// for (File f : fileList) {
-	// System.out.println(f.toString());
-	// }
-	// System.out.println("共獲得 " + fileList.size() + " 個檔案");
 	return fileList;
     }
 
@@ -923,6 +909,20 @@ public class Cleaner {
     }
 
     /**
+     * 讀取一個 File, 如果是資料夾，則刪除整個資料夾，如果是檔案，則刪除檔案。
+     */
+    public void delDirFiles(File path) {
+	if (!path.exists()) {
+	    return;
+	}
+	if (path.isDirectory()) {
+	    this.delDIR(path.getPath());
+	} else {
+	    this.delFiles(path.getPath());
+	}
+    }
+
+    /**
      * 刪除檔案, 如果遇到目錄, 就將目錄底下的檔案全數刪除 <br>
      * 目錄結構被保留
      * 
@@ -1014,9 +1014,9 @@ public class Cleaner {
     public static Scanner cin = new Scanner(System.in);
 
     public static void main(String[] args) {
-	System.out.println("args.length=" + args.length);
+	System.out.println("args.length=" + args.length + ", args=" + args[0]);
 	if (args.length == 1 && new File(args[0]).exists()) {
-	    new Cleaner(new File(args[0])).run();
+	    new _Cleaner(new File(args[0])).run();
 	}
     }
 }
