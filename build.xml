@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="ZeroJudge_Server">
+    <property environment="env"/>
+    <property name="TOMCAT_HOME" value="../../apache-tomcat-6.0.20"/>
+    <property name="ECLIPSE_HOME" value="C:/Users/nknush-001/Documents/Downloads/eclipse-jee-galileo-SR1-win32/eclipse"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.5"/>
+    <property name="source" value="1.5"/>
+    <path id="ZeroJudge_Server.classpath">
+        <pathelement location="${TOMCAT_HOME}/lib/servlet-api.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/jasper.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/jsp-api.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/el-api.jar"/>
+        <pathelement location="${TOMCAT_HOME}/lib/annotations-api.jar"/>
+        <pathelement location="WEB-INF/classes"/>
+        <pathelement location="work"/>
+        <pathelement location="WEB-INF/lib/activation.jar"/>
+        <pathelement location="WEB-INF/lib/commons-io-1.4.jar"/>
+        <pathelement location="WEB-INF/lib/google-api-translate-java-0.92.jar"/>
+        <pathelement location="WEB-INF/lib/jdom.jar"/>
+        <pathelement location="WEB-INF/lib/json.jar"/>
+        <pathelement location="WEB-INF/lib/jstl.jar"/>
+        <pathelement location="WEB-INF/lib/junit-4.4.jar"/>
+        <pathelement location="WEB-INF/lib/standard.jar"/>
+        <pathelement location="WEB-INF/lib/jericho-html-3.2.jar"/>
+        <pathelement location="WEB-INF/lib/jackson-all-1.8.3.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="WEB-INF/classes"/>
+        <mkdir dir="work"/>
+        <copy includeemptydirs="false" todir="WEB-INF/classes">
+            <fileset dir="WEB-INF/src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="work">
+            <fileset dir="work">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="WEB-INF/classes"/>
+        <delete dir="work"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="WEB-INF/classes" source="${source}" target="${target}">
+            <src path="WEB-INF/src"/>
+            <classpath refid="ZeroJudge_Server.classpath"/>
+        </javac>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="work" source="${source}" target="${target}">
+            <src path="work"/>
+            <classpath refid="ZeroJudge_Server.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+</project>

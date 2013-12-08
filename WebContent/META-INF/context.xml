@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context docBase="ZeroJudge_Server">
+
+	<!-- <Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="127.0.0.1" 
+		deny="192.168.22.33" /> -->
+</Context>
