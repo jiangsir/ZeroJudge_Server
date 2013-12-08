@@ -16,18 +16,13 @@ public class ExecuteOutput extends Throwable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// public static String JUDGEMENT_RE = "RE";
-	// public static String JUDGEMENT_TLE = "TLE";
-	// public static String JUDGEMENT_MLE = "MLE";
-	// public static String JUDGEMENT_OLE = "OLE";
-	// public static String JUDGEMENT_SE = "SE";
 	private ServerOutput.JUDGEMENT judgement = ServerOutput.JUDGEMENT.SE;
 	private String info = "";
 
 	private ServerOutput.REASON reason = ServerOutput.REASON.SYSTEMERROR;
 	private int exitstatus = -1;
-	private long timeusage = -1; // ms
-	private int memoryusage = -1; // KB 改成 MB
+	private long timeusage = -1; 
+	private int memoryusage = -1; 
 
 	private String hint = null;
 

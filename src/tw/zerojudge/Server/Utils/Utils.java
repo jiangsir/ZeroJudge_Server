@@ -174,7 +174,6 @@ public class Utils {
 	Matcher m = null;
 	String value = null;
 
-	// 去掉<>标签
 	p = Pattern.compile("(<[^>]*>)");
 	m = p.matcher(content);
 	String temp = content;
@@ -183,35 +182,33 @@ public class Utils {
 	    temp = temp.replace(value, "");
 	}
 
-	// 去掉换行或回车符号
 	p = Pattern.compile("(\r+|\n+)");
 	m = p.matcher(temp);
 	while (m.find()) {
 	    value = m.group(0);
 	    temp = temp.replace(value, " ");
-	    // System.out.println("....." + value);
 	}
 
 	return temp;
     }
 
     /**
-     * 路徑容錯。要處理連續 // 的問題，且在最後要保證有 /
+     * 路徑容錯。要處理連續 
      */
     public static String parsePath(String path) {
 	if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
-	    path = path + System.getProperty("file.separator"); // 僅確保最後一個斜線。
+	    path = path + System.getProperty("file.separator"); 
 	    Matcher m = Pattern.compile(
 		    "['" + System.getProperty("file.separator") + "']+")
 		    .matcher(path);
-	    return m.replaceAll(System.getProperty("file.separator"));// 替換為一個斜線
+	    return m.replaceAll(System.getProperty("file.separator"));
 	} else {
 	    path = System.getProperty("file.separator") + path
-		    + System.getProperty("file.separator"); // 確保前後都有斜線。
+		    + System.getProperty("file.separator"); 
 	    Matcher m = Pattern.compile(
 		    "['" + System.getProperty("file.separator") + "']+")
 		    .matcher(path);
-	    return m.replaceAll(System.getProperty("file.separator"));// 替換為一個斜線
+	    return m.replaceAll(System.getProperty("file.separator"));
 	}
     }
 
@@ -241,7 +238,6 @@ public class Utils {
 	    outfile = new BufferedWriter(new OutputStreamWriter(fos, "UTF-8"));
 	    data = data.replaceAll("\n", System.getProperty("line.separator"));
 	    outfile.write(data);
-	    // outfile.newLine(); // qx 換行
 	    outfile.flush();
 	    outfile.close();
 	    System.gc();
@@ -270,9 +266,7 @@ public class Utils {
 	    }
 	} else if (file.exists() && file.getPath().matches(regex)) {
 	    if (file.delete()) {
-		System.out.println("刪除 " + path);
 	    } else {
-		System.out.println(path + " 刪除失敗");
 	    }
 	}
     }
@@ -290,8 +284,7 @@ public class Utils {
 	File[] files = file.listFiles();
 	for (int i = 0; i < files.length; i++) {
 	    String filestring = files[i].toString();
-	    // 先列出目錄
-	    if (!files[i].isDirectory() && filestring.matches(regex)) { // 是否為目錄
+	    if (!files[i].isDirectory() && filestring.matches(regex)) { 
 		String filename = filestring.substring(filestring
 			.lastIndexOf(System.getProperty("file.separator")) + 1);
 		fileList.put(filename,
@@ -302,7 +295,6 @@ public class Utils {
     }
 
     public static String readFile(String path, String filename) {
-	// 所有跟 readfile 有關的都要改成 path 由內部指定。外部只允許指定 filename
 	filename = filename.replaceAll("\\.\\.", "");
 	path = path.replaceAll("\\.\\.", "");
 	if (!path.endsWith(System.getProperty("file.separator"))) {
@@ -318,10 +310,8 @@ public class Utils {
 	    while ((line = breader.readLine()) != null) {
 		text.append(line + "\n");
 		if (text.length() >= MAX_LENGTH) {
-		    // text = new StringBuffer(20);
 		    text.append("超過 " + MAX_LENGTH + " Bytes，以下略過...");
 		    break;
-		    // return null;
 		}
 	    }
 	    fis.close();
@@ -338,7 +328,6 @@ public class Utils {
     }
 
     public static int readFilelinecount(String path, String filename) {
-	// 所有跟 readfile 有關的都要改成 path 由內部指定。外部只允許指定 filename
 	filename = filename.replaceAll("\\.\\.", "");
 	path = path.replaceAll("\\.\\.", "");
 	if (!path.endsWith(System.getProperty("file.separator"))) {
@@ -367,7 +356,6 @@ public class Utils {
 
     public static ArrayList<String> readFilelines(String path, String filename,
 	    String encode) {
-	// 所有跟 readfile 有關的都要改成 path 由內部指定。外部只允許指定 filename
 	filename = filename.replaceAll("\\.\\.", "");
 	path = path.replaceAll("\\.\\.", "");
 	if (!path.endsWith(System.getProperty("file.separator"))) {
@@ -492,7 +480,6 @@ public class Utils {
 	ArrayList<?> out = runcommand.getErrorStream();
 	if (out == null || out.size() == 0
 		|| ((String) out.get(0)).contains("java: command not found")) {
-	    System.out.println("out=" + out);
 	    return "Java not installed!!";
 	} else {
 	    return (String) out.get(0);
@@ -506,7 +493,6 @@ public class Utils {
 	ArrayList<?> out = runcommand.getOutputStream();
 	if (out == null || out.size() == 0
 		|| "".equals(out.get(0).toString().trim())) {
-	    System.out.println("out=" + out);
 	    return "$JAVA_HOME is empty!!";
 	} else {
 	    return (String) out.get(0);
@@ -556,7 +542,6 @@ public class Utils {
 	RunCommand runcommand = new RunCommand(command);
 	runcommand.run();
 	ArrayList<?> out = runcommand.getOutputStream();
-	System.out.println("mysqlversion=" + out);
 	if (out == null || out.size() == 0
 		|| "".equals(out.get(0).toString().trim())) {
 	    return "mysql 有誤!!";
@@ -568,7 +553,6 @@ public class Utils {
     }
 
     public static boolean isDigits(String s) {
-	// 負的整數會 return false
 	if (s == null || "".equals(s.trim())) {
 	    return false;
 	}
@@ -610,7 +594,6 @@ public class Utils {
 	try {
 	    return format.parse(datestring);
 	} catch (ParseException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	    return new Date();
 	}
@@ -638,28 +621,11 @@ public class Utils {
      */
     public static String toOneSpace(String s) {
 	return Pattern.compile("[ ]+").matcher(s).replaceAll(" ");
-	// 替換為一個空格
     }
 
     public static String translate(String text, String locale_from,
 	    String locale_to) {
-	// 20110518 取消自動翻譯。http://code.google.com/apis/errors 被 google 封鎖。
 	return text;
-	// String result = null;
-	// try {
-	// Translate.setHttpReferrer("http://");
-	// result = Translate.execute(text, new Utils().parse(locale_from),
-	// new Utils().parse(locale_to));
-	// } catch (Exception ex) {
-	// ex.printStackTrace();
-	// Log log = new Log(ex);
-	// log.setMessage(locale_from + "轉成 " + locale_to + "出錯！"
-	// + log.getMessage());
-	// log.setStacktrace(text);
-	// new LogDAO().insert(log);
-	// return text;
-	// }
-	// return "[By Google's Translation API]\n" + result;
     }
 
     /**
@@ -694,9 +660,6 @@ public class Utils {
     public static void main(String[] args) {
 	String result = "";
 	result = Utils.treeremove("abc,aab,bbc", "aaa");
-	System.out.println(result);
 	String querystring = "tab=tab01&pagenum=1&name=ssss";
-	System.out.println(querystring);
-	System.out.println(Utils.querystingMerge(querystring));
     }
 }

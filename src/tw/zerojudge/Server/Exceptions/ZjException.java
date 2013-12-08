@@ -18,17 +18,14 @@ public class ZjException extends Exception {
 
 	public ZjException() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public ZjException(String message, Throwable cause) {
 		super(message, cause);
-		// TODO Auto-generated constructor stub
 	}
 
 	public ZjException(Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -36,8 +33,6 @@ public class ZjException extends Exception {
 	 */
 	public ZjException(String session_account, String string) {
 		super(string);
-		// Logger logger = Logger.getLogger(this.getClass().getName());
-		// logger.log(Level.WARNING, "ZjException: " + string);
 	}
 
 }

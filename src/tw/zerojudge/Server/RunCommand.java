@@ -24,10 +24,9 @@ public class RunCommand implements Runnable {
 	private RunnableCause cause = new RunnableCause();
 
 	public int exitCode = -1;
-	private double timelimit = 0; // 改以 以 s 為單位, 允許小數點。
+	private double timelimit = 0; 
 	public boolean isInterrupted = false;
 
-	// public LineNumberReader in = null;
 
 	public RunCommand(String[] command, long delay) {
 		this.command = command;
@@ -43,8 +42,6 @@ public class RunCommand implements Runnable {
 	}
 
 	public void run() {
-		// String key = String.valueOf(new Date().getTime());
-		// ENV.ThreadPool.put(key, Thread.currentThread());
 		try {
 			Thread.sleep(delay);
 		} catch (InterruptedException e1) {
@@ -52,7 +49,6 @@ public class RunCommand implements Runnable {
 			return;
 		}
 		if (this.isInterrupted) {
-			System.out.println("command 被中斷: " + command[2]);
 			return;
 		}
 
@@ -100,8 +96,8 @@ public class RunCommand implements Runnable {
 		}
 		long stoptime = new Date().getTime();
 		this.executetime = (stoptime - starttime);
-		InputStream stdin = process.getInputStream(); // qx 取得該指令行的正常輸出
-		InputStream stderr = process.getErrorStream(); // qx 取得該指令行的錯誤輸出
+		InputStream stdin = process.getInputStream(); 
+		InputStream stderr = process.getErrorStream(); 
 
 		try {
 			String s = null;
@@ -139,11 +135,6 @@ public class RunCommand implements Runnable {
 	public void interrupt() {
 		this.isInterrupted = true;
 		Thread.currentThread().interrupt();
-		// qx 底下是不會中斷的, 要自己在 run 內指定 flag 才能中斷
-		// qx 因為 Thread 一定要跑完 run() 才能結束
-		// Thread.currentThread().interrupt();
-		// System.out.println("這個 Thread 是否已停止 = "
-		// + Thread.currentThread().isInterrupted());
 	}
 
 	/**

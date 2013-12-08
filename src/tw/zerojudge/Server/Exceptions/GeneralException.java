@@ -29,7 +29,6 @@ public class GeneralException extends Exception {
 
 	public GeneralException(String session_account, String message) {
 		super(message);
-		System.out.println("session_account=" + session_account);
 	}
 
 }

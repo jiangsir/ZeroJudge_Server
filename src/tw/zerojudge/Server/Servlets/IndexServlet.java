@@ -21,7 +21,7 @@ public class IndexServlet extends HttpServlet {
 	 * 
 	 */
     private static final long serialVersionUID = 1L;
-    ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
+    ObjectMapper mapper = new ObjectMapper(); 
 
     protected void doGet(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
@@ -48,8 +48,6 @@ public class IndexServlet extends HttpServlet {
 	} catch (JsonMappingException e1) {
 	    e1.printStackTrace();
 	}
-	// 20130409 CONSOLE_PATH 應該由 server 端的設定檔為準。
-	// ENV.setCONSOLE_PATH(serverInput.getConsole_path());
 	DoJudge doJudge = new DoJudge(serverInput);
 	doJudge.run();
 

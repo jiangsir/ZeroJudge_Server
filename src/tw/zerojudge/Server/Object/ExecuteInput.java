@@ -10,11 +10,11 @@ package tw.zerojudge.Server.Object;
  * 
  */
 public class ExecuteInput {
-	private String codename; // 程式碼放入 server /tmp/ 的主檔名 比如 code_851234
+	private String codename; 
 	private String session_account;
 	private Compiler.LANGUAGE language = null;
-	private double timelimit; // sec
-	private int memorylimit; // KB 改成 MB
+	private double timelimit; 
+	private int memorylimit; 
 	private String command;
 
 	public String getSession_account() {

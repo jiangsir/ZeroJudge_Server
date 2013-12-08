@@ -26,8 +26,6 @@ public class DES {
 	 * @throws Exception
 	 */
 	public final static String decrypt(String data) throws Exception {
-		// 20110817 new String 最後要加一個 "UTF-8" 的參數，否則如果 host 端的系統編碼不是 UTF-8
-		// 會造成亂碼。
 		return new String(decrypt(hex2byte(data.getBytes()), PASSWORD_CRYPT_KEY
 				.getBytes()), "UTF-8");
 	}
@@ -69,33 +67,25 @@ public class DES {
 
 	private static byte[] encrypt(byte[] data, byte[] key) throws Exception {
 
-		// 从原始密匙数据创建DESKeySpec对象
 
 		DESKeySpec dks = new DESKeySpec(key);
 
-		// 创建一个密匙工厂，然后用它把DESKeySpec转换成
 
-		// 一个SecretKey对象
 
 		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
 
 		SecretKey securekey = keyFactory.generateSecret(dks);
 
-		// 向量
 
 		IvParameterSpec iv = new IvParameterSpec(key);
 
-		// Cipher对象实际完成加密操作
 
 		Cipher cipher = Cipher.getInstance(ALGORITHM);
 
-		// 用密匙初始化Cipher对象
 
 		cipher.init(Cipher.ENCRYPT_MODE, securekey, iv);
 
-		// 现在，获取数据并加密
 
-		// 正式执行加密操作
 
 		return cipher.doFinal(data);
 
@@ -119,33 +109,25 @@ public class DES {
 
 	private static byte[] decrypt(byte[] data, byte[] key) throws Exception {
 
-		// 从原始密匙数据创建一个DESKeySpec对象
 
 		DESKeySpec dks = new DESKeySpec(key);
 
-		// 创建一个密匙工厂，然后用它把DESKeySpec对象转换成
 
-		// 一个SecretKey对象
 
 		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
 
 		SecretKey securekey = keyFactory.generateSecret(dks);
 
-		// 向量
 
 		IvParameterSpec iv = new IvParameterSpec(key);
 
-		// Cipher对象实际完成解密操作
 
 		Cipher cipher = Cipher.getInstance(ALGORITHM);
 
-		// 用密匙初始化Cipher对象
 
 		cipher.init(Cipher.DECRYPT_MODE, securekey, iv);
 
-		// 现在，获取数据并解密
 
-		// 正式执行解密操作
 
 		return cipher.doFinal(data);
 

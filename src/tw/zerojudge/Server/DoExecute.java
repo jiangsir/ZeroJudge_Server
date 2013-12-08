@@ -18,7 +18,6 @@ import tw.zerojudge.Server.Object.Rusage;
 public class DoExecute {
 	ExecuteInput executeInput;
 
-	// ExecuteOutput executeOutput = new ExecuteOutput();
 
 	public DoExecute(ExecuteInput executeInput) {
 		this.executeInput = executeInput;
@@ -28,9 +27,7 @@ public class DoExecute {
 		long timeusage = -1;
 		int memoryusage = -1;
 		ExecuteOutput output = new ExecuteOutput();
-		// HashMap<String, String> rusage = new HashMap<String, String>();
 		String cmd = executeInput.getCommand();
-		System.out.println("doExecute: cmd=" + cmd);
 		RunCommand execute = new RunCommand(
 				new String[] { "/bin/sh", "-c", cmd }, 0);
 		execute.setTimelimit(executeInput.getTimelimit());
@@ -38,19 +35,6 @@ public class DoExecute {
 
 		Rusage rusage = new Rusage(execute.getOutputStream(),
 				execute.getErrorString());
-		// String errorstring = execute.getErrorString();
-		// Iterator<String> it = execute.getOutputStream().iterator();
-		// while (it.hasNext()) {
-		// String message = it.next();
-		// if (message.contains("=")) {
-		// String[] usage = message.split("=");
-		// rusage.put(usage[0], usage[1]);
-		// } else {
-		// errorstring += message + "\n";
-		// }
-		// }
-		System.out.println("doExecute: OutputString="
-				+ execute.getOutputString());
 
 		if (rusage.getTime() >= 0) {
 			timeusage = (long) (rusage.getTime() * 1000);
@@ -61,12 +45,9 @@ public class DoExecute {
 					* rusage.getPagesize() / 1024;
 			output.setMemoryusage(memoryusage);
 		}
-		// 用 timelimitinsecs 才能反映出多測資點時，那個點的時間限制，而非該題目的總時間限制
 		if (timeusage > 0 && timeusage >= executeInput.getTimelimit() * 1000) {
 			output.setJudgement(ServerOutput.JUDGEMENT.TLE);
 			output.setTimeusage((long) (executeInput.getTimelimit() * 1000));
-			// output.setInfo(DoCompare.parseTimeusage((long) (executeInput
-			// .getTimelimit() * 1000)));
 			output.setReason(ServerOutput.REASON.TLE);
 			output.setHint(execute.getErrorString());
 			throw new JudgeException(output);
@@ -75,7 +56,6 @@ public class DoExecute {
 		if (memoryusage > 0
 				&& memoryusage >= executeInput.getMemorylimit() * 1024) {
 			output.setJudgement(ServerOutput.JUDGEMENT.MLE);
-			// output.setInfo(DoCompare.parseMemoryusage(memoryusage));
 			output.setReason(ServerOutput.REASON.MLE);
 			output.setHint(execute.getErrorString());
 			throw new JudgeException(output);
@@ -109,15 +89,12 @@ public class DoExecute {
 			throw new JudgeException(output);
 
 		} else if ("132".equals(rusage.getWEXITSTATUS())) {
-			// qx (4) SIGILL 执行了非法指令. 通常是因为可执行文件本身出现错误,
-			// 或者试图执行数据段.堆栈溢出时也有可能产生这个信号.
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("SIGILL");
 			output.setReason(ServerOutput.REASON.RE);
 			output.setHint("執行了非法的指令。\n" + execute.getErrorString());
 			throw new JudgeException(output);
 		} else if ("134".equals(rusage.getWEXITSTATUS())) {
-			// qx SIGABRT 6 Core Abort 參考 code_2682
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("SIGABRT");
 			output.setReason(ServerOutput.REASON.RE);

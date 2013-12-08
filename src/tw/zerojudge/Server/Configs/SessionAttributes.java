@@ -9,11 +9,11 @@ import javax.servlet.http.HttpSession;
 
 public class SessionAttributes {
     public enum NAMES {
-	sessionid, // sessionid
-	session_ip, // 來源 ip
-	session_currentpage, // 當前頁
-	session_previouspage, // 前一頁
-	session_locale, // 語系設定
+	sessionid, 
+	session_ip, 
+	session_currentpage, 
+	session_previouspage, 
+	session_locale, 
 	session_useragent, //
 	session_requestheaders, //
 	returnPage, //
@@ -35,7 +35,6 @@ public class SessionAttributes {
 	}
     };
     private Date lastsubmission = new Date();
-    // =======================================================================================
     private HttpSession session = null;
     private long idle = 0;
 

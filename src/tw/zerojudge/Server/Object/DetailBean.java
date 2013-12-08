@@ -41,7 +41,6 @@ public class DetailBean {
 
 	public DetailBean(String jsonString) {
 		try {
-			// System.out.println("jsonString=" + jsonString);
 			JSONObject json = new JSONObject(jsonString);
 			this.setJudgement(json.has("judgement") ? json
 					.getString("judgement") : this.judgement);
@@ -52,7 +51,6 @@ public class DetailBean {
 					: this.comment);
 			this.setReason(json.has("reason") ? json.getString("reason")
 					: this.comment);
-			// System.out.println("json.get(details)=" + json.get("details"));
 			if (json.has("details")) {
 				JSONArray jarray = json.getJSONArray("details");
 				String[] a = new String[jarray.length()];

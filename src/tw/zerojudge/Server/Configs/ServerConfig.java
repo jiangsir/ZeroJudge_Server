@@ -22,15 +22,12 @@ public class ServerConfig extends Config {
     @Property(key = "Servername")
     private String servername = "";
     @Property(key = "ServerOS")
-    private String serverOS = ""; // 描述評分主機的作業系統
+    private String serverOS = ""; 
     @Property(key = "ServerInfo")
-    private String serverInfo = ""; // 描述評分主機的硬體相關訊息。
-    // ====================================================================================
-    private ObjectMapper mapper = new ObjectMapper(); // can reuse, share
+    private String serverInfo = ""; 
+    private ObjectMapper mapper = new ObjectMapper(); 
     private File TempPath = new File("/tmp");
 
-    // private File RealPath;
-    // private String appName;
 
     public Compiler[] getCompilers() {
 	return Compilers;
@@ -128,35 +125,11 @@ public class ServerConfig extends Config {
 	TempPath = tempPath;
     }
 
-    // @JsonIgnore
-    // public File getRealPath() {
-    // return RealPath;
-    // }
     //
-    // @JsonIgnore
-    // public void setRealPath(File realPath) {
-    // RealPath = realPath;
-    // }
 
-    // @JsonIgnore
-    // public File getMetaInf() {
-    // return new File(RealPath + File.separator + "META-INF");
-    // }
     //
-    // @JsonIgnore
-    // public File getWebInf() {
-    // return new File(RealPath + File.separator + "WEB-INF");
-    // }
 
-    // @JsonIgnore
-    // public String getAppName() {
-    // return appName;
-    // }
     //
-    // @JsonIgnore
-    // public void setAppName(String appName) {
-    // this.appName = appName;
-    // }
 
     public int getJVM_MB() {
 	return JVM_MB;

@@ -21,21 +21,6 @@ import tw.zerojudge.Server.Beans.ServerInput;
  */
 public class ENV {
 
-    // qx 此處做為常數使用，但因為初始化時必須設定值 <br>
-    // TODO 因此無法定義為 final 再修正 <br>
-    // 例：D:\Tomcat 5.5\webapps\ZeroJudge_Dev\
-    // private static String PATH_REALPATH;
-    // private static String PATH_TESTDATA;
-    // private static String PATH_SPECIAL_JUDGE; // Special judge 的評審程式路徑
-    // private static String PATH_TMP;
-    // private static String PATH_COMPILER = "";
-    // private static String PATH_APP_BIN = "";
-    // private static String PATH_SOLUTIONFILE = "";
-    // private static String PATH_WEBINF;
-    // private static String PATH_METAINF;
-    // private static String APP_NAME;
-    // private static String APP_DIR;
-    // private static File CONSOLE_PATH;
 
     public static String SYSTEM_MONITOR_ACCOUNT;
     public static String SYSTEM_MONITOR_SELECTOR;
@@ -46,8 +31,6 @@ public class ENV {
     public static Hashtable<String, Integer> IP_CONNECTION = new Hashtable<String, Integer>();
     public static TreeSet<String> IP_DENIED = new TreeSet<String>();
     public static LinkedHashMap<String, HttpSession> OnlineSessions = new LinkedHashMap<String, HttpSession>();
-    // 改用 priorityQueue_20110215 public static ArrayList<JudgeObject> JudgeQueue
-    // = new ArrayList<JudgeObject>();
     public static PriorityQueue<ServerInput> JudgeQueue = new PriorityQueue<ServerInput>(
 	    1000, new Comparator<ServerInput>() {
 		public int compare(ServerInput x, ServerInput y) {
@@ -72,95 +55,31 @@ public class ENV {
     public static ServletContext context = null;
     public static final String rankrule = "ac DESC, rankpoint DESC, ce ASC, wa ASC";
 
-    // public static HashMap<String, Compiler> compilers;
 
-    // public static HashMap<String, Compiler> getCompilers() {
-    // return compilers;
-    // }
     //
-    // public static void setCompilers(HashMap<String, Compiler> compilers) {
-    // ENV.compilers = compilers;
-    // }
 
-    // public static String getPATH_REALPATH() {
-    // return PATH_REALPATH;
-    // }
     //
-    // public static File getCONSOLE_PATH() {
-    // return CONSOLE_PATH;
-    // }
     //
-    // public static void setCONSOLE_PATH(File cONSOLE_PATH) {
-    // CONSOLE_PATH = cONSOLE_PATH;
-    // }
     //
-    // public static String getPATH_SOLUTIONFILE() {
-    // return PATH_SOLUTIONFILE;
-    // }
     //
-    // public static String getAPP_DIR() {
-    // return APP_DIR;
-    // }
     //
-    // public static void setPATH_SOLUTIONFILE(String pATHSOLUTIONFILE) {
-    // PATH_SOLUTIONFILE = pATHSOLUTIONFILE;
-    // }
     //
-    // public static void setPATH_REALPATH(String pATHREALPATH) {
-    // PATH_REALPATH = pATHREALPATH;
-    // }
 
-    // public static String getPATH_TESTDATA() {
-    // return PATH_TESTDATA;
-    // }
 
-    // public static void setPATH_TESTDATA(String pATHTESTDATA) {
-    // PATH_TESTDATA = pATHTESTDATA;
-    // }
     //
-    // public static String getPATH_SPECIAL_JUDGE() {
-    // return PATH_SPECIAL_JUDGE;
-    // }
     //
-    // public static void setPATH_SPECIAL_JUDGE(String pATHSPECIALJUDGE) {
-    // PATH_SPECIAL_JUDGE = pATHSPECIALJUDGE;
-    // }
 
-    // public static String getPATH_WEBINF() {
-    // return PATH_WEBINF;
-    // }
     //
-    // public static void setPATH_WEBINF(String pATHWEBINF) {
-    // PATH_WEBINF = pATHWEBINF;
-    // }
     //
-    // public static String getPATH_METAINF() {
-    // return PATH_METAINF;
-    // }
     //
-    // public static void setPATH_METAINF(String pATHMETAINF) {
-    // PATH_METAINF = pATHMETAINF;
-    // }
 
     public static void setCOMMAND(String command) {
 	COMMAND = command;
     }
 
-    // public static String getPATH_TMP() {
-    // return PATH_TMP;
-    // }
     //
-    // public static void setPATH_TMP(String pATHTMP) {
-    // PATH_TMP = pATHTMP;
-    // }
     //
-    // public static String getPATH_COMPILER() {
-    // return PATH_COMPILER;
-    // }
     //
-    // public static void setPATH_COMPILER(String pATHCOMPILER) {
-    // PATH_COMPILER = pATHCOMPILER;
-    // }
 
     public static String getNow() {
 	return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
@@ -175,7 +94,6 @@ public class ENV {
 	    date = format.parse(datestring);
 	    this.timestamp = date.getTime();
 	} catch (ParseException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	    this.timestamp = new Date().getTime();
 	}
@@ -213,32 +131,9 @@ public class ENV {
 	}
     }
 
-    // /**
-    // * 定義所有固定要出現在 log 前面的字串
-    // *
-    // * @return
-    // */
-    // public static String logHeader(Object object) {
-    // return "[" + ENV.getNow() + " " + ENV.APP_NAME + "/"
-    // + object.getClass().getName() + "]: ";
-    // }
     //
-    // /**
-    // * 定義所有固定要出現在 log 前面的字串
-    // *
-    // * @return
-    // */
-    // public static String logHeader() {
-    // return "[" + ENV.getNow() + " " + ENV.APP_NAME + "]: ";
-    // }
     //
-    // public static void setAPP_DIR(String app_dir) {
-    // APP_DIR = app_dir;
-    // }
     //
-    // public static void setAPP_NAME(String app_name) {
-    // APP_NAME = app_name;
-    // }
 
     public static int getPAGESIZE() {
 	return PAGESIZE;
@@ -268,7 +163,6 @@ public class ENV {
 	try {
 	    this.urlstring = URLEncoder.encode(urlstring, "UTF-8");
 	} catch (UnsupportedEncodingException e) {
-	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
     }
@@ -314,25 +208,11 @@ public class ENV {
      * @param key
      */
     public void setMyProperty(String key) {
-	// ServerConfig_OLD myProperties = new ServerConfig_OLD();
-	// this.myProperty = myProperties.getProperty(key);
     }
 
-    // public static String getAPP_TESTDATA_PATH() {
-    // return APP_TESTDATA_PATH;
-    // }
     //
-    // public static void setAPP_TESTDATA_PATH(String app_testdata_path) {
-    // APP_TESTDATA_PATH = app_testdata_path;
-    // }
 
-    // public static String getPATH_APP_BIN() {
-    // return PATH_APP_BIN;
-    // }
     //
-    // public static void setPATH_APP_BIN(String pATHAPPBIN) {
-    // PATH_APP_BIN = pATHAPPBIN;
-    // }
 
     public static String getSYSTEM_MONITOR_ACCOUNT() {
 	return SYSTEM_MONITOR_ACCOUNT;

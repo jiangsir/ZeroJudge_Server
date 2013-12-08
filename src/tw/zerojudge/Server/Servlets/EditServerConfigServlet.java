@@ -15,11 +15,10 @@ public class EditServerConfigServlet extends HttpServlet {
 	 * 
 	 */
     private static final long serialVersionUID = 1L;
-    ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
+    ObjectMapper mapper = new ObjectMapper(); 
 
     protected void doGet(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
-	// PrintWriter out = response.getWriter();
 	request.setAttribute("serverConfig", ConfigFactory.getServerConfig());
 	request.getRequestDispatcher("EditServerConfig.jsp").forward(request,
 		response);

@@ -16,11 +16,8 @@ public class NameManglingOutput extends Throwable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// public static String JUDGEMENT_RF = "RF";
-	// public static String JUDGEMENT_SE = "SE";
 	private ServerOutput.JUDGEMENT judgement = ServerOutput.JUDGEMENT.SE;
 	private String info = "";
-	// System Error 未定義錯誤！
 	private ServerOutput.REASON reason = ServerOutput.REASON.SYSTEMERROR;
 	private String hint = "";
 

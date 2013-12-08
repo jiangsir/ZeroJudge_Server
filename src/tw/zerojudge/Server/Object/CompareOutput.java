@@ -17,11 +17,6 @@ public class CompareOutput extends Throwable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String session_account;
-	// public static String JUDGEMENT_AC = "AC";
-	// public static String JUDGEMENT_WA = "WA";
-	// public static String JUDGEMENT_NA = "NA";
-	// public static String JUDGEMENT_OLE = "OLE";
-	// public static String JUDGEMENT_SE = "SE";
 	private ServerOutput.JUDGEMENT judgement = ServerOutput.JUDGEMENT.SE;
 	private String info = "";
 

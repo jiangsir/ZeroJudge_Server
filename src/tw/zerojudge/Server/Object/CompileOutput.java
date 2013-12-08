@@ -16,8 +16,6 @@ public class CompileOutput extends Throwable {
 	 * 
 	 */
 	private static final long serialVersionUID = 6331434458762608732L;
-	// public static String JUDGEMENT_CE = "CE";
-	// public static String JUDGEMENT_SE = "SE";
 	private ServerOutput.JUDGEMENT judgement = ServerOutput.JUDGEMENT.SE;
 	private String info = "";
 	private ServerOutput.REASON reason = ServerOutput.REASON.SYSTEMERROR;

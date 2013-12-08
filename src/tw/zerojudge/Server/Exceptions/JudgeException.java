@@ -32,7 +32,6 @@ public class JudgeException extends RuntimeException {
 
 	public JudgeException() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public JudgeException(String message, Throwable cause) {
@@ -66,7 +65,6 @@ public class JudgeException extends RuntimeException {
 
 	public JudgeException(String session_account, String message) {
 		super(message);
-		System.out.println("session_account=" + session_account);
 	}
 
 	public JudgeException(Throwable cause, String session_account) {

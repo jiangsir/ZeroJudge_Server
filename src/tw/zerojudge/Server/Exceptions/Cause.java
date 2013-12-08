@@ -16,11 +16,11 @@ public class Cause extends Throwable {
     private static final long serialVersionUID = 1L;
 
     public static enum TYPE {
-	INFO, // 處理一些一般訊息的呈現。
-	WARNING, // 顯示使用者填報錯誤，或違規行為。
-	EXCEPTION, // 系統丟出的例外。
-	SQL_EXCEPTION, // 系統丟出 sql exception,包裝成自定的 exception
-	ERROR // 顯示一些錯誤訊息。
+	INFO, 
+	WARNING, 
+	EXCEPTION, 
+	SQL_EXCEPTION, 
+	ERROR 
     };
 
     private TYPE type = TYPE.INFO;

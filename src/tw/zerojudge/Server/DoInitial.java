@@ -23,18 +23,13 @@ public class DoInitial {
 	ServerConfig serverConfig = ConfigFactory.getServerConfig();
 	ServerInput serverInput;
 
-	// String Path_Testdata = "Testdata/";
-	// String Path_Bin = "Bin/";
 
 	public DoInitial(ServerInput serverInput) {
 		this.serverInput = serverInput;
 	}
 
 	public void run() throws JudgeException {
-		System.out.println("進入 syncTestdata: 1");
 		InitialOutput output = new InitialOutput(serverInput);
-		// rsync -av -e ssh jiangsir@163.32.92.12:/home/ZeroJudge_CONSOLE/
-		// /home/ZeroJudge_CONSOLE
 		String osname = System.getProperty("os.name");
 		if (!osname.toLowerCase().contains("linux")
 				&& !osname.toLowerCase().contains("mac")) {
@@ -51,31 +46,11 @@ public class DoInitial {
 			throw new JudgeException(output);
 		}
 
-		// 2011-08-16 server 與 host 同步的部分暫時取消。
-		// server 在同步這個動作上應採取被動。只有在 context 重新啟動的時候去同步整個 ZeroJudge_CONSOLE
-		// 接下來 host 端如果有任何測資的變動理論上都會同步到 server 端。
-		// 因此不需要在 Judge 時再同步一次。
 
-		// String rsync = "rsync -av -e ssh " + serverInput.getHost() + ":"
-		// + serverInput.getConsole_testdata() + " "
-		// + ENV.getPATH_TESTDATA();
-		// System.out.println("rsync=" + rsync);
-		// RunCommand execute = new RunCommand(new String[] { "/bin/sh", "-c",
-		// rsync }, 0);
-		// execute.run();
-		// if (!execute.getErrorString().equals("")) {
-		// output.setJudgement(CompileOutput.JUDGEMENT_SE);
-		// output.setReason(InitialOutput.REASON_CANT_SYNC_TESTDATA);
-		// output.setHint("無法同步測資！\n" + execute.getErrorString());
-		// throw new JudgeException(JudgeException.SE, output);
-		// }
 
-		// String[] testfiles = serverInput.getTestfiles().split(",");
-		// int testfilelength = serverInput.getTestfilelength();
 
 		for (int i = 0; i < serverInput.getTestfiles().length; i++) {
 			if (serverInput.getPriority() == ServerInput.PRIORITY.Testjudge) {
-				// Testjudge 需特殊處理！必須新增測資檔。
 				if (!serverConfig.getTestdataPath().exists()) {
 					serverConfig.getTestdataPath().mkdir();
 				}

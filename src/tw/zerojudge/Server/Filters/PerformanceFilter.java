@@ -23,14 +23,12 @@ public class PerformanceFilter implements Filter {
 	 * Default constructor.
 	 */
 	public PerformanceFilter() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
 	 * @see Filter#destroy()
 	 */
 	public void destroy() {
-		// TODO Auto-generated method stub
 	}
 
 	/**

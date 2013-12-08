@@ -25,8 +25,6 @@ public class DoJudge implements Runnable {
     ServerInput serverInput;
     ServerOutput[] serverOutputs = null;
 
-    // public static String Path_Testdata = "/Testdata/";
-    // public static String Path_Bin = "/Bin/";
 
     public DoJudge(ServerInput serverInput) {
 	this.serverInput = serverInput;
@@ -39,7 +37,6 @@ public class DoJudge implements Runnable {
      * @see java.lang.Runnable#run()
      */
     public void run() {
-	// String[] testfiles = serverInput.getTestfiles().split(",");
 	double[] timelimits = serverInput.getTimelimits();
 	int[] scores = serverInput.getScores();
 	try {
@@ -56,27 +53,22 @@ public class DoJudge implements Runnable {
 	}
 
 	try {
-	    System.out.println("DoCompile!!!");
 	    new DoCompile(serverInput).run();
 	} catch (JudgeException e) {
 	    e.printStackTrace();
 	    CompileOutput compileOutput = (CompileOutput) e.getCause();
 
-	    // 如果是 CE 最好只回傳 一個 serverOutput 作為最終結果。
-	    // 要不然，後面幾個都會是 null. 會變成 NA。要不然就是要做更多判斷。
 	    serverOutputs[0] = ServerFactory
 		    .newServerOutputFromInput(serverInput);
 	    serverOutputs[0].setJudgement(compileOutput.getJudgement());
 	    serverOutputs[0].setInfo(compileOutput.getInfo());
 	    serverOutputs[0].setReason(compileOutput.getReason());
 	    serverOutputs[0].setHint(compileOutput.getHint());
-	    // serverOutputs[0].setScore(scores[0]);
 	    serverOutputs[0].setScore(0);
 	    return;
 	}
 
 	try {
-	    System.out.println("CheckFunctions!!!");
 	    new NameMangling(serverInput).run();
 	} catch (JudgeException e) {
 	    e.printStackTrace();
@@ -91,7 +83,6 @@ public class DoJudge implements Runnable {
 	}
 
 	for (int i = 0; i < serverInput.getTestfiles().length; i++) {
-	    System.out.println("*** 第 " + (i + 1) + " 個測資點：");
 
 	    serverOutputs[i] = ServerFactory
 		    .newServerOutputFromInput(serverInput);
@@ -100,29 +91,14 @@ public class DoJudge implements Runnable {
 	    executeInput.setCodename(serverInput.getCodename());
 	    String command = "";
 
-	    int outfilelimit = 100 * 1024 * 1024; // 單位?
+	    int outfilelimit = 100 * 1024 * 1024; 
 	    double timelimit = timelimits[i];
-	    // int JVM = 10 * 1000 * 1000 * 1000; // Byte
-	    // String testfilename = Utils.getTESTDATA_FILENAME(serverInput
-	    // .getProblemid(), i);
 
-	    // Compiler compiler = null;
-	    // for (Compiler enablecompiler :
-	    // serverConfig.getENABLE_COMPILERS()) {
-	    // if (enablecompiler.getLanguage() == serverInput.getLanguage()) {
-	    // compiler = enablecompiler;
-	    // break;
-	    // }
-	    // }
 	    Compiler compiler = serverInput.getCompiler();
 	    executeInput.setMemorylimit(serverInput.getMemorylimit());
 	    executeInput.setTimelimit(timelimit * compiler.getTimeextension());
 
-	    // int memorylimit = serverInput.getMemorylimit() * 1100;
-	    System.out.println("Memorylimit=" + executeInput.getMemorylimit()
-		    + " MB");
 	    if (serverInput.getLanguage() == Compiler.LANGUAGE.JAVA) {
-		System.out.println("JVM=" + serverConfig.getJVM_MB() + " MB");
 		command = ""
 			+ serverConfig.getBinPath()
 			+ File.separator
@@ -187,7 +163,6 @@ public class DoJudge implements Runnable {
 
 	    ExecuteOutput executeOutput = null;
 	    try {
-		System.out.println("DoExecute!!!");
 		executeOutput = new DoExecute(executeInput).run();
 		serverOutputs[i].setTimeusage(executeOutput.getTimeusage());
 		serverOutputs[i].setMemoryusage(executeOutput.getMemoryusage());
@@ -202,7 +177,6 @@ public class DoJudge implements Runnable {
 		serverOutputs[i].setInfo(executeOutput.getInfo());
 		serverOutputs[i].setReason(executeOutput.getReason());
 		serverOutputs[i].setHint(executeOutput.getHint());
-		// serverOutputs[i].setScore(0);
 		continue;
 	    }
 
@@ -229,10 +203,7 @@ public class DoJudge implements Runnable {
 		serverOutputs[i].setJudgement(compareOutput.getJudgement());
 		serverOutputs[i].setInfo(compareOutput.getInfo());
 		serverOutputs[i].setReason(compareOutput.getReason());
-		System.out.println("hint=" + compareOutput.getHint());
 		serverOutputs[i].setHint(compareOutput.getHint());
-		System.out.println("hint=" + serverOutputs[i].getHint());
-		// serverOutputs[i].setScore(scores[i]);
 		continue;
 	    }
 

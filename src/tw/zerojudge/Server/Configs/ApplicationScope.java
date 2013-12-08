@@ -43,9 +43,6 @@ public class ApplicationScope {
     }
 
     public static File getAppRoot() {
-	// if (ApplicationScope.appRoot == null) {
-	// setAppRoot();
-	// }
 	return ApplicationScope.appRoot;
     }
 

@@ -65,7 +65,6 @@ public class ExceptionHandlerFilter implements Filter {
 	    } else {
 		cause = new Cause(rootCause);
 	    }
-	    // cause.setContent(content);
 	    HashMap<String, URI> uris = cause.getUris();
 
 	    try {

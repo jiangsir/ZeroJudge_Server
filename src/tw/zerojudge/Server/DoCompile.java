@@ -25,14 +25,13 @@ import tw.zerojudge.Server.Utils.Utils;
 public class DoCompile {
 	ServerInput serverInput;
 	ServerConfig serverConfig = ConfigFactory.getServerConfig();
-	ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
+	ObjectMapper mapper = new ObjectMapper(); 
 
 	public DoCompile(ServerInput serverInput) {
 		this.serverInput = serverInput;
 	}
 
 	public void run() throws JudgeException {
-		System.out.println("進入 doCompile: 1");
 		CompileOutput compileOutput = new CompileOutput();
 		String code = serverInput.getCode();
 		if (code == null || code.trim().equals("")) {
@@ -44,9 +43,6 @@ public class DoCompile {
 		}
 
 		if (serverInput.getLanguage() == Compiler.LANGUAGE.JAVA) {
-			// System.out.println("java code=" + code);
-			// 改進 java 的 regex 盡量開放使用各種類別名稱
-			// System.out.println("code=" + code);
 
 			/*
 			 * 問題：找出第一組 class { 之間的任何資源，代換成 class JAVA { 即可。
@@ -67,7 +63,6 @@ public class DoCompile {
 			 */
 			code = code.replaceAll("[ ]*package .*", "");
 			code = code.replaceFirst("class(?s).*?\\{", "class JAVA \\{");
-			// System.out.println("code=" + code);
 
 			if (!code.contains("public class JAVA")
 					&& !code.contains("class JAVA")) {
@@ -85,10 +80,6 @@ public class DoCompile {
 						+ "." + serverInput.getLanguage().getSuffix()), code
 						+ "\n");
 
-		// HashMap<String, String> rusage = new HashMap<String, String>();
-		System.out.println(serverInput.getSolutionid() + " 進入 doCompile: 2");
-		// String cmd =
-		// ENV.getCompilers().get(serverInput.getLanguage()).getCmd();
 		Compiler compiler = serverInput.getCompiler();
 		String cmd_compile = compiler.getCmd_compile();
 		if (cmd_compile.contains("$S")) {
@@ -96,30 +87,15 @@ public class DoCompile {
 					"\\$S",
 					serverConfig.getTempPath() + File.separator
 							+ serverInput.getCodename());
-			// System.out.println("replaced $S=" + cmd_compile);
 		}
 		cmd_compile = "" + serverConfig.getBinPath() + File.separator
 				+ "shell.exe " + "10 640000000 100000000 \""
 				+ serverConfig.getBinPath() + File.separator
 				+ "base_c.exe\" \"" + cmd_compile + "\"";
-		System.out.println("進入 doCompile: 3 CMD replaced2=" + cmd_compile);
 		RunCommand runCompile = new RunCommand(new String[] { "/bin/sh", "-c",
 				cmd_compile }, 0);
 		runCompile.run();
-		System.out.println("進入 doCompile: 4 CMD replaced2=" + cmd_compile
-				+ " 完成 runCompile.run()");
 
-		// String errmsg = runCompile.getErrorString();
-		// Iterator<String> it = runCompile.getOutputStream().iterator();
-		// while (it.hasNext()) {
-		// String message = it.next();
-		// if (message.contains("=")) {
-		// String[] usage = message.split("=");
-		// rusage.put(usage[0], usage[1]);
-		// } else {
-		// errmsg += message + "\n";
-		// }
-		// }
 		Rusage rusage = new Rusage(runCompile.getOutputStream(),
 				runCompile.getErrorString());
 
@@ -130,12 +106,7 @@ public class DoCompile {
 			compileOutput.setReason(ServerOutput.REASON.FORCED_STOP);
 			compileOutput.setHint("程序被強制結束！");
 			throw new JudgeException(compileOutput);
-			// return output;
 		} else if ("0".equals(WEXITSTATUS)) {
-			// || "137".equals((String) rusage.get("WEXITSTATUS")
-			// FIXME_DONE 實驗證明 回傳值 137 并沒有什麼錯誤
-			// output.setJudgement(CompileOutput.JUDGEMENT_PASS);
-			// return null;
 		} else if ("1".equals(WEXITSTATUS)) {
 			double compiletimeusage = rusage.getTime();
 			if (compiletimeusage >= 30) {
@@ -165,7 +136,6 @@ public class DoCompile {
 					.setReason(ServerOutput.REASON.SYSTEMERROR_WHEN_COMPILE);
 			compileOutput.setHint(rusage.getErrmsg());
 			throw new JudgeException(compileOutput);
-			// return output;
 		}
 	}
 }

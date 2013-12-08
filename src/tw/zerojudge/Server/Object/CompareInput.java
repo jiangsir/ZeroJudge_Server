@@ -12,7 +12,7 @@ import tw.zerojudge.Server.Beans.ServerInput;
  * 
  */
 public class CompareInput {
-	private String codename; // 程式碼放入 server /tmp/ 的主檔名 比如 code_851234
+	private String codename; 
 	private String session_account;
 	private String testfilename;
 	private ServerInput.MODE mode;

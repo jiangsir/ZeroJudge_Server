@@ -21,8 +21,8 @@ public class Compiler {
     public static enum LANGUAGE {
 	C("C", "c"), CPP("C++", "cpp"), JAVA("JAVA", "java"), PASCAL("PASCAL",
 		"pas"), BASIC("BASIC", "bas");
-	private String value; // 顯示在 View 的名稱。 如：C++
-	private String suffix;// 語言的附檔名
+	private String value; 
+	private String suffix;
 
 	private LANGUAGE(String value, String suffix) {
 	    this.value = value;
@@ -47,7 +47,7 @@ public class Compiler {
     private String command_begin = "";
     private String command_end = "";
 
-    private double timeextension = 1; // 依據語言特性設定寬限值， 1 代表與題目預設一樣。
+    private double timeextension = 1; 
     private String cmd_compile = "";
     private String cmd_makeobject = "";
     private String cmd_namemangling = "";
@@ -56,57 +56,15 @@ public class Compiler {
 
     /** ******************************************************************** */
     @JsonIgnore
-    ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
+    ObjectMapper mapper = new ObjectMapper(); 
 
     public Compiler() {
 
     }
 
-    // @SuppressWarnings("unchecked")
-    // public Compiler(String language) {
-    // SystemConfig systemConfig = new SystemConfig();
-    // List<Object> compilers = new ArrayList<Object>();
-    // try {
-    // compilers = Json.toJavaList(new JSONArray(systemConfig
-    // .getProperty(SystemConfig.props_COMPILERS)));
-    // } catch (JSONException e) {
-    // e.printStackTrace();
-    // Log log = new Log(e);
-    // log.setMessage("設定值有問題！並未依照 JSON 格式來指定語言分類，請修改設定檔。<br>"
-    // + log.getMessage());
-    // new LogDAO().insert(log);
-    // return;
-    // }
-    // Iterator<Object> it = compilers.iterator();
-    // while (it.hasNext()) {
-    // HashMap<String, String> map = (HashMap<String, String>) it.next();
-    // if (language.equals((String) map.get("language"))) {
-    // this.setLanguage((String) map.get("language"));
-    // this.setCompile_path((String) map.get("path"));
-    // this.setCompile_cmd((String) map.get("cmd"));
-    // this.setCompile_param((String) map.get("param"));
-    // this.setCompile_version((String) map.get("version"));
-    // System.out.println(this.getLanguage() + ", "
-    // + this.getCompile_path() + ", "
-    // + this.getCompile_version());
     //
-    // return;
-    // }
-    // }
-    // }
 
     /** *********************************************************************** */
-    // public int workingLanguage(String language) {
-    // // if ("CPP".equals(language)) {
-    // // language = "C++";
-    // // }
-    // for (int i = 0; i < this.languages.length; i++) {
-    // if (this.languages[i].equals(language)) {
-    // return i;
-    // }
-    // }
-    // return -1;
-    // }
 
     /** *********************************************************************** */
 

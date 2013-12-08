@@ -18,12 +18,12 @@ import tw.zerojudge.Server.Configs.ServerConfig;
 @WebServlet(urlPatterns = { "/api/Index" })
 public class IndexServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private static ObjectMapper mapper = new ObjectMapper(); // can reuse, share
+    private static ObjectMapper mapper = new ObjectMapper(); 
 
     public static enum GETACTION {
-	getCompilers, // 取得本評分主機所支援的語言及其編譯器的資訊
-	getServerConfig, // 取得本評分主機的相關設定
-	getTestdataPath;// 取得評分主機的測資路徑
+	getCompilers, 
+	getServerConfig, 
+	getTestdataPath;
     }
 
     /**

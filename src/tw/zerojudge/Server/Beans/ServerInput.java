@@ -15,47 +15,31 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  */
 public class ServerInput {
     private String servername = "";
-    // private File console_path; // 在 host 當中要指定好 server 的 console_path
     private String session_account = "";
     private int solutionid = 0;
     private String problemid = "";
     private Compiler.LANGUAGE language = null;
-    private double[] timelimits; // sec 允許多測資
-    private int memorylimit; // KB
+    private double[] timelimits; 
+    private int memorylimit; 
     private String code;
     private String codename;
-    // private String testfiles; // 測資檔名 允許多測資
-    private String[] testfiles;// 測資檔名 允許多測資 host 要確定好名稱才送給 server 。
-    private int[] scores; // 本次配分 允許多測資
+    private String[] testfiles;
+    private int[] scores; 
 
-    // public static final String MODE_STRICTLY = "Strictly";
-    // public static final String MODE_TOLERANT = "Tolerant";
-    // public static final String MODE_SPECIAL = "Special";
 
     public static enum MODE {
 	Strictly, Tolerant, Special;
     }
 
-    private MODE mode = MODE.Tolerant; // 寬鬆 or 嚴格 or Special
+    private MODE mode = MODE.Tolerant; 
 
     private boolean detailvisible;
 
-    // public static final int PRIORITY_Submit = 1;
-    // public static final int PRIORITY_Prejudge = 2;
-    // public static final int PRIORITY_Testjudge = 3;
-    // public static final int PRIORITY_TESTCODE = 4;
-    // public static final int PRIORITY_MANUALJUDGE = 5;
-    // public static final int PRIORITY_Rejudge = 6;
     public static enum PRIORITY {
 	Submit, Prejudge, Testjudge, TESTCODE, MANUALJUDGE, Rejudge;
     }
 
     private PRIORITY priority = PRIORITY.Submit;
-    // private String cmd_compile = "";
-    // private String cmd_makeobject = "";
-    // private String cmd_namemangling = "";
-    // private String cmd_execute = "";
-    // private String[] restrictedfunctions = new String[] {};
     private String testjudge_indata = "";
     private String testjudge_outdata = "";
 
@@ -67,18 +51,7 @@ public class ServerInput {
 	this.servername = servername;
     }
 
-    // // public File getConsole_path() {
-    // // return console_path;
-    // // }
-    // //
-    // // @JsonIgnore
-    // // public void setConsole_path(File console_path) {
-    // // this.console_path = console_path;
-    // // }
     //
-    // public void setConsole_path(String console_path) {
-    // this.setConsole_path(new File(console_path));
-    // }
 
     public int getSolutionid() {
 	return solutionid;
@@ -157,13 +130,7 @@ public class ServerInput {
 	this.code = code;
     }
 
-    // public String getTestfiles() {
-    // return testfiles;
-    // }
     //
-    // public void setTestfiles(String testfiles) {
-    // this.testfiles = testfiles;
-    // }
 
     public String[] getTestfiles() {
 	return testfiles;
@@ -244,52 +211,16 @@ public class ServerInput {
 	this.detailvisible = detailvisible;
     }
 
-    // public String getCmd_compile() {
-    // return cmd_compile;
-    // }
     //
-    // public void setCmd_compile(String cmdCompile) {
-    // cmd_compile = cmdCompile;
-    // }
     //
-    // public String getCmd_makeobject() {
-    // return cmd_makeobject;
-    // }
     //
-    // public void setCmd_makeobject(String cmdMakeobject) {
-    // cmd_makeobject = cmdMakeobject;
-    // }
     //
-    // public String getCmd_namemangling() {
-    // return cmd_namemangling;
-    // }
     //
-    // public void setCmd_namemangling(String cmdNamemangling) {
-    // cmd_namemangling = cmdNamemangling;
-    // }
     //
-    // public String getCmd_execute() {
-    // return cmd_execute;
-    // }
     //
-    // public void setCmd_execute(String cmdExecute) {
-    // cmd_execute = cmdExecute;
-    // }
     //
-    // public String[] getRestrictedfunctions() {
-    // return restrictedfunctions;
-    // }
     //
-    // public void setRestrictedfunctions(String[] restrictedfunctions) {
-    // this.restrictedfunctions = restrictedfunctions;
-    // }
 
-    // public void setRestrictedfunctions(String restrictedfunctions) {
-    // if (restrictedfunctions == null) {
-    // return;
-    // }
-    // this.setRestrictedfunctions(Utils.String2Array(restrictedfunctions));
-    // }
 
     public String getTestjudge_indata() {
 	return testjudge_indata;

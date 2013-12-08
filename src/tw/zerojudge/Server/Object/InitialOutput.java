@@ -22,7 +22,7 @@ public class InitialOutput extends Throwable {
 	private ServerOutput.REASON reason = ServerOutput.REASON.SYSTEMERROR;
 	private String hint = "";
 	private int exitstatus = -1;
-	private String debug = ""; // 系統除錯使用，不顯示到 web 上
+	private String debug = ""; 
 
 	public InitialOutput(ServerInput serverInput) {
 	}
