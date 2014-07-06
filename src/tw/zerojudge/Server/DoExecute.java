@@ -18,7 +18,6 @@ import tw.zerojudge.Server.Object.Rusage;
 public class DoExecute {
 	ExecuteInput executeInput;
 
-
 	public DoExecute(ExecuteInput executeInput) {
 		this.executeInput = executeInput;
 	}
@@ -28,6 +27,7 @@ public class DoExecute {
 		int memoryusage = -1;
 		ExecuteOutput output = new ExecuteOutput();
 		String cmd = executeInput.getCommand();
+		System.out.println(cmd);
 		RunCommand execute = new RunCommand(
 				new String[] { "/bin/sh", "-c", cmd }, 0);
 		execute.setTimelimit(executeInput.getTimelimit());
@@ -37,7 +37,7 @@ public class DoExecute {
 				execute.getErrorString());
 
 		if (rusage.getTime() >= 0) {
-			timeusage = (long) (rusage.getTime() * 1000);
+			timeusage = (long) ((rusage.getTime() + rusage.getBasetime()) * 1000);
 			output.setTimeusage(timeusage);
 		}
 		if (rusage.getMem() >= 0 && rusage.getBasemem() >= 0) {
@@ -45,7 +45,8 @@ public class DoExecute {
 					* rusage.getPagesize() / 1024;
 			output.setMemoryusage(memoryusage);
 		}
-		if (timeusage > 0 && timeusage >= executeInput.getTimelimit() * 1000) {
+		if (timeusage > 0
+				&& timeusage >= executeInput.getTimelimit() * 1000 * 0.95) {
 			output.setJudgement(ServerOutput.JUDGEMENT.TLE);
 			output.setTimeusage((long) (executeInput.getTimelimit() * 1000));
 			output.setReason(ServerOutput.REASON.TLE);

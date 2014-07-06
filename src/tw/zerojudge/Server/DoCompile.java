@@ -25,7 +25,7 @@ import tw.zerojudge.Server.Utils.Utils;
 public class DoCompile {
 	ServerInput serverInput;
 	ServerConfig serverConfig = ConfigFactory.getServerConfig();
-	ObjectMapper mapper = new ObjectMapper(); 
+	ObjectMapper mapper = new ObjectMapper();
 
 	public DoCompile(ServerInput serverInput) {
 		this.serverInput = serverInput;
@@ -92,6 +92,7 @@ public class DoCompile {
 				+ "shell.exe " + "10 640000000 100000000 \""
 				+ serverConfig.getBinPath() + File.separator
 				+ "base_c.exe\" \"" + cmd_compile + "\"";
+		System.out.println(cmd_compile);
 		RunCommand runCompile = new RunCommand(new String[] { "/bin/sh", "-c",
 				cmd_compile }, 0);
 		runCompile.run();
@@ -104,7 +105,7 @@ public class DoCompile {
 			compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);
 			compileOutput.setInfo("");
 			compileOutput.setReason(ServerOutput.REASON.FORCED_STOP);
-			compileOutput.setHint("程序被強制結束！");
+			compileOutput.setHint("編譯程式被強制結束！");
 			throw new JudgeException(compileOutput);
 		} else if ("0".equals(WEXITSTATUS)) {
 		} else if ("1".equals(WEXITSTATUS)) {

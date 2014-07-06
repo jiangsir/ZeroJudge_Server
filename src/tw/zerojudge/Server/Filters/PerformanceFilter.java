@@ -39,8 +39,13 @@ public class PerformanceFilter implements Filter {
 		long begin = System.currentTimeMillis();
 		request.setAttribute("ms", begin);
 		chain.doFilter(request, response);
-		logger.info("requestURL="
-				+ ((HttpServletRequest) request).getRequestURL() + ", 共耗時 "
+		HttpServletRequest req = (HttpServletRequest) request;
+		logger.info(req.getMethod()
+				+ " "
+				+ req.getRequestURL()
+				+ req.getServletPath()
+				+ (req.getQueryString() == null ? "" : "?"
+						+ req.getQueryString()) + ", 共耗時 "
 				+ (System.currentTimeMillis() - begin) + " ms.");
 	}
 

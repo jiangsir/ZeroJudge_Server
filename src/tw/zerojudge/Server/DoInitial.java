@@ -23,7 +23,6 @@ public class DoInitial {
 	ServerConfig serverConfig = ConfigFactory.getServerConfig();
 	ServerInput serverInput;
 
-
 	public DoInitial(ServerInput serverInput) {
 		this.serverInput = serverInput;
 	}
@@ -40,14 +39,11 @@ public class DoInitial {
 		}
 		String code = serverInput.getCode();
 		if (code == null || code.trim().equals("")) {
-			output.setJudgement(ServerOutput.JUDGEMENT.SE);
-			output.setReason(ServerOutput.REASON.SYSTEMERROR);
+			output.setJudgement(ServerOutput.JUDGEMENT.CE);
+			output.setReason(ServerOutput.REASON.COMPILE_ERROR);
 			output.setHint("您的程式碼為空字串！");
 			throw new JudgeException(output);
 		}
-
-
-
 
 		for (int i = 0; i < serverInput.getTestfiles().length; i++) {
 			if (serverInput.getPriority() == ServerInput.PRIORITY.Testjudge) {

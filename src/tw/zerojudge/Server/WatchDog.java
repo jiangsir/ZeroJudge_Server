@@ -5,8 +5,8 @@ import tw.zerojudge.Server.Exceptions.RunnableCause;
 
 public class WatchDog implements Runnable {
 	Process process;
-	double max_timelimit = 40; 
-	double timelimit = 0; 
+	double max_timelimit = 30;
+	double timelimit = 0;
 	boolean isFinish = false;
 	private RunnableCause cause = null;
 
@@ -34,6 +34,7 @@ public class WatchDog implements Runnable {
 			cause.setResourceMessage(RunnableCause.Resource_PROCESS_DESTROIED);
 			cause.setPlainMessage("process 沒有結束，因此強迫結束 do process.destroy(), "
 					+ "watch 經過 " + this.max_timelimit + " s 啟動，強制結束");
+			System.out.println(cause.getPlainMessage());
 			return;
 		}
 	}
