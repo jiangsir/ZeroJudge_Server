@@ -205,10 +205,9 @@ public class DoJudge implements Runnable {
 				serverOutputs[i].setHint(compareOutput.getHint());
 				continue;
 			}
-			
-			new DoClean();
 
 		}
+		new DoClean(serverInput.getCodename()).run();
 	}
 
 	public ServerOutput[] getServerOutputs() {
