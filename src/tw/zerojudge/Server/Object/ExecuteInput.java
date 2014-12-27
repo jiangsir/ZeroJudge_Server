@@ -6,7 +6,7 @@
 package tw.zerojudge.Server.Object;
 
 /**
- * @author nknush-001
+ * @author jiangsir
  * 
  */
 public class ExecuteInput {

@@ -24,9 +24,8 @@ public class RunCommand implements Runnable {
 	private RunnableCause cause = new RunnableCause();
 
 	public int exitCode = -1;
-	private double timelimit = 0; 
+	private double timelimit = 0;
 	public boolean isInterrupted = false;
-
 
 	public RunCommand(String[] command, long delay) {
 		this.command = command;
@@ -35,6 +34,12 @@ public class RunCommand implements Runnable {
 
 	public RunCommand(String[] command) {
 		this.command = command;
+		this.delay = 0;
+	}
+
+	public RunCommand(String command) {
+		this.command = new String[] { "/bin/sh", "-c", command };
+		this.delay = 0;
 	}
 
 	public void setTimelimit(double timelimit) {
@@ -56,9 +61,10 @@ public class RunCommand implements Runnable {
 		Runtime rt = Runtime.getRuntime();
 		Process process;
 		try {
+			System.out.println("command=" + command[2]);
 			process = rt.exec(command);
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 			cause.setResourceMessage(ServerOutput.REASON.SYSTEMERROR.toString());
 			cause.setPlainMessage("runtime exec IOException!!");
 			return;
@@ -96,8 +102,8 @@ public class RunCommand implements Runnable {
 		}
 		long stoptime = new Date().getTime();
 		this.executetime = (stoptime - starttime);
-		InputStream stdin = process.getInputStream(); 
-		InputStream stderr = process.getErrorStream(); 
+		InputStream stdin = process.getInputStream();
+		InputStream stderr = process.getErrorStream();
 
 		try {
 			String s = null;

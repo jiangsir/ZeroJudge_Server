@@ -6,7 +6,7 @@
 package tw.zerojudge.Server.Beans;
 
 /**
- * @author nknush-001
+ * @author jiangsir
  * 
  */
 public class TestJson {

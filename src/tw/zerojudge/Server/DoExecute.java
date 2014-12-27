@@ -12,7 +12,7 @@ import tw.zerojudge.Server.Object.ExecuteOutput;
 import tw.zerojudge.Server.Object.Rusage;
 
 /**
- * @author nknush-001
+ * @author jiangsir
  * 
  */
 public class DoExecute {

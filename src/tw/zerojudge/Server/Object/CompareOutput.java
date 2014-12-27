@@ -8,7 +8,7 @@ package tw.zerojudge.Server.Object;
 import tw.zerojudge.Server.Beans.ServerOutput;
 
 /**
- * @author nknush-001
+ * @author jiangsir
  * 
  */
 public class CompareOutput extends Throwable {

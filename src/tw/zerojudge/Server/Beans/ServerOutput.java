@@ -10,38 +10,12 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonValue;
 
 /**
- * @author nknush-001
+ * @author jiangsir
  * 
  */
 public class ServerOutput {
 	public static enum REASON {
-		DES_ERROR, 
-		JsonGenerationException, 
-		CANT_SEND_DATA_TO_JUDGESERVER, 
-		JUDGESERVER_NOT_FOUND, 
-		TESTDATA_NOT_FOUND, 
-		SYSTEMERROR, 
-		WRONG_JAVA_CLASS, 
-		FORCED_STOP, 
-		COMPILE_TOO_LONG, 
-		COMPILE_ERROR, 
-		SYSTEMERROR_WHEN_COMPILE, 
-		LESS_THAN_STANDARD_OUTPUT, 
-		MORE_THAN_STANDARD_OUTPUT, 
-		ANSWER_NOT_MATCHED, 
-		OS_NOT_SUPPORTTED, 
-		JSON_PARSE_ERROR, 
-		MANUAL_JUDGE, 
-		SYSTEMERROR_WHEN_COMPARE, 
-		CANT_SYNC_TESTDATA, 
-		CONTEST_PREJUDGE_DATA_EXCEED, 
-		YouCannotShowOthersErrmsg, 
-		AC, 
-		TLE, 
-		MLE, 
-		RE, 
-		RF, 
-		OLE; 
+		DES_ERROR, JsonGenerationException, CANT_SEND_DATA_TO_JUDGESERVER, JUDGESERVER_NOT_FOUND, TESTDATA_NOT_FOUND, SYSTEMERROR, WRONG_JAVA_CLASS, FORCED_STOP, COMPILE_TOO_LONG, COMPILE_ERROR, SYSTEMERROR_WHEN_COMPILE, LESS_THAN_STANDARD_OUTPUT, MORE_THAN_STANDARD_OUTPUT, ANSWER_NOT_MATCHED, OS_NOT_SUPPORTTED, JSON_PARSE_ERROR, MANUAL_JUDGE, SYSTEMERROR_WHEN_COMPARE, CANT_SYNC_TESTDATA, CONTEST_PREJUDGE_DATA_EXCEED, YouCannotShowOthersErrmsg, AC, TLE, MLE, RE, RF, OLE;
 
 		//
 		//
@@ -75,14 +49,14 @@ public class ServerOutput {
 	private String account = null;
 	private Integer solutionid = 0;
 	private String problemid = "";
-	private JUDGEMENT judgement = JUDGEMENT.Waiting; 
+	private JUDGEMENT judgement = JUDGEMENT.Waiting;
 	private String info = "";
 	private REASON reason = REASON.SYSTEMERROR;
-	private String hint = null; 
-	private Long timeusage = 0L; 
-	private Integer memoryusage = 0; 
-	private Integer exefilesize = 0; 
-	private Integer score = 0; 
+	private String hint = null;
+	private Long timeusage = 0L;
+	private Integer memoryusage = 0;
+	private Integer exefilesize = 0;
+	private Integer score = 0;
 	@JsonIgnore
 	private String summary = null;
 
@@ -152,7 +126,6 @@ public class ServerOutput {
 	}
 
 	//
-
 
 	public REASON getReason() {
 		return reason;

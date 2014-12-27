@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 /**
- * @author nknush-001
+ * @author jiangsir
  * 
  */
 public class Rusage {

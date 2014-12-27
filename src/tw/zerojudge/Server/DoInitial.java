@@ -16,7 +16,7 @@ import tw.zerojudge.Server.Object.*;
 import tw.zerojudge.Server.Utils.Utils;
 
 /**
- * @author nknush-001
+ * @author jiangsir
  * 
  */
 public class DoInitial {

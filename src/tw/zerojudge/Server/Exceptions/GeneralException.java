@@ -6,7 +6,7 @@
 package tw.zerojudge.Server.Exceptions;
 
 /**
- * @author nknush-001
+ * @author jiangsir
  * 
  */
 public class GeneralException extends Exception {

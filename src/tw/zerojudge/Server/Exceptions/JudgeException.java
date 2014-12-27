@@ -12,7 +12,7 @@ import tw.zerojudge.Server.Object.InitialOutput;
 import tw.zerojudge.Server.Object.NameManglingOutput;
 
 /**
- * @author nknush-001
+ * @author jiangsir
  * 
  */
 public class JudgeException extends RuntimeException {

@@ -19,7 +19,7 @@ import tw.zerojudge.Server.Object.Compiler;
 import tw.zerojudge.Server.Utils.Utils;
 
 /**
- * @author nknush-001
+ * @author jiangsir
  * 
  */
 public class DoCompile {

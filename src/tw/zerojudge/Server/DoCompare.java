@@ -21,7 +21,7 @@ import tw.zerojudge.Server.Object.CompareInput;
 import tw.zerojudge.Server.Object.CompareOutput;
 
 /**
- * @author nknush-001
+ * @author jiangsir
  * 
  */
 public class DoCompare {

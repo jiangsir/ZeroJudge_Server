@@ -17,7 +17,7 @@ import tw.zerojudge.Server.Object.*;
 import tw.zerojudge.Server.Object.Compiler;
 
 /**
- * @author nknush-001
+ * @author jiangsir
  * 
  */
 public class DoJudge implements Runnable {
@@ -205,6 +205,8 @@ public class DoJudge implements Runnable {
 				serverOutputs[i].setHint(compareOutput.getHint());
 				continue;
 			}
+			
+			new DoClean();
 
 		}
 	}

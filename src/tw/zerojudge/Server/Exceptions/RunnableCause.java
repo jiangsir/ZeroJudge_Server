@@ -6,7 +6,7 @@
 package tw.zerojudge.Server.Exceptions;
 
 /**
- * @author nknush-001 專用在 multi thread 傳遞錯誤訊息。
+ * @author jiangsir 專用在 multi thread 傳遞錯誤訊息。
  */
 public class RunnableCause extends Throwable {
 	/**
