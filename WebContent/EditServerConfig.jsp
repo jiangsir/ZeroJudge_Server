@@ -55,6 +55,14 @@
 		<p>
 			JVM 預留記憶體容量：<input name="JVM_MB" value="${serverConfig.JVM_MB}" />MB
 		</p>
+		<p>
+			account：<input name="account" value="${serverConfig.account}"
+				size="100" />
+		</p>
+		<p>
+			sshport：<input name="sshport" value="${serverConfig.sshport}"
+				size="100" />
+		</p>
 		<c:forEach var="compiler" items="${serverConfig.compilers}">
 			<table width="100%" border="0">
 				<tr id="compiler" class="imcontent">

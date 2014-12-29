@@ -11,68 +11,71 @@ import tw.zerojudge.Server.Object.Compiler;
 
 @WebServlet(urlPatterns = { "/EditServerConfig" })
 public class EditServerConfigServlet extends HttpServlet {
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 1L;
-    ObjectMapper mapper = new ObjectMapper(); 
+	private static final long serialVersionUID = 1L;
+	ObjectMapper mapper = new ObjectMapper();
 
-    protected void doGet(HttpServletRequest request,
-	    HttpServletResponse response) throws ServletException, IOException {
-	request.setAttribute("serverConfig", ConfigFactory.getServerConfig());
-	request.getRequestDispatcher("EditServerConfig.jsp").forward(request,
-		response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request,
-	    HttpServletResponse response) throws ServletException, IOException {
-	ServerConfig serverConfig = ConfigFactory.getServerConfig();
-	serverConfig.setServername(request.getParameter("Servername"));
-	serverConfig.setServerOS(request.getParameter("ServerOS"));
-	serverConfig.setServerInfo(request.getParameter("ServerInfo"));
-	serverConfig.setCONSOLE_PATH(request.getParameter("CONSOLE_PATH"));
-	serverConfig.setJVM_MB(request.getParameter("JVM_MB"));
-	String[] compiler_enable = request
-		.getParameterValues("compiler_enable");
-	String[] compiler_language = request
-		.getParameterValues("compiler_language");
-	String[] compiler_version = request
-		.getParameterValues("compiler_version");
-	String[] compiler_path = request.getParameterValues("compiler_path");
-	String[] cmd_compile = request.getParameterValues("cmd_compile");
-	String[] timeextension = request.getParameterValues("timeextension");
-	String[] cmd_execute = request.getParameterValues("cmd_execute");
-	String[] cmd_makeobject = request.getParameterValues("cmd_makeobject");
-	String[] cmd_namemagling = request
-		.getParameterValues("cmd_namemangling");
-	String[] samplecode = request.getParameterValues("samplecode");
-	String[] restrictedfunctions = request
-		.getParameterValues("restrictedfunctions");
-	Compiler[] compilers = new Compiler[compiler_language.length];
-	for (int i = 0; i < compiler_language.length; i++) {
-	    Compiler compiler = new Compiler();
-	    compiler.setLanguage(compiler_language[i]);
-	    for (String enable : compiler_enable) {
-		if (enable.equals(compiler.getLanguage().name())) {
-		    compiler.setEnable(compiler.getLanguage());
-		    break;
-		}
-	    }
-
-	    compiler.setVersion(compiler_version[i]);
-	    compiler.setPath(compiler_path[i]);
-	    compiler.setCmd_compile(cmd_compile[i]);
-	    compiler.setTimeextension(timeextension[i]);
-	    compiler.setCmd_execute(cmd_execute[i]);
-	    compiler.setCmd_makeobject(cmd_makeobject[i]);
-	    compiler.setCmd_namemangling(cmd_namemagling[i]);
-	    compiler.setSamplecode(samplecode[i]);
-	    compiler.setRestrictedfunctions(restrictedfunctions[i]);
-	    compilers[i] = compiler;
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("serverConfig", ConfigFactory.getServerConfig());
+		request.getRequestDispatcher("EditServerConfig.jsp").forward(request,
+				response);
 	}
-	serverConfig.setCompilers(compilers);
-	ConfigFactory.writeServerConfig(serverConfig);
-	response.sendRedirect("./EditServerConfig");
-    }
+
+	@Override
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		ServerConfig serverConfig = ConfigFactory.getServerConfig();
+		serverConfig.setServername(request.getParameter("Servername"));
+		serverConfig.setServerOS(request.getParameter("ServerOS"));
+		serverConfig.setServerInfo(request.getParameter("ServerInfo"));
+		serverConfig.setCONSOLE_PATH(request.getParameter("CONSOLE_PATH"));
+		serverConfig.setJVM_MB(request.getParameter("JVM_MB"));
+		serverConfig.setAccount(request.getParameter("account"));
+		serverConfig.setSshport(request.getParameter("sshport"));
+
+		String[] compiler_enable = request
+				.getParameterValues("compiler_enable");
+		String[] compiler_language = request
+				.getParameterValues("compiler_language");
+		String[] compiler_version = request
+				.getParameterValues("compiler_version");
+		String[] compiler_path = request.getParameterValues("compiler_path");
+		String[] cmd_compile = request.getParameterValues("cmd_compile");
+		String[] timeextension = request.getParameterValues("timeextension");
+		String[] cmd_execute = request.getParameterValues("cmd_execute");
+		String[] cmd_makeobject = request.getParameterValues("cmd_makeobject");
+		String[] cmd_namemagling = request
+				.getParameterValues("cmd_namemangling");
+		String[] samplecode = request.getParameterValues("samplecode");
+		String[] restrictedfunctions = request
+				.getParameterValues("restrictedfunctions");
+		Compiler[] compilers = new Compiler[compiler_language.length];
+		for (int i = 0; i < compiler_language.length; i++) {
+			Compiler compiler = new Compiler();
+			compiler.setLanguage(compiler_language[i]);
+			for (String enable : compiler_enable) {
+				if (enable.equals(compiler.getLanguage().name())) {
+					compiler.setEnable(compiler.getLanguage());
+					break;
+				}
+			}
+
+			compiler.setVersion(compiler_version[i]);
+			compiler.setPath(compiler_path[i]);
+			compiler.setCmd_compile(cmd_compile[i]);
+			compiler.setTimeextension(timeextension[i]);
+			compiler.setCmd_execute(cmd_execute[i]);
+			compiler.setCmd_makeobject(cmd_makeobject[i]);
+			compiler.setCmd_namemangling(cmd_namemagling[i]);
+			compiler.setSamplecode(samplecode[i]);
+			compiler.setRestrictedfunctions(restrictedfunctions[i]);
+			compilers[i] = compiler;
+		}
+		serverConfig.setCompilers(compilers);
+		ConfigFactory.writeServerConfig(serverConfig);
+		response.sendRedirect("./EditServerConfig");
+	}
 }

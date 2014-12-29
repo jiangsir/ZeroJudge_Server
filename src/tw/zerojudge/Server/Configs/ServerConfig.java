@@ -27,6 +27,8 @@ public class ServerConfig extends Config {
 	private String serverInfo = "";
 	private ObjectMapper mapper = new ObjectMapper();
 	private File TempPath = new File("/tmp");
+	private String account = "root";
+	private int sshport = 22;
 
 	public Compiler[] getCompilers() {
 		return Compilers;
@@ -124,12 +126,6 @@ public class ServerConfig extends Config {
 		TempPath = tempPath;
 	}
 
-	//
-
-	//
-
-	//
-
 	public int getJVM_MB() {
 		return JVM_MB;
 	}
@@ -167,6 +163,29 @@ public class ServerConfig extends Config {
 
 	public void setServerInfo(String serverInfo) {
 		this.serverInfo = serverInfo;
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public int getSshport() {
+		return sshport;
+	}
+
+	public void setSshport(int sshport) {
+		this.sshport = sshport;
+	}
+
+	public void setSshport(String sshport) {
+		if (sshport == null || !sshport.matches("[0-9]+")) {
+			return;
+		}
+		this.setSshport(Integer.parseInt(sshport));
 	}
 
 }
