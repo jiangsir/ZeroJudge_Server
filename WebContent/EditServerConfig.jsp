@@ -56,12 +56,12 @@
 			JVM 預留記憶體容量：<input name="JVM_MB" value="${serverConfig.JVM_MB}" />MB
 		</p>
 		<p>
-			account：<input name="account" value="${serverConfig.account}"
-				size="100" />
+			裁判機同步帳號：<input name="rsyncAccount"
+				value="${serverConfig.rsyncAccount}" size="20" />
 		</p>
 		<p>
-			sshport：<input name="sshport" value="${serverConfig.sshport}"
-				size="100" />
+			ssh port (一般為 22 不需要修改)：<input name="sshport"
+				value="${serverConfig.sshport}" size="10" />
 		</p>
 		<c:forEach var="compiler" items="${serverConfig.compilers}">
 			<table width="100%" border="0">

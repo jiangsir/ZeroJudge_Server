@@ -27,7 +27,7 @@ public class ServerConfig extends Config {
 	private String serverInfo = "";
 	private ObjectMapper mapper = new ObjectMapper();
 	private File TempPath = new File("/tmp");
-	private String account = "root";
+	private String rsyncAccount = "root";
 	private int sshport = 22;
 
 	public Compiler[] getCompilers() {
@@ -165,12 +165,15 @@ public class ServerConfig extends Config {
 		this.serverInfo = serverInfo;
 	}
 
-	public String getAccount() {
-		return account;
+	public String getRsyncAccount() {
+		return rsyncAccount;
 	}
 
-	public void setAccount(String account) {
-		this.account = account;
+	public void setRsyncAccount(String rsyncAccount) {
+		if (rsyncAccount == null || rsyncAccount.trim().equals("")) {
+			return;
+		}
+		this.rsyncAccount = rsyncAccount;
 	}
 
 	public int getSshport() {
