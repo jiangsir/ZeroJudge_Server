@@ -181,6 +181,7 @@ public class ServerConfig extends Config {
 		this.sshport = sshport;
 	}
 
+	@JsonIgnore
 	public void setSshport(String sshport) {
 		if (sshport == null || !sshport.matches("[0-9]+")) {
 			return;
