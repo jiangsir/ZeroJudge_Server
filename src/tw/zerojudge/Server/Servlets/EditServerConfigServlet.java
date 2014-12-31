@@ -36,6 +36,7 @@ public class EditServerConfigServlet extends HttpServlet {
 		serverConfig.setRsyncAccount(request.getParameter("rsyncAccount"));
 		serverConfig.setSshport(request.getParameter("sshport"));
 		serverConfig.setAllowIPset(request.getParameter("allowIPset"));
+		serverConfig.setCryptKey(request.getParameter("cryptKey"));
 
 		String[] compiler_enable = request
 				.getParameterValues("compiler_enable");

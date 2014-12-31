@@ -11,11 +11,14 @@ import tw.zerojudge.Server.Configs.ConfigFactory;
 public class DES {
 
 	/** 加密、解密key. */
-	private static final String PASSWORD_CRYPT_KEY = ConfigFactory
-			.getServerConfig().getCryptKey();
+	private final String PASSWORD_CRYPT_KEY;
 
 	/** 加密算法 */
-	private final static String ALGORITHM = "DES/CBC/PKCS5Padding";
+	private final String ALGORITHM = "DES/CBC/PKCS5Padding";
+
+	public DES() {
+		PASSWORD_CRYPT_KEY = ConfigFactory.getServerConfig().getCryptKey();
+	}
 
 	/**
 	 * 
@@ -28,7 +31,7 @@ public class DES {
 	 * 
 	 * @throws Exception
 	 */
-	public final static String decrypt(String data) throws Exception {
+	public final String decrypt(String data) throws Exception {
 		return new String(decrypt(hex2byte(data.getBytes()),
 				PASSWORD_CRYPT_KEY.getBytes()), "UTF-8");
 	}
@@ -45,12 +48,9 @@ public class DES {
 	 * @throws Exception
 	 */
 
-	public final static String encrypt(String data) throws Exception {
-
-		return byte2hex(encrypt(data.getBytes("UTF-8"), PASSWORD_CRYPT_KEY
-
-		.getBytes()));
-
+	public final String encrypt(String data) throws Exception {
+		return byte2hex(encrypt(data.getBytes("UTF-8"),
+				PASSWORD_CRYPT_KEY.getBytes()));
 	}
 
 	/**
@@ -68,22 +68,14 @@ public class DES {
 	 * @throws Exception
 	 */
 
-	private static byte[] encrypt(byte[] data, byte[] key) throws Exception {
-
+	private byte[] encrypt(byte[] data, byte[] key) throws Exception {
 		DESKeySpec dks = new DESKeySpec(key);
-
 		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
-
 		SecretKey securekey = keyFactory.generateSecret(dks);
-
 		IvParameterSpec iv = new IvParameterSpec(key);
-
 		Cipher cipher = Cipher.getInstance(ALGORITHM);
-
 		cipher.init(Cipher.ENCRYPT_MODE, securekey, iv);
-
 		return cipher.doFinal(data);
-
 	}
 
 	/** */
@@ -102,45 +94,28 @@ public class DES {
 	 * @throws Exception
 	 */
 
-	private static byte[] decrypt(byte[] data, byte[] key) throws Exception {
-
+	private byte[] decrypt(byte[] data, byte[] key) throws Exception {
 		DESKeySpec dks = new DESKeySpec(key);
-
 		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
-
 		SecretKey securekey = keyFactory.generateSecret(dks);
-
 		IvParameterSpec iv = new IvParameterSpec(key);
-
 		Cipher cipher = Cipher.getInstance(ALGORITHM);
-
 		cipher.init(Cipher.DECRYPT_MODE, securekey, iv);
-
 		return cipher.doFinal(data);
-
 	}
 
-	public static byte[] hex2byte(byte[] b) {
-
+	public byte[] hex2byte(byte[] b) {
 		if ((b.length % 2) != 0)
-
 			throw new IllegalArgumentException("长度不是偶数");
-
 		byte[] b2 = new byte[b.length / 2];
-
 		for (int n = 0; n < b.length; n += 2) {
-
 			String item = new String(b, n, 2);
-
 			b2[n / 2] = (byte) Integer.parseInt(item, 16);
-
 		}
-
 		return b2;
-
 	}
 
-	public static String byte2hex(byte[] b) {
+	public String byte2hex(byte[] b) {
 		String hs = "";
 
 		String stmp = "";

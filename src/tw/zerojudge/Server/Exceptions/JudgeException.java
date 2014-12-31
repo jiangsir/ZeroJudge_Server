@@ -7,6 +7,8 @@ package tw.zerojudge.Server.Exceptions;
 
 import tw.zerojudge.Server.Object.CompareOutput;
 import tw.zerojudge.Server.Object.CompileOutput;
+import tw.zerojudge.Server.Object.DESInput;
+import tw.zerojudge.Server.Object.DESOutput;
 import tw.zerojudge.Server.Object.ExecuteOutput;
 import tw.zerojudge.Server.Object.InitialOutput;
 import tw.zerojudge.Server.Object.NameManglingOutput;
@@ -57,6 +59,16 @@ public class JudgeException extends RuntimeException {
 	public JudgeException(InitialOutput output) {
 		super(output.getJudgement() + ": " + output.getHint() + ", Debug:"
 				+ output.getDebug(), output);
+	}
+
+	public JudgeException(DESInput desInput) {
+		super(desInput.getJudgement() + ": " + desInput.getHint() + ", Debug:"
+				+ desInput.getDebug(), desInput);
+	}
+
+	public JudgeException(DESOutput desOutput) {
+		super(desOutput.getJudgement() + ": " + desOutput.getHint()
+				+ ", Debug:" + desOutput.getDebug(), desOutput);
 	}
 
 	public JudgeException(String message) {

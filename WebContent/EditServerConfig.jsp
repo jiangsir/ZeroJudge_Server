@@ -61,7 +61,7 @@
 		</p>
 		<p>
 			裁判機加密鎖：<input name="cryptKey" value="${serverConfig.cryptKey}"
-				size="10" />
+				size="8" />(使用 8 個字元)
 		</p>
 		<p>
 			ssh port (一般為 22 不需要修改)：<input name="sshport"
