@@ -6,10 +6,13 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 
+import tw.zerojudge.Server.Configs.ConfigFactory;
+
 public class DES {
 
 	/** 加密、解密key. */
-	private static final String PASSWORD_CRYPT_KEY = "ZZEERROO";
+	private static final String PASSWORD_CRYPT_KEY = ConfigFactory
+			.getServerConfig().getCryptKey();
 
 	/** 加密算法 */
 	private final static String ALGORITHM = "DES/CBC/PKCS5Padding";
@@ -26,8 +29,8 @@ public class DES {
 	 * @throws Exception
 	 */
 	public final static String decrypt(String data) throws Exception {
-		return new String(decrypt(hex2byte(data.getBytes()), PASSWORD_CRYPT_KEY
-				.getBytes()), "UTF-8");
+		return new String(decrypt(hex2byte(data.getBytes()),
+				PASSWORD_CRYPT_KEY.getBytes()), "UTF-8");
 	}
 
 	/**
@@ -67,25 +70,17 @@ public class DES {
 
 	private static byte[] encrypt(byte[] data, byte[] key) throws Exception {
 
-
 		DESKeySpec dks = new DESKeySpec(key);
-
-
 
 		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
 
 		SecretKey securekey = keyFactory.generateSecret(dks);
 
-
 		IvParameterSpec iv = new IvParameterSpec(key);
-
 
 		Cipher cipher = Cipher.getInstance(ALGORITHM);
 
-
 		cipher.init(Cipher.ENCRYPT_MODE, securekey, iv);
-
-
 
 		return cipher.doFinal(data);
 
@@ -109,25 +104,17 @@ public class DES {
 
 	private static byte[] decrypt(byte[] data, byte[] key) throws Exception {
 
-
 		DESKeySpec dks = new DESKeySpec(key);
-
-
 
 		SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
 
 		SecretKey securekey = keyFactory.generateSecret(dks);
 
-
 		IvParameterSpec iv = new IvParameterSpec(key);
-
 
 		Cipher cipher = Cipher.getInstance(ALGORITHM);
 
-
 		cipher.init(Cipher.DECRYPT_MODE, securekey, iv);
-
-
 
 		return cipher.doFinal(data);
 

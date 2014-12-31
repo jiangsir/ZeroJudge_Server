@@ -10,111 +10,107 @@ import org.codehaus.jackson.map.JsonMappingException;
 
 public class Cause extends Throwable {
 
-    /**
+	/**
 	 * 
 	 */
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public static enum TYPE {
-	INFO, 
-	WARNING, 
-	EXCEPTION, 
-	SQL_EXCEPTION, 
-	ERROR 
-    };
+	public static enum TYPE {
+		INFO, WARNING, EXCEPTION, SQL_EXCEPTION, ERROR
+	};
 
-    private TYPE type = TYPE.INFO;
-    private String title = "";
-    private String subtitle = "";
-    private String content = "";
-    private HashSet<String> debugs = new HashSet<String>();
-    private ArrayList<String> contentlist = new ArrayList<String>();
-    private HashMap<String, URI> uris = new HashMap<String, URI>();
+	private TYPE type = TYPE.INFO;
+	private String title = "";
+	private String subtitle = "";
+	private String content = "";
+	private HashSet<String> debugs = new HashSet<String>();
+	private ArrayList<String> contentlist = new ArrayList<String>();
+	private HashMap<String, URI> uris = new HashMap<String, URI>();
 
-    public Cause(TYPE type, String title, String subtitle) {
-	this.setType(type);
-	this.setTitle(title);
-	this.setSubtitle(subtitle);
-    }
-
-    public Cause(String title, Throwable throwable) {
-	this.setType(TYPE.EXCEPTION);
-	this.setTitle(title);
-	this.setSubtitle(throwable.getClass().getName());
-	this.setStackTrace(throwable.getStackTrace());
-    }
-
-    public Cause(Throwable throwable) {
-	this.setType(TYPE.EXCEPTION);
-	if (throwable instanceof JsonParseException) {
-	    this.setTitle("JSON 資料格式不符合！(" + throwable.getLocalizedMessage()
-		    + ")");
-	} else if (throwable instanceof JsonMappingException) {
-	    this.setTitle("JSON 欄位對應不正確！(" + throwable.getLocalizedMessage()
-		    + ")");
-	} else if (throwable instanceof MalformedURLException) {
-	    this.setTitle("URL 位址有誤！(" + throwable.getLocalizedMessage() + ")");
-	} else {
-	    this.setTitle(throwable.getLocalizedMessage());
+	public Cause(TYPE type, String title, String subtitle) {
+		this.setType(type);
+		this.setTitle(title);
+		this.setSubtitle(subtitle);
 	}
-	this.setSubtitle(throwable.getClass().getName());
-	this.setStackTrace(throwable.getStackTrace());
-    }
 
-    public TYPE getType() {
-	return type;
-    }
+	public Cause(String title, Throwable throwable) {
+		this.setType(TYPE.EXCEPTION);
+		this.setTitle(title);
+		this.setSubtitle(throwable.getClass().getName());
+		this.setStackTrace(throwable.getStackTrace());
+	}
 
-    public void setType(TYPE type) {
-	this.type = type;
-    }
+	public Cause(Throwable throwable) {
+		this.setType(TYPE.EXCEPTION);
+		if (throwable instanceof JsonParseException) {
+			this.setTitle("JSON 資料格式不符合！(" + throwable.getLocalizedMessage()
+					+ ")");
+		} else if (throwable instanceof JsonMappingException) {
+			this.setTitle("JSON 欄位對應不正確！(" + throwable.getLocalizedMessage()
+					+ ")");
+		} else if (throwable instanceof MalformedURLException) {
+			this.setTitle("URL 位址有誤！(" + throwable.getLocalizedMessage() + ")");
+		} else {
+			this.setTitle(throwable.getLocalizedMessage());
+		}
+		this.setSubtitle(throwable.getClass().getName());
+		this.setStackTrace(throwable.getStackTrace());
+	}
 
-    public String getTitle() {
-	return title;
-    }
+	public TYPE getType() {
+		return type;
+	}
 
-    public void setTitle(String title) {
-	this.title = title;
-    }
+	public void setType(TYPE type) {
+		this.type = type;
+	}
 
-    public String getSubtitle() {
-	return subtitle;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setSubtitle(String subtitle) {
-	this.subtitle = subtitle;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public String getContent() {
-	return content;
-    }
+	public String getSubtitle() {
+		return subtitle;
+	}
 
-    public void setContent(String content) {
-	this.content = content;
-    }
+	public void setSubtitle(String subtitle) {
+		this.subtitle = subtitle;
+	}
 
-    public HashSet<String> getDebugs() {
-	return debugs;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public void setDebugs(HashSet<String> debugs) {
-	this.debugs = debugs;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    public ArrayList<String> getContentlist() {
-	return contentlist;
-    }
+	public HashSet<String> getDebugs() {
+		return debugs;
+	}
 
-    public void setContentlist(ArrayList<String> contentlist) {
-	this.contentlist = contentlist;
-    }
+	public void setDebugs(HashSet<String> debugs) {
+		this.debugs = debugs;
+	}
 
-    public HashMap<String, URI> getUris() {
-	return uris;
-    }
+	public ArrayList<String> getContentlist() {
+		return contentlist;
+	}
 
-    public void setUris(HashMap<String, URI> uris) {
-	this.uris = uris;
-    }
+	public void setContentlist(ArrayList<String> contentlist) {
+		this.contentlist = contentlist;
+	}
+
+	public HashMap<String, URI> getUris() {
+		return uris;
+	}
+
+	public void setUris(HashMap<String, URI> uris) {
+		this.uris = uris;
+	}
 
 }

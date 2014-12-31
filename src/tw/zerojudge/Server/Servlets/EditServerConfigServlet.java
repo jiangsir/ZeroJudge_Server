@@ -35,6 +35,7 @@ public class EditServerConfigServlet extends HttpServlet {
 		serverConfig.setJVM_MB(request.getParameter("JVM_MB"));
 		serverConfig.setRsyncAccount(request.getParameter("rsyncAccount"));
 		serverConfig.setSshport(request.getParameter("sshport"));
+		serverConfig.setAllowIPset(request.getParameter("allowIPset"));
 
 		String[] compiler_enable = request
 				.getParameterValues("compiler_enable");

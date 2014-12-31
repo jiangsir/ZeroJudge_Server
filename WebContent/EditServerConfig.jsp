@@ -60,9 +60,18 @@
 				value="${serverConfig.rsyncAccount}" size="20" />
 		</p>
 		<p>
+			裁判機加密鎖：<input name="cryptKey" value="${serverConfig.cryptKey}"
+				size="10" />
+		</p>
+		<p>
 			ssh port (一般為 22 不需要修改)：<input name="sshport"
 				value="${serverConfig.sshport}" size="10" />
 		</p>
+		<p>
+			允許進入的 IP：<input name="allowIPset" value="${serverConfig.allowIPset}"
+				size="100" />
+		</p>
+		<hr></hr>
 		<c:forEach var="compiler" items="${serverConfig.compilers}">
 			<table width="100%" border="0">
 				<tr id="compiler" class="imcontent">
@@ -106,8 +115,8 @@
 				</tr>
 			</table>
 		</c:forEach>
-		<input type="submit" class="button" name="Submit"
-			value="送出(context會一並重新啟動)" />
+		<input type="submit" class="button" name="Submit" value="存入" />
 	</form>
+	<jsp:include page="include/Footer.jsp" />
 </body>
 </html>

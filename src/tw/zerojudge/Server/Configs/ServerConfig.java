@@ -3,6 +3,8 @@ package tw.zerojudge.Server.Configs;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.TreeSet;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -11,6 +13,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import tw.zerojudge.Server.Exceptions.DataException;
 import tw.zerojudge.Server.Annotations.Property;
 import tw.zerojudge.Server.Object.Compiler;
+import tw.zerojudge.Server.Utils.Utils;
 
 public class ServerConfig extends Config {
 	@Property(key = "Compilers")
@@ -27,8 +30,24 @@ public class ServerConfig extends Config {
 	private String serverInfo = "";
 	private ObjectMapper mapper = new ObjectMapper();
 	private File TempPath = new File("/tmp");
+	@Property(key = "rsyncAccount")
 	private String rsyncAccount = "root";
+	@Property(key = "sshport")
 	private int sshport = 22;
+	@Property(key = "cryptKey")
+	private String cryptKey = "ZZEERROO";
+	@Property(key = "allowIPset")
+	private LinkedHashSet<String> allowIPset = new LinkedHashSet<String>() {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -6735127017873261251L;
+
+		{
+			add("*");
+			add("127.0.0.1");
+		}
+	};
 
 	public Compiler[] getCompilers() {
 		return Compilers;
@@ -190,6 +209,37 @@ public class ServerConfig extends Config {
 			return;
 		}
 		this.setSshport(Integer.parseInt(sshport));
+	}
+
+	@JsonIgnore
+	public String getCryptKey() {
+		return cryptKey;
+	}
+
+	@JsonIgnore
+	public void setCryptKey(String cryptKey) {
+		if (cryptKey == null || cryptKey.trim().equals("")) {
+			return;
+		}
+		this.cryptKey = cryptKey;
+	}
+
+	@JsonIgnore
+	public LinkedHashSet<String> getAllowIPset() {
+		return allowIPset;
+	}
+
+	@JsonIgnore
+	public void setAllowIPset(LinkedHashSet<String> allowIPset) {
+		this.allowIPset = allowIPset;
+	}
+
+	@JsonIgnore
+	public void setAllowIPset(String allowIPset) {
+		if (allowIPset == null) {
+			return;
+		}
+		this.allowIPset = Utils.String2LinkedHashSet(allowIPset);
 	}
 
 }

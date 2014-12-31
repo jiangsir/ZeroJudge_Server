@@ -11,24 +11,24 @@ package tw.zerojudge.Server.Exceptions;
  */
 public class AlertException extends RuntimeException {
 
-    /**
+	/**
      * 
      */
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public AlertException() {
-	super();
-    }
+	public AlertException() {
+		super();
+	}
 
-    public AlertException(String message, Cause cause) {
-	super(message, cause);
-    }
+	public AlertException(String message, Cause cause) {
+		super(message, cause);
+	}
 
-    public AlertException(Cause cause) {
-	super(cause);
-    }
+	public AlertException(Cause cause) {
+		super(cause);
+	}
 
-    public AlertException(String message) {
-	super(message);
-    }
+	public AlertException(String message) {
+		super(message);
+	}
 }
