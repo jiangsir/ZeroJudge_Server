@@ -10,6 +10,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>${applicationScope.serverConfig.servername}</title>
+<jsp:include page="include/CommonHead.jsp" />
 </head>
 
 <body>
@@ -18,18 +19,27 @@
 	<p>裁判機作業系統：${applicationScope.serverConfig.serverOS}</p>
 	<p>裁判機資訊：${applicationScope.serverConfig.serverInfo}</p>
 	<p>所有支援的語言：</p>
-	<c:forEach var="compiler"
-		items="${applicationScope.serverConfig.enableCompilers}">
-		<table width="100%" border="0">
+	<%-- 	<table width="100%" border="0">
+		<c:forEach var="compiler"
+			items="${applicationScope.serverConfig.enableCompilers}">
 			<tr id="compiler">
-				<td width="50%">
-					<p>程式語言: ${compiler.language.value}</p>
-					<p>編譯器版本: ${compiler.version}</p>
-					<p>範例程式碼：</p> <textarea name="samplecode" rows="8" id="samplecode"
-						style="width: 80%">${compiler.samplecode}</textarea>
+				<td width="50%">程式語言: ${compiler.language.value}<br /> 編譯器版本:
+					${compiler.version}<br /> 範例程式碼:<br /> <textarea
+						name="samplecode" rows="8" id="samplecode" style="width: 80%">${compiler.samplecode}</textarea>
 				</td>
 			</tr>
-		</table>
+		</c:forEach>
+	</table> --%>
+	<c:forEach var="compiler"
+		items="${applicationScope.serverConfig.enableCompilers}">
+		<div
+			style="margin-top: 2em; border: thin; border-width: 1px; border-color: black;">
+			程式語言: ${compiler.language.value}<br /> 編譯器版本: ${compiler.version}<br />
+			範例程式碼:<br />
+			<textarea name="samplecode" rows="8" id="samplecode"
+				style="width: 80%">${compiler.samplecode}</textarea>
+		</div>
 	</c:forEach>
+	<jsp:include page="include/Footer.jsp" />
 </body>
 </html>

@@ -16,7 +16,7 @@ import tw.zerojudge.Server.Exceptions.ZjException;
  * @author jiangsir
  * 
  */
-public class DetailBean {
+public class _DetailBean {
 	private String judgement = "";
 	private String info = "";
 	public static final String TITLE_AC = "通過！";
@@ -36,10 +36,10 @@ public class DetailBean {
 	private String detail = "";
 	private String[] details = {};
 
-	public DetailBean() {
+	public _DetailBean() {
 	}
 
-	public DetailBean(String jsonString) {
+	public _DetailBean(String jsonString) {
 		try {
 			JSONObject json = new JSONObject(jsonString);
 			this.setJudgement(json.has("judgement") ? json

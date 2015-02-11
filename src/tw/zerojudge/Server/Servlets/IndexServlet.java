@@ -14,9 +14,6 @@ import tw.zerojudge.Server.DoJudge;
 import tw.zerojudge.Server.Beans.ServerInput;
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Exceptions.AlertException;
-import tw.zerojudge.Server.Exceptions.JudgeException;
-import tw.zerojudge.Server.Object.DESInput;
-import tw.zerojudge.Server.Object.DESOutput;
 import tw.zerojudge.Server.Utils.DES;
 
 @WebServlet(urlPatterns = { "/Index" })

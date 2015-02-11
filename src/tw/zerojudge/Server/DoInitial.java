@@ -47,6 +47,8 @@ public class DoInitial {
 
 		for (int i = 0; i < serverInput.getTestfiles().length; i++) {
 			if (serverInput.getPriority() == ServerInput.PRIORITY.Testjudge) {
+				System.out.println("serverConfig.getTestdataPath()="
+						+ serverConfig.getTestdataPath());
 				if (!serverConfig.getTestdataPath().exists()) {
 					serverConfig.getTestdataPath().mkdir();
 				}

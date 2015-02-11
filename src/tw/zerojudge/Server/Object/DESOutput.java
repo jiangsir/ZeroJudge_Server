@@ -5,7 +5,6 @@
  */
 package tw.zerojudge.Server.Object;
 
-import tw.zerojudge.Server.Beans.ServerInput;
 import tw.zerojudge.Server.Beans.ServerOutput;
 
 /**
