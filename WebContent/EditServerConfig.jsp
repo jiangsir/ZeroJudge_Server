@@ -54,7 +54,7 @@
 						value="${serverConfig.sshport}" size="10" />
 				</p>
 				<p>
-					允許進入的 IP：<input name="allowIPset"
+					允許進入的 IP(使用 CIDR 表達範圍，多組時用 , 隔開)：<input name="allowIPset"
 						value="${serverConfig.allowIPset}" size="100" />
 				</p>
 			</div>

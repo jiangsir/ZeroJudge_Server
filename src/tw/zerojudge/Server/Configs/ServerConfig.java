@@ -3,7 +3,6 @@ package tw.zerojudge.Server.Configs;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -11,7 +10,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import tw.zerojudge.Server.Exceptions.DataException;
 import tw.zerojudge.Server.Annotations.Property;
 import tw.zerojudge.Server.Object.Compiler;
-import tw.zerojudge.Server.Utils.Utils;
+import tw.zerojudge.Server.Object.IpAddress;
+import tw.zerojudge.Server.Utils.StringTool;
 
 public class ServerConfig extends Config {
 	@Property(key = "Compilers")
@@ -35,15 +35,14 @@ public class ServerConfig extends Config {
 	@Property(key = "cryptKey")
 	private String cryptKey = "ZZEERROO";
 	@Property(key = "allowIPset")
-	private LinkedHashSet<String> allowIPset = new LinkedHashSet<String>() {
+	private ArrayList<IpAddress> allowIPset = new ArrayList<IpAddress>() {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = -6735127017873261251L;
 
 		{
-			add("*");
-			add("127.0.0.1");
+			add(new IpAddress("0.0.0.0", 0));
 		}
 	};
 
@@ -223,12 +222,12 @@ public class ServerConfig extends Config {
 	}
 
 	@JsonIgnore
-	public LinkedHashSet<String> getAllowIPset() {
+	public ArrayList<IpAddress> getAllowIPset() {
 		return allowIPset;
 	}
 
 	@JsonIgnore
-	public void setAllowIPset(LinkedHashSet<String> allowIPset) {
+	public void setAllowIPset(ArrayList<IpAddress> allowIPset) {
 		this.allowIPset = allowIPset;
 	}
 
@@ -237,7 +236,7 @@ public class ServerConfig extends Config {
 		if (allowIPset == null) {
 			return;
 		}
-		this.allowIPset = Utils.String2LinkedHashSet(allowIPset);
+		this.allowIPset = StringTool.String2IpAddressList(allowIPset);
 	}
 
 }

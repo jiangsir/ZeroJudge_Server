@@ -1,8 +1,7 @@
 package tw.zerojudge.Server.Filters;
 
 import java.io.IOException;
-import java.util.LinkedHashSet;
-
+import java.util.ArrayList;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -14,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Exceptions.AlertException;
-import tw.zerojudge.Server.Utils.Utils;
+import tw.zerojudge.Server.Object.IpAddress;
 
 /**
  * Servlet Filter implementation class EncodingFilter
@@ -41,22 +40,7 @@ public class IpFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
-		String ip = request.getRemoteAddr();
-		// String forwarded = req.getHeader("x-forwarded-for");
-		// if (forwarded != null && !"".equals(forwarded)
-		// && !"unknown".equalsIgnoreCase(forwarded)) {
-		// ip += ", " + forwarded;
-		// }
-		// String proxy = req.getHeader("Proxy-Client-IP");
-		// if (proxy != null && !"".equals(proxy)
-		// && !"unknown".equalsIgnoreCase(proxy)) {
-		// ip += ", " + proxy;
-		// }
-		// String wl = req.getHeader("WL-Proxy-Client-IP");
-		// if (wl != null && !"".equals(wl) && !"unknown".equalsIgnoreCase(wl))
-		// {
-		// ip += ", " + wl;
-		// }
+		IpAddress ip = new IpAddress(request.getRemoteAddr());
 
 		if (isAddrInIprule(ConfigFactory.getServerConfig().getAllowIPset(), ip)) {
 			chain.doFilter(req, response);
@@ -72,9 +56,9 @@ public class IpFilter implements Filter {
 		// iprules.add("*");
 	}
 
-	public boolean isAddrInIprule(LinkedHashSet<String> iprules, String ip) {
-		for (String rule : iprules) {
-			if (Utils.isIpInRule(rule, ip)) {
+	public boolean isAddrInIprule(ArrayList<IpAddress> iprules, IpAddress ip) {
+		for (IpAddress rule : iprules) {
+			if (ip.getIsSubnetOf(rule)) {
 				return true;
 			}
 		}
