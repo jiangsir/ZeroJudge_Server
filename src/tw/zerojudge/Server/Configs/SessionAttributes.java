@@ -119,7 +119,7 @@ public class SessionAttributes {
 
 	@SuppressWarnings("unchecked")
 	public ArrayList<String> getReturnPages() {
-		if (session.getAttribute("returnPages") != null) {
+		if (session != null && session.getAttribute("returnPages") != null) {
 			this.returnPages = (ArrayList<String>) session
 					.getAttribute("returnPages");
 		}
