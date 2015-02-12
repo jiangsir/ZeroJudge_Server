@@ -37,6 +37,7 @@ public class EditServerConfigServlet extends HttpServlet {
 		serverConfig.setSshport(request.getParameter("sshport"));
 		serverConfig.setAllowIPset(request.getParameter("allowIPset"));
 		serverConfig.setCryptKey(request.getParameter("cryptKey"));
+		serverConfig.setIsCleanTmpFile(request.getParameter("isCleanTmpFile"));
 
 		String[] compiler_enable = request
 				.getParameterValues("compiler_enable");

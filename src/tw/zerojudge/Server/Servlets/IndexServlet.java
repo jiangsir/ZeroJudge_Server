@@ -36,6 +36,7 @@ public class IndexServlet extends HttpServlet {
 		String input = request.getParameter("input");
 		try {
 			input = new DES().decrypt(input);
+			System.out.println("input=" + input);
 		} catch (Exception e) {
 			e.printStackTrace();
 			// DESInput desInput = new DESInput();

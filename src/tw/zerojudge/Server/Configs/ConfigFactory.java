@@ -137,14 +137,13 @@ public class ConfigFactory {
 			Property property = field.getAnnotation(Property.class);
 			Method gettermethod;
 			try {
-				if (field.getType() == boolean.class
-						|| field.getType() == Boolean.class) {
-					gettermethod = serverConfig.getClass().getMethod(
-							"is" + name);
-				} else {
-					gettermethod = serverConfig.getClass().getMethod(
-							"get" + name);
-				}
+				// if (field.getType() == boolean.class
+				// || field.getType() == Boolean.class) {
+				// gettermethod = serverConfig.getClass().getMethod(
+				// "is" + name);
+				// } else {
+				gettermethod = serverConfig.getClass().getMethod("get" + name);
+				// }
 				Object getter = gettermethod.invoke(serverConfig);
 				if (getter == null) {
 					continue;
@@ -153,7 +152,8 @@ public class ConfigFactory {
 						|| gettermethod.getReturnType() == String.class
 						|| gettermethod.getReturnType() == int.class
 						|| gettermethod.getReturnType() == double.class
-						|| gettermethod.getReturnType() == boolean.class) {
+						|| gettermethod.getReturnType() == boolean.class
+						|| gettermethod.getReturnType() == Boolean.class) {
 					props.setProperty(property.key(), getter.toString());
 				} else {
 					props.setProperty(property.key(),
@@ -182,7 +182,7 @@ public class ConfigFactory {
 		FileOutputStream fos;
 		try {
 			fos = new FileOutputStream(ApplicationScope.getServerConfigFile());
-			props.storeToXML(fos, "應用程式參數");
+			props.storeToXML(fos, "應用程式參數 " + ApplicationScope.getBuilt());
 			fos.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

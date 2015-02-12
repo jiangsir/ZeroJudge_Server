@@ -258,4 +258,9 @@ public class Compiler {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return this.getLanguage() + ":*." + this.getLanguage().getSuffix();
+	}
+
 }

@@ -77,7 +77,9 @@ public class ServerInput {
 	}
 
 	public Compiler getCompiler() {
+		System.out.println("language=" + language);
 		for (Compiler compiler : ConfigFactory.getServerConfig().getCompilers()) {
+			System.out.println("Compiler=" + compiler);
 			if (compiler.getLanguage() == language) {
 				return compiler;
 			}

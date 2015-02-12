@@ -57,6 +57,13 @@
 					允許進入的 IP(使用 CIDR 表達範圍，多組時用 , 隔開)：<input name="allowIPset"
 						value="${serverConfig.allowIPset}" size="100" />
 				</p>
+				<p>
+					是否清除暫存檔： <input name="isCleanTmpFile" type="radio" value="true"
+						isCleanTmpFile="${serverConfig.isCleanTmpFile}" /> 是 <input
+						name="isCleanTmpFile" type="radio" value="false"
+						isCleanTmpFile="${serverConfig.isCleanTmpFile}" /> 否 ？<br />
+				</p>
+
 			</div>
 			<div id="tabs-2">
 				<p>

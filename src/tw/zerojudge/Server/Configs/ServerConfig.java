@@ -47,6 +47,10 @@ public class ServerConfig extends Config {
 			add(new IpAddress("0.0.0.0", 0));
 		}
 	};
+	@Property(key = "isCleanTmpFile")
+	private boolean isCleanTmpFile = true;
+
+	// =============================================================================
 
 	public Compiler[] getCompilers() {
 		return Compilers;
@@ -200,6 +204,24 @@ public class ServerConfig extends Config {
 
 	public void setSshport(int sshport) {
 		this.sshport = sshport;
+	}
+
+	@JsonIgnore
+	public Boolean getIsCleanTmpFile() {
+		return isCleanTmpFile;
+	}
+
+	@JsonIgnore
+	public void setIsCleanTmpFile(Boolean isCleanTmpFile) {
+		this.isCleanTmpFile = isCleanTmpFile;
+	}
+
+	@JsonIgnore
+	public void setIsCleanTmpFile(String isCleanTmpFile) {
+		if (isCleanTmpFile == null || "".equals(isCleanTmpFile.trim())) {
+			return;
+		}
+		this.setIsCleanTmpFile(Boolean.valueOf(isCleanTmpFile.trim()));
 	}
 
 	@JsonIgnore

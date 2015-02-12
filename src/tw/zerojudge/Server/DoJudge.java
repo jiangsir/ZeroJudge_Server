@@ -207,7 +207,9 @@ public class DoJudge implements Runnable {
 			}
 
 		}
-		new DoClean(serverInput.getCodename()).run();
+		if (serverConfig.getIsCleanTmpFile()) {
+			new DoClean(serverInput.getCodename()).run();
+		}
 	}
 
 	public ServerOutput[] getServerOutputs() {
