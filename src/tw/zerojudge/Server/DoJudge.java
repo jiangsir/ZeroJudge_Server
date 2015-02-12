@@ -97,7 +97,66 @@ public class DoJudge implements Runnable {
 			executeInput.setMemorylimit(serverInput.getMemorylimit());
 			executeInput.setTimelimit(timelimit * compiler.getTimeextension());
 
-			if (serverInput.getLanguage() == Compiler.LANGUAGE.JAVA) {
+			switch (serverInput.getLanguage()) {
+			case BASIC:
+				break;
+			case C:
+				command = serverConfig.getBinPath() + File.separator
+						+ "shell.exe "
+						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
+						+ executeInput.getMemorylimit() * 1024 * 1024 + " "
+						+ outfilelimit + " \"" + serverConfig.getBinPath()
+						+ File.separator + "base_c.exe\" \""
+						+ serverConfig.getTempPath() + File.separator
+						+ serverInput.getCodename() + ".exe < "
+						+ serverConfig.getTestdataPath() + File.separator
+						+ serverInput.getTestfiles()[i] + ".in > "
+						+ serverConfig.getTempPath() + File.separator
+						+ serverInput.getCodename() + ".out\" ";
+				break;
+			case C11:
+				command = serverConfig.getBinPath() + File.separator
+						+ "shell.exe "
+						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
+						+ executeInput.getMemorylimit() * 1024 * 1024 + " "
+						+ outfilelimit + " \"" + serverConfig.getBinPath()
+						+ File.separator + "base_c.exe\" \""
+						+ serverConfig.getTempPath() + File.separator
+						+ serverInput.getCodename() + ".exe < "
+						+ serverConfig.getTestdataPath() + File.separator
+						+ serverInput.getTestfiles()[i] + ".in > "
+						+ serverConfig.getTempPath() + File.separator
+						+ serverInput.getCodename() + ".out\" ";
+				break;
+			case CPP:
+				command = serverConfig.getBinPath() + File.separator
+						+ "shell.exe "
+						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
+						+ executeInput.getMemorylimit() * 1024 * 1024 + " "
+						+ outfilelimit + " \"" + serverConfig.getBinPath()
+						+ File.separator + "base_cpp.exe\" \""
+						+ serverConfig.getTempPath() + File.separator
+						+ serverInput.getCodename() + ".exe < "
+						+ serverConfig.getTestdataPath() + File.separator
+						+ serverInput.getTestfiles()[i] + ".in > "
+						+ serverConfig.getTempPath() + File.separator
+						+ serverInput.getCodename() + ".out\" ";
+				break;
+			case CPP11:
+				command = serverConfig.getBinPath() + File.separator
+						+ "shell.exe "
+						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
+						+ executeInput.getMemorylimit() * 1024 * 1024 + " "
+						+ outfilelimit + " \"" + serverConfig.getBinPath()
+						+ File.separator + "base_cpp.exe\" \""
+						+ serverConfig.getTempPath() + File.separator
+						+ serverInput.getCodename() + ".exe < "
+						+ serverConfig.getTestdataPath() + File.separator
+						+ serverInput.getTestfiles()[i] + ".in > "
+						+ serverConfig.getTempPath() + File.separator
+						+ serverInput.getCodename() + ".out\" ";
+				break;
+			case JAVA:
 				command = ""
 						+ serverConfig.getBinPath()
 						+ File.separator
@@ -115,7 +174,8 @@ public class DoJudge implements Runnable {
 						+ serverInput.getTestfiles()[i] + ".in > "
 						+ serverConfig.getTempPath() + File.separator
 						+ serverInput.getCodename() + ".out\" ";
-			} else if (serverInput.getLanguage() == Compiler.LANGUAGE.PASCAL) {
+				break;
+			case PASCAL:
 				command = "" + serverConfig.getBinPath() + File.separator
 						+ "shell.exe "
 						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
@@ -128,32 +188,10 @@ public class DoJudge implements Runnable {
 						+ serverInput.getTestfiles()[i] + ".in > "
 						+ serverConfig.getTempPath() + File.separator
 						+ serverInput.getCodename() + ".out\" ";
-			} else if (serverInput.getLanguage() == Compiler.LANGUAGE.C) {
-				command = serverConfig.getBinPath() + File.separator
-						+ "shell.exe "
-						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
-						+ executeInput.getMemorylimit() * 1024 * 1024 + " "
-						+ outfilelimit + " \"" + serverConfig.getBinPath()
-						+ File.separator + "base_c.exe\" \""
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".exe < "
-						+ serverConfig.getTestdataPath() + File.separator
-						+ serverInput.getTestfiles()[i] + ".in > "
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".out\" ";
-			} else if (serverInput.getLanguage() == Compiler.LANGUAGE.CPP) {
-				command = serverConfig.getBinPath() + File.separator
-						+ "shell.exe "
-						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
-						+ executeInput.getMemorylimit() * 1024 * 1024 + " "
-						+ outfilelimit + " \"" + serverConfig.getBinPath()
-						+ File.separator + "base_cpp.exe\" \""
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".exe < "
-						+ serverConfig.getTestdataPath() + File.separator
-						+ serverInput.getTestfiles()[i] + ".in > "
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".out\" ";
+
+				break;
+			default:
+				break;
 			}
 
 			executeInput.setCommand(command);
