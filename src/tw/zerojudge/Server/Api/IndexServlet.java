@@ -17,46 +17,44 @@ import tw.zerojudge.Server.Configs.ServerConfig;
  */
 @WebServlet(urlPatterns = { "/api/Index" })
 public class IndexServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private static ObjectMapper mapper = new ObjectMapper(); 
+	private static final long serialVersionUID = 1L;
+	private static ObjectMapper mapper = new ObjectMapper();
 
-    public static enum GETACTION {
-	getCompilers, 
-	getServerConfig, 
-	getTestdataPath;
-    }
-
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     *      response)
-     */
-    protected void doGet(HttpServletRequest request,
-	    HttpServletResponse response) throws ServletException, IOException {
-	String result = "";
-	ServerConfig serverConfig = ConfigFactory.getServerConfig();
-	switch (GETACTION.valueOf(request.getParameter("action"))) {
-	case getCompilers:
-	    result = mapper.writeValueAsString(serverConfig
-		    .getEnableCompilers());
-	    break;
-	case getServerConfig:
-	    result = mapper.writeValueAsString(serverConfig);
-	    break;
-	case getTestdataPath:
-	    result = serverConfig.getTestdataPath().toString();
-	    break;
-	default:
-	    break;
+	public static enum GETACTION {
+		getCompilers, getServerConfig, getTestdataPath;
 	}
-	response.getWriter().print(result);
-    }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
-     */
-    protected void doPost(HttpServletRequest request,
-	    HttpServletResponse response) throws ServletException, IOException {
-    }
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		String result = "";
+		ServerConfig serverConfig = ConfigFactory.getServerConfig();
+		switch (GETACTION.valueOf(request.getParameter("action"))) {
+		case getCompilers:
+			result = mapper.writeValueAsString(serverConfig
+					.getEnableCompilers());
+			break;
+		case getServerConfig:
+			result = mapper.writeValueAsString(serverConfig);
+			break;
+		case getTestdataPath:
+			result = serverConfig.getTestdataPath().toString();
+			break;
+		default:
+			break;
+		}
+		response.getWriter().print(result);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+	}
 
 }

@@ -7,6 +7,8 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+
 import tw.zerojudge.Server.Exceptions.DataException;
 import tw.zerojudge.Server.Annotations.Property;
 import tw.zerojudge.Server.Object.Compiler;
@@ -236,7 +238,20 @@ public class ServerConfig extends Config {
 		if (allowIPset == null) {
 			return;
 		}
-		this.allowIPset = StringTool.String2IpAddressList(allowIPset);
+		try {
+			ArrayList<IpAddress> ipaddress = mapper.readValue(allowIPset,
+					new TypeReference<ArrayList<IpAddress>>() {
+					});
+			this.setAllowIPset(ipaddress);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+			this.setAllowIPset(StringTool.String2IpAddressList(allowIPset));
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+			this.setAllowIPset(StringTool.String2IpAddressList(allowIPset));
+		} catch (IOException e) {
+			e.printStackTrace();
+			this.setAllowIPset(StringTool.String2IpAddressList(allowIPset));
+		}
 	}
-
 }

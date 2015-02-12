@@ -6,6 +6,8 @@ import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class IpAddress implements Comparable<IpAddress>, Serializable {
 
 	/**
@@ -21,6 +23,10 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 		B, // B
 		C, // C
 		ONE, // 1 個 ip
+	}
+
+	public IpAddress() {
+		// JSON string 還原時需要用到
 	}
 
 	/**
@@ -97,10 +103,12 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 		this.cidr = cidr;
 	}
 
+	@JsonIgnore
 	public boolean getIsIpv4() {
 		return this.getIp() instanceof Inet4Address;
 	}
 
+	@JsonIgnore
 	public boolean getIsIpv6() {
 		return this.getIp() instanceof Inet6Address;
 	}

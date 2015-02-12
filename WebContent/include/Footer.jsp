@@ -11,6 +11,7 @@
 <div class="Footer">
 	<div>${pageContext.request.remoteAddr }</div>
 	<div>
-		Powered by <a href="http://zerojudge.tw/" target="_blank">ZeroJudge</a>
+		Powered by <a href="http://zerojudge.tw/" target="_blank">ZeroJudge_Server
+		</a> built ${applicationScope.built}
 	</div>
 </div>

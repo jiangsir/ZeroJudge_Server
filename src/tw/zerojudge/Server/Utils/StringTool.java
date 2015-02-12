@@ -79,7 +79,7 @@ public class StringTool {
 			return list;
 		}
 		for (String s : string.split(",")) {
-			list.add(new IpAddress(s));
+			list.add(new IpAddress(s.trim()));
 		}
 		return list;
 	}
