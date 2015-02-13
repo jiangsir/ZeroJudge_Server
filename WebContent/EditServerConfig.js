@@ -5,9 +5,15 @@ jQuery(document).ready(function() {
 		}
 	});
 
-	jQuery("#newCompiler").click(function() {
+	jQuery("button[id=newCompiler]").click(function() {
 		var compiler = $(this).closest("#compiler");
-		compiler.after(compiler.clone());
+		compiler.after(compiler.clone(true));
+	});
+	jQuery("button[id=deleteCompiler]").click(function() {
+		if (jQuery("button[id=deleteCompiler]").size() > 1) {
+			var compiler = $(this).closest("#compiler");
+			compiler.remove();
+		}
 	});
 
 	jQuery("input[name='isCleanTmpFile']").each(function() {
