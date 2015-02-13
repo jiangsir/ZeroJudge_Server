@@ -98,8 +98,8 @@ public class DoJudge implements Runnable {
 			executeInput.setTimelimit(timelimit * compiler.getTimeextension());
 
 			switch (serverInput.getLanguage()) {
-			case BASIC:
-				break;
+			// case BASIC:
+			// break;
 			case C:
 				command = serverConfig.getBinPath() + File.separator
 						+ "shell.exe "
@@ -114,35 +114,7 @@ public class DoJudge implements Runnable {
 						+ serverConfig.getTempPath() + File.separator
 						+ serverInput.getCodename() + ".out\" ";
 				break;
-			case C11:
-				command = serverConfig.getBinPath() + File.separator
-						+ "shell.exe "
-						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
-						+ executeInput.getMemorylimit() * 1024 * 1024 + " "
-						+ outfilelimit + " \"" + serverConfig.getBinPath()
-						+ File.separator + "base_c.exe\" \""
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".exe < "
-						+ serverConfig.getTestdataPath() + File.separator
-						+ serverInput.getTestfiles()[i] + ".in > "
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".out\" ";
-				break;
 			case CPP:
-				command = serverConfig.getBinPath() + File.separator
-						+ "shell.exe "
-						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
-						+ executeInput.getMemorylimit() * 1024 * 1024 + " "
-						+ outfilelimit + " \"" + serverConfig.getBinPath()
-						+ File.separator + "base_cpp.exe\" \""
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".exe < "
-						+ serverConfig.getTestdataPath() + File.separator
-						+ serverInput.getTestfiles()[i] + ".in > "
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".out\" ";
-				break;
-			case CPP11:
 				command = serverConfig.getBinPath() + File.separator
 						+ "shell.exe "
 						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
@@ -188,9 +160,20 @@ public class DoJudge implements Runnable {
 						+ serverInput.getTestfiles()[i] + ".in > "
 						+ serverConfig.getTempPath() + File.separator
 						+ serverInput.getCodename() + ".out\" ";
-
 				break;
 			default:
+				command = serverConfig.getBinPath() + File.separator
+						+ "shell.exe "
+						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
+						+ executeInput.getMemorylimit() * 1024 * 1024 + " "
+						+ outfilelimit + " \"" + serverConfig.getBinPath()
+						+ File.separator + "base_c.exe\" \""
+						+ serverConfig.getTempPath() + File.separator
+						+ serverInput.getCodename() + ".exe < "
+						+ serverConfig.getTestdataPath() + File.separator
+						+ serverInput.getTestfiles()[i] + ".in > "
+						+ serverConfig.getTempPath() + File.separator
+						+ serverInput.getCodename() + ".out\" ";
 				break;
 			}
 

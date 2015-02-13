@@ -9,8 +9,6 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-
-import tw.zerojudge.Server.Exceptions.DataException;
 import tw.zerojudge.Server.Utils.Utils;
 
 /**
@@ -20,8 +18,13 @@ import tw.zerojudge.Server.Utils.Utils;
 public class Compiler {
 
 	public static enum LANGUAGE {
-		C("C", "c"), CPP("C++", "cpp"), C11("C11", "c"), CPP11("C++11", "cpp"), JAVA(
-				"JAVA", "java"), PASCAL("PASCAL", "pas"), BASIC("BASIC", "bas");
+		C("C", "c"), //
+		CPP("C++", "cpp"), //
+		// C11("C11", "c"), //
+		// CPP11("C++11", "cpp"), //
+		JAVA("JAVA", "java"), //
+		PASCAL("PASCAL", "pas"); //
+		// BASIC("BASIC", "bas");
 		private String value;
 		private String suffix;
 
@@ -203,7 +206,7 @@ public class Compiler {
 			this.setLanguage(LANGUAGE.valueOf(language));
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new DataException("您所指定的語言並不在系統支援清單內。", e);
+			// throw new DataException("您所指定的語言並不在系統支援清單內。", e);
 		}
 	}
 
@@ -256,6 +259,11 @@ public class Compiler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@JsonIgnore
+	public LANGUAGE[] getLANGUAGES() {
+		return LANGUAGE.values();
 	}
 
 	@Override

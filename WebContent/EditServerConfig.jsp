@@ -104,9 +104,12 @@
 										<input type="checkbox" name="compiler_enable"
 											value="${compiler.language}" language="${compiler.enable}" />
 									</div></td>
-								<td width="50%">程式語言: <input name="compiler_language"
-									type="text" value="${compiler.language}" size="5" /> <br />
-									編譯器版本: <input name="compiler_version" type="text"
+								<td width="50%">程式語言: <select name="compiler_language"
+									compiler_language="${compiler.language}">
+										<c:forEach var="LANGUAGE" items="${compiler.LANGUAGES }">
+											<option>${LANGUAGE}</option>
+										</c:forEach>
+								</select> <br /> 編譯器版本: <input name="compiler_version" type="text"
 									value="${compiler.version}" size="50" /> <br /> 編譯器路徑: <input
 									name="compiler_path" type="text" value="${compiler.path}"
 									size="50" />(有兩個以上編譯器才需特別指定編譯器路徑) <br /> 編譯指令： <input

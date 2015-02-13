@@ -22,4 +22,10 @@ jQuery(document).ready(function() {
 		}
 	});
 
+	jQuery("select[name=compiler_language]").children().each(function() {
+		if ($(this).parent().attr("compiler_language") == $(this).val()) {
+			$(this).attr("selected", true);
+		}
+	});
+
 });
