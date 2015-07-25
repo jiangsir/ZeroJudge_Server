@@ -30,7 +30,6 @@ public class DoCompare {
 	CompareInput compareInput;
 	CompareOutput compareOutput = new CompareOutput();
 
-
 	public DoCompare(ServerInput serverInput, CompareInput compareInput) {
 		this.serverInput = serverInput;
 		this.compareInput = compareInput;
@@ -74,13 +73,11 @@ public class DoCompare {
 		} else if (ServerInput.MODE.Special == compareInput.getMode()) {
 			File useroutfile = new File(serverConfig.getTempPath(),
 					compareInput.getCodename() + ".out");
-
 			compareOutput = this.SpecialComparison(
-					serverConfig.getTestdataPath() + File.separator
-							+ compareInput.getTestfilename() + ".in",
-					serverConfig.getTestdataPath() + File.separator
-							+ compareInput.getTestfilename() + ".out",
-					useroutfile);
+					new File(serverConfig.getTestdataPath(), compareInput
+							.getTestfilename() + ".in"),
+					new File(serverConfig.getTestdataPath(), compareInput
+							.getTestfilename() + ".out"), useroutfile);
 			try {
 				systemout.close();
 				userout.close();
@@ -259,32 +256,36 @@ public class DoCompare {
 	 * @param useroutfile
 	 * @return
 	 */
-	private CompareOutput SpecialComparison(String systeminfile,
-			String systemoutfile, File useroutfile) throws JudgeException {
+	private CompareOutput SpecialComparison(File systeminfile,
+			File systemoutfile, File useroutfile) throws JudgeException {
 		CompareOutput output = new CompareOutput();
 
 		String judgecmd = serverConfig.getSpecialPath() + File.separator
-				+ "Special_" + compareInput.getProblemid() + ".exe";
+				+ compareInput.getProblemid() + File.separator + "Special_"
+				+ compareInput.getProblemid() + ".exe";
 		File judgefile = new File(judgecmd);
+		// if (!judgefile.exists()) {
+		// judgecmd = serverConfig.getSpecialPath() + File.separator
+		// + compareInput.getProblemid() + File.separator + "Special_"
+		// + compareInput.getProblemid() + ".class";
+		// judgefile = new File(judgecmd);
 		if (!judgefile.exists()) {
-			judgecmd = serverConfig.getSpecialPath() + File.separator
-					+ "Special_" + compareInput.getProblemid() + ".class";
-			judgefile = new File(judgecmd);
-			if (!judgefile.exists()) {
-				output.setJudgement(ServerOutput.JUDGEMENT.SE);
-				output.setHint("Special Judge 程式不存在！" + judgefile.getPath());
-				throw new JudgeException(output);
-			}
-			judgecmd = "java -classpath " + serverConfig.getSpecialPath()
-					+ File.separator + " Special_"
-					+ compareInput.getProblemid();
+			output.setJudgement(ServerOutput.JUDGEMENT.SE);
+			output.setReason(ServerOutput.REASON.SPECIAL_JUDGE_NOT_FOUND);
+			output.setHint("Special Judge 程式不存在！" + judgefile.getPath());
+			throw new JudgeException(output);
 		}
+		// judgecmd = "java -classpath " + serverConfig.getSpecialPath()
+		// + File.separator + compareInput.getProblemid()
+		// + File.separator + " Special_"
+		// + compareInput.getProblemid();
+		// }
 
 		judgecmd += " \"" + systeminfile + "\"";
 		judgecmd += " \"" + systemoutfile + "\"";
 		judgecmd += " \"" + useroutfile + "\"";
-		String[] cmd = new String[] { "/bin/sh", "-c", judgecmd };
-		RunCommand special = new RunCommand(cmd, 0);
+		// String[] cmd = new String[] { "/bin/sh", "-c", judgecmd };
+		RunCommand special = new RunCommand(judgecmd);
 		special.run();
 
 		String returnline = "";
@@ -356,7 +357,7 @@ public class DoCompare {
 			if (!"".equals(CASES)) {
 				output.setInfo("case:" + CASES);
 				output.setReason(ServerOutput.REASON.ANSWER_NOT_MATCHED);
-				output.setHint("與正確輸出不相符");
+				// output.setHint("與正確輸出不相符");
 			}
 			if (!"".equals(LINECOUNT)) {
 				output.setInfo("line:" + LINECOUNT);

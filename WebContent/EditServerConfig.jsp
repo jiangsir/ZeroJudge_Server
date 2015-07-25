@@ -43,11 +43,12 @@
 				</p>
 				<p>
 					裁判機同步帳號：<input name="rsyncAccount"
-						value="${serverConfig.rsyncAccount}" size="20" />
+						value="${serverConfig.rsyncAccount}" size="20" />(裁判機系統上必須確實存在這個帳號)<br />必須讓
+					「前台」以這個身份免密碼登入裁判機，通常不要使用 root, 宜使用系統上其它帳號。
 				</p>
 				<p>
 					裁判機加密鎖：<input name="cryptKey" value="${serverConfig.cryptKey}"
-						size="10" maxlength="8" />(使用 8 個字元)
+						size="10" maxlength="8" />(加密鎖使用 8 個字元由裁判機決定。「前台」加密鎖的設定必須與這裡相同)
 				</p>
 				<p>
 					ssh port (一般為 22 不需要修改)：<input name="sshport"
