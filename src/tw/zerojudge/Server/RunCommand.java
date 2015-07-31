@@ -93,18 +93,11 @@ public class RunCommand implements Runnable {
 			watchcause.setExitCode(watchcause.getExitCode());
 			return;
 		}
-		if (process.exitValue() != 0) {
-			cause.setResourceMessage(ServerOutput.REASON.SYSTEMERROR.toString());
-			cause.setPlainMessage("程序已被終止！ exit code=" + this.exitCode
-					+ ", exitValue=" + process.exitValue());
-			cause.setExitCode(process.exitValue());
-			return;
-		}
-		long stoptime = new Date().getTime();
+
+		long stoptime = System.currentTimeMillis();
 		this.executetime = (stoptime - starttime);
 		InputStream stdin = process.getInputStream();
 		InputStream stderr = process.getErrorStream();
-
 		try {
 			String s = null;
 			LineNumberReader err = new LineNumberReader(new InputStreamReader(
@@ -113,6 +106,7 @@ public class RunCommand implements Runnable {
 					&& this.errorStream.size() < 500) {
 				this.errorStream.add(s);
 			}
+			System.out.println("errorString=" + this.getErrorString());
 			err.close();
 			LineNumberReader in = new LineNumberReader(new InputStreamReader(
 					stdin));
@@ -121,6 +115,7 @@ public class RunCommand implements Runnable {
 					&& this.outputStream.size() < 500) {
 				this.outputStream.add(outstring);
 			}
+			System.out.println("outputString=" + this.getOutputString());
 			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -128,6 +123,16 @@ public class RunCommand implements Runnable {
 			cause.setPlainMessage("IOException: " + e.getLocalizedMessage());
 			return;
 		}
+
+		if (process.exitValue() != 0) {
+			cause.setResourceMessage(ServerOutput.REASON.SYSTEMERROR.toString());
+			cause.setPlainMessage("程序已被終止！ exit code=" + this.exitCode
+					+ ", exitValue=" + process.exitValue() + ", errorString="
+					+ this.getErrorString());
+			cause.setExitCode(process.exitValue());
+			return;
+		}
+
 	}
 
 	public String getThreadName() {
