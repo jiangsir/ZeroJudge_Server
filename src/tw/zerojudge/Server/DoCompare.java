@@ -19,8 +19,11 @@ import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;
 import tw.zerojudge.Server.Exceptions.JudgeException;
+import tw.zerojudge.Server.Factories.ServerFactory;
 import tw.zerojudge.Server.Object.CompareInput;
 import tw.zerojudge.Server.Object.CompareOutput;
+import tw.zerojudge.Server.Object.CompileOutput;
+import tw.zerojudge.Server.Object.Rusage;
 
 /**
  * @author jiangsir
@@ -249,11 +252,21 @@ public class DoCompare {
 		}
 	}
 
-	private void SpecialCompile(File judge_source, File judge_exe) {
-		RunCommand runCompile = new RunCommand("g++ -o " + judge_exe + " "
-				+ judge_source);
-		runCompile.run();
-	}
+	// private void SpecialCompile(File judge_source, File judge_exe)
+	// throws JudgeException {
+	// CompareOutput output = new CompareOutput();
+	// try {
+	// new DoSpecialCompile(judge_source, judge_exe).run();
+	// } catch (JudgeException e) {
+	// e.printStackTrace();
+	// CompileOutput compileOutput = (CompileOutput) e.getCause();
+	// output.setJudgement(compileOutput.getJudgement());
+	// output.setInfo(compileOutput.getInfo());
+	// output.setReason(compileOutput.getReason());
+	// output.setHint(compileOutput.getHint());
+	// throw new JudgeException(output);
+	// }
+	// }
 
 	/**
 	 * 條件式評分，交由出題者自行決定
@@ -273,145 +286,48 @@ public class DoCompare {
 		// + "Special_"
 		// + compareInput.getProblemid()
 		// + ".exe";
-		File judge_source = new File(serverConfig.getSpecialPath(compareInput
+		File special_source = new File(serverConfig.getSpecialPath(compareInput
 				.getProblemid()), "Special_" + compareInput.getProblemid()
 				+ ".cpp");
-		File judge_exe = new File(judge_source.toString().replaceAll(".cpp",
-				".exe"));
+		File special_exe = new File(special_source.toString().replaceAll(
+				".cpp", ".exe"));
 		// if (!judgefile.exists()) {
 		// judgecmd = serverConfig.getSpecialPath() + File.separator
 		// + compareInput.getProblemid() + File.separator + "Special_"
 		// + compareInput.getProblemid() + ".class";
 		// judgefile = new File(judgecmd);
-		if (!judge_source.exists()) {
+		if (!special_source.exists()) {
 			output.setJudgement(ServerOutput.JUDGEMENT.SE);
 			output.setReason(ServerOutput.REASON.SPECIAL_JUDGE_NOT_FOUND);
-			output.setHint("Special Judge 原始程式不存在！" + judge_source);
+			output.setHint("Special Judge 原始程式不存在！" + special_source);
 			throw new JudgeException(output);
-		} else if (!judge_exe.exists()) {
-			this.SpecialCompile(judge_source, judge_exe);
-		}
-
-		// judgecmd = "java -classpath " + serverConfig.getSpecialPath()
-		// + File.separator + compareInput.getProblemid()
-		// + File.separator + " Special_"
-		// + compareInput.getProblemid();
-		// }
-
-		// judgecmd += " \"" + systeminfile + "\"";
-		// judgecmd += " \"" + systemoutfile + "\"";
-		// judgecmd += " \"" + useroutfile + "\"";
-		// String[] cmd = new String[] { "/bin/sh", "-c", judgecmd };
-		RunCommand special = new RunCommand(judge_exe + " \"" + systeminfile
-				+ "\"" + " \"" + systemoutfile + "\"" + " \"" + useroutfile
-				+ "\"");
-		special.run();
-
-		if (special.getCause().getExitCode() != 0) {
-			output.setJudgement(ServerOutput.JUDGEMENT.SE);
-			output.setReason(ServerOutput.REASON.SYSTEMERROR_WHEN_COMPARE);
-			output.setHint("Special Judge 裁判程式無法執行！("
-					+ special.getCause().getPlainMessage() + ")");
-			throw new JudgeException(output);
-		}
-
-		ArrayList<String> outputStream = special.getOutputStream();
-		for (String outline : outputStream) {
-			if (!outline.startsWith("$")) {
-				output.setJudgement(ServerOutput.JUDGEMENT.SE);
-				output.setReason(ServerOutput.REASON.SYSTEMERROR_WHEN_COMPARE);
-				output.setHint("Special Judge 輸出格式有誤！(" + outline + ")");
+		} else if (!special_exe.exists()) {
+			try {
+				new DoSpecialCompile(special_source, special_exe).run();
+			} catch (JudgeException e) {
+				e.printStackTrace();
+				CompileOutput compileOutput = (CompileOutput) e.getCause();
+				output.setJudgement(compileOutput.getJudgement());
+				output.setInfo(compileOutput.getInfo());
+				output.setReason(compileOutput.getReason());
+				output.setHint(compileOutput.getHint());
 				throw new JudgeException(output);
 			}
 		}
-
-		String returnline = "";
-		String JUDGE_RESULT = "";
-		String MESSAGE = "";
-		String CASES = "";
-		String LINECOUNT = "";
-		String USEROUT = "";
-		String SYSTEMOUT = "";
-		int linecount = outputStream.size();
-		for (int i = 0; i < linecount; i++) {
-			returnline = outputStream.get(i);
-			if (returnline.startsWith("$JUDGE_RESULT=")) {
-				JUDGE_RESULT = returnline
-						.substring(returnline.indexOf("=") + 1);
-			} else if (returnline.startsWith("$CASES=")) {
-				CASES = returnline.substring(returnline.indexOf("=") + 1);
-			} else if (returnline.startsWith("$LINECOUNT=")) {
-				LINECOUNT = returnline.substring(returnline.indexOf("=") + 1);
-			} else if (returnline.startsWith("$USEROUT=")) {
-				USEROUT = returnline.substring(returnline.indexOf("=") + 1)
-						+ "\n";
-				while (i < linecount - 1
-						&& !outputStream.get(i + 1).trim().startsWith("$")) {
-					USEROUT += outputStream.get(++i).trim() + "\n";
-				}
-				if (USEROUT.length() > 2000) {
-					USEROUT = USEROUT.substring(0, 2000);
-					USEROUT += "... USEROUT太長省略!";
-				}
-			} else if (returnline.startsWith("$SYSTEMOUT=")) {
-				SYSTEMOUT = returnline.substring(returnline.indexOf("=") + 1)
-						+ "\n";
-				while (i < linecount - 1
-						&& !outputStream.get(i + 1).trim().startsWith("$")) {
-					SYSTEMOUT += outputStream.get(++i).trim() + "\n";
-				}
-				if (SYSTEMOUT.length() > 2000) {
-					SYSTEMOUT = SYSTEMOUT.substring(0, 2000);
-					SYSTEMOUT += "... SYSTEMOUT太長省略!";
-				}
-			} else if (returnline.startsWith("$MESSAGE=")) {
-				MESSAGE = returnline.substring(returnline.indexOf("=") + 1)
-						.trim() + "\n";
-
-				while (i < linecount - 1
-						&& !outputStream.get(i + 1).trim().startsWith("$")) {
-					MESSAGE += outputStream.get(++i).trim() + "\n";
-				}
-				if (MESSAGE.length() >= 2000) {
-					MESSAGE = MESSAGE.substring(0, 2000);
-					MESSAGE += "... MESSAGE太長省略!";
-				}
-			}
-		}
-		ServerOutput.JUDGEMENT RESULT = ServerOutput.JUDGEMENT
-				.valueOf(JUDGE_RESULT);
-
-		if (ServerOutput.JUDGEMENT.AC == RESULT) {
-			output.setJudgement(RESULT);
-			output.setReason(ServerOutput.REASON.AC);
+		try {
+			output = new DoSpecialCompare(special_exe, systeminfile,
+					systemoutfile, useroutfile).run();
 			return output;
-		} else if (ServerOutput.JUDGEMENT.WA == RESULT) {
-			output.setJudgement(RESULT);
-
-			if (!"".equals(CASES)) {
-				output.setInfo("case:" + CASES);
-				output.setReason(ServerOutput.REASON.ANSWER_NOT_MATCHED);
-				// output.setHint("與正確輸出不相符");
-			}
-			if (!"".equals(LINECOUNT)) {
-				output.setInfo("line:" + LINECOUNT);
-			}
-			if (!"".equals(MESSAGE)) {
-				output.setHint(output.getHint() + MESSAGE);
-			}
-			if (!"".equals(USEROUT) && compareInput.isShowdetail()) {
-				output.setHint(output.getHint() + "您的答案為：" + USEROUT);
-			}
-			if (!"".equals(SYSTEMOUT) && compareInput.isShowdetail()) {
-				output.setHint(output.getHint() + "正確答案為：" + SYSTEMOUT);
-			}
-
+		} catch (JudgeException e) {
+			e.printStackTrace();
+			CompareOutput compareOutput = (CompareOutput) e.getCause();
+			output.setJudgement(compareOutput.getJudgement());
+			output.setInfo(compareOutput.getInfo());
+			output.setReason(compareOutput.getReason());
+			output.setHint(compareOutput.getHint());
 			throw new JudgeException(output);
 		}
-		output.setJudgement(ServerOutput.JUDGEMENT.SE);
-		output.setReason(ServerOutput.REASON.SYSTEMERROR_WHEN_COMPARE);
-		output.setHint("比對答案時，發生未定義錯誤！");
-		throw new JudgeException(output);
+
 	}
 
 	/**

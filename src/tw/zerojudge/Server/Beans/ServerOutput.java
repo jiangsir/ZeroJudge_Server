@@ -37,6 +37,7 @@ public class ServerOutput {
 		CANT_SYNC_TESTDATA, //
 		CONTEST_PREJUDGE_DATA_EXCEED, //
 		YouCannotShowOthersErrmsg, //
+		SPECIALJUDGE_COMPILE_ERROR, // Special Judge 的裁判程式編譯錯誤。出題者應解決。
 		AC, TLE, MLE, RE, RF, OLE;
 
 		//
@@ -167,6 +168,9 @@ public class ServerOutput {
 	}
 
 	public void setHint(String hint) {
+		if (hint == null || "null".equals(hint)) {
+			return;
+		}
 		int max_length = 3000;
 		if (hint.length() <= max_length) {
 			this.hint = hint;

@@ -182,6 +182,11 @@ public class ServerInput {
 		return problemid;
 	}
 
+	/**
+	 * 程式碼的 主檔名 如： code_851234
+	 * 
+	 * @return
+	 */
 	public String getCodename() {
 		return codename;
 	}

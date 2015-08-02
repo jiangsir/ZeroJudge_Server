@@ -135,8 +135,7 @@ public class ServerConfig extends Config {
 	}
 
 	public File getSpecialPath(String problemid) {
-		return new File(this.getCONSOLE_PATH() + File.pathSeparator + "Special"
-				+ File.pathSeparator + problemid + File.pathSeparator);
+		return new File(this.getSpecialPath() + File.separator + problemid);
 	}
 
 	public File getExecutablePath() {

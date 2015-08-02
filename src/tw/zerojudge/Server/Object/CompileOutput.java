@@ -19,7 +19,7 @@ public class CompileOutput extends Throwable {
 	private ServerOutput.JUDGEMENT judgement = ServerOutput.JUDGEMENT.SE;
 	private String info = "";
 	private ServerOutput.REASON reason = ServerOutput.REASON.SYSTEMERROR;
-	private String hint = null;
+	private String hint = "";
 	private int exitstatus = -1;
 
 	public ServerOutput.JUDGEMENT getJudgement() {
@@ -59,7 +59,10 @@ public class CompileOutput extends Throwable {
 	}
 
 	public void setHint(String hint) {
-		this.hint = hint;
+		if (hint == null || "null".equals(hint)) {
+			return;
+		}
+		this.hint += hint + "\n";
 	}
 
 }

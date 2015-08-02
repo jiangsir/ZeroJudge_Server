@@ -22,15 +22,16 @@ public class JudgeException extends RuntimeException {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static String CE = "CE";
-	public static String SE = "SE";
-	public static String TLE = "TLE";
-	public static String MLE = "MLE";
-	public static String OLE = "OLE";
-	public static String RF = "RF";
-	public static String WA = "WA";
-	public static String RE = "RE";
-	public static String NA = "NA";
+
+	// public static String CE = "CE";
+	// public static String SE = "SE";
+	// public static String TLE = "TLE";
+	// public static String MLE = "MLE";
+	// public static String OLE = "OLE";
+	// public static String RF = "RF";
+	// public static String WA = "WA";
+	// public static String RE = "RE";
+	// public static String NA = "NA";
 
 	public JudgeException() {
 		super();
