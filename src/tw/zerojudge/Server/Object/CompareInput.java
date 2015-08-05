@@ -12,7 +12,7 @@ import tw.zerojudge.Server.Beans.ServerInput;
  * 
  */
 public class CompareInput {
-	private String codename; 
+	private String codename;
 	private String session_account;
 	private String testfilename;
 	private ServerInput.MODE mode;
@@ -20,6 +20,8 @@ public class CompareInput {
 	private boolean showdetail;
 	private long timeusage;
 	private int memoryusage;
+	private double timelimit;
+	private int memorylimit;
 
 	public String getSession_account() {
 		return session_account;
@@ -88,6 +90,22 @@ public class CompareInput {
 
 	public void setMemoryusage(int memoryusage) {
 		this.memoryusage = memoryusage;
+	}
+
+	public double getTimelimit() {
+		return timelimit;
+	}
+
+	public void setTimelimit(double timelimit) {
+		this.timelimit = timelimit;
+	}
+
+	public int getMemorylimit() {
+		return memorylimit;
+	}
+
+	public void setMemorylimit(int memorylimit) {
+		this.memorylimit = memorylimit;
 	}
 
 }

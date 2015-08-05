@@ -5,16 +5,19 @@
  */
 package tw.zerojudge.Server.Object;
 
+import java.io.File;
+
 /**
  * @author jiangsir
  * 
  */
 public class ExecuteInput {
-	private String codename; 
+	private String codename;
 	private String session_account;
 	private Compiler.LANGUAGE language = null;
-	private double timelimit; 
-	private int memorylimit; 
+	private double timelimit;
+	private int memorylimit;
+	private String testfilename;
 	private String command;
 
 	public String getSession_account() {
@@ -73,6 +76,14 @@ public class ExecuteInput {
 
 	public void setCommand(String command) {
 		this.command = command;
+	}
+
+	public String getTestfilename() {
+		return testfilename;
+	}
+
+	public void setTestfilename(String testfilename) {
+		this.testfilename = testfilename;
 	}
 
 }

@@ -19,10 +19,11 @@ public class CompareOutput extends Throwable {
 	private String session_account;
 	private ServerOutput.JUDGEMENT judgement = ServerOutput.JUDGEMENT.SE;
 	private String info = "";
-
 	private ServerOutput.REASON reason = ServerOutput.REASON.SYSTEMERROR;
 	private int exitstatus = -1;
 	private String hint = "";
+	private long timeusage = -1;
+	private int memoryusage = -1;
 
 	public String getSession_account() {
 		return session_account;
@@ -80,6 +81,22 @@ public class CompareOutput extends Throwable {
 
 	public void setInfo(String info) {
 		this.info = info;
+	}
+
+	public long getTimeusage() {
+		return timeusage;
+	}
+
+	public void setTimeusage(long timeusage) {
+		this.timeusage = timeusage;
+	}
+
+	public int getMemoryusage() {
+		return memoryusage;
+	}
+
+	public void setMemoryusage(int memoryusage) {
+		this.memoryusage = memoryusage;
 	}
 
 }

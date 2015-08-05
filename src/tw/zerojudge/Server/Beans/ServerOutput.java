@@ -23,7 +23,7 @@ public class ServerOutput {
 		SPECIAL_JUDGE_NOT_FOUND, // 找不到 Special judge 程式
 		SYSTEMERROR, //
 		WRONG_JAVA_CLASS, //
-		FORCED_STOP, //
+		FORCED_STOP, // 強制終止
 		COMPILE_TOO_LONG, //
 		COMPILE_ERROR, //
 		SYSTEMERROR_WHEN_COMPILE, //
@@ -38,6 +38,11 @@ public class ServerOutput {
 		CONTEST_PREJUDGE_DATA_EXCEED, //
 		YouCannotShowOthersErrmsg, //
 		SPECIALJUDGE_COMPILE_ERROR, // Special Judge 的裁判程式編譯錯誤。出題者應解決。
+		SPECIALJUDGE_COMPILE_FORCEDSTOP, // Special Judge 編譯時無法結束。強迫終止。
+		SPECIALJUDGE_COMPILE_TLE, // Special Judge 編譯逾時
+		SPECIALJUDGE_SYSTEMERROR_WHEN_COMPILE, // 未定義錯誤，於 Special Judge 編譯時。
+		SPECIALJUDGE_EXECUTE_TLE, // 裁判程式執行逾時。
+		SPECIALJUDGE_EXECUTE_MLE, // 裁判程式 MLE
 		AC, TLE, MLE, RE, RF, OLE;
 
 		//

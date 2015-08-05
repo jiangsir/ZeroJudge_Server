@@ -5,9 +5,7 @@
  */
 package tw.zerojudge.Server;
 
-import java.io.File;
 import java.util.ArrayList;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
@@ -19,32 +17,20 @@ import tw.zerojudge.Server.Object.*;
  * @author jiangsir
  * 
  */
-public class DoSpecialCompare {
-	File special_exe;
-	File systemin;
-	File systemout;
-	File userout;
+public class DoSpecialExecute {
+	ExecuteInput executeInput;
 	ServerConfig serverConfig = ConfigFactory.getServerConfig();
 	ObjectMapper mapper = new ObjectMapper();
 
-	public DoSpecialCompare(File special_exe, File systemin, File systemout,
-			File userout) {
-		this.special_exe = special_exe;
-		this.systemin = systemin;
-		this.systemout = systemout;
-		this.userout = userout;
+	public DoSpecialExecute(ExecuteInput executeInput) {
+		this.executeInput = executeInput;
 	}
 
-	public CompareOutput run() throws JudgeException {
-		CompareOutput output = new CompareOutput();
+	public ExecuteOutput run() throws JudgeException {
+		ExecuteOutput output = new ExecuteOutput();
 
-		String cmd_special = serverConfig.getBinPath() + File.separator
-				+ "shell.exe 10 640000000 100000000 \""
-				+ serverConfig.getBinPath() + File.separator
-				+ "base_cpp.exe\" \"" + special_exe + " \"" + systemin + "\""
-				+ " \"" + systemout + "\"" + " \"" + userout + "\"" + "\"";
-
-		RunCommand special_execute = new RunCommand(cmd_special);
+		RunCommand special_execute = new RunCommand(executeInput.getCommand());
+		special_execute.setTimelimit(executeInput.getTimelimit());
 		special_execute.run();
 
 		if (special_execute.getCause().getExitCode() != 0) {
@@ -54,9 +40,8 @@ public class DoSpecialCompare {
 					+ special_execute.getCause().getPlainMessage() + ")");
 			throw new JudgeException(output);
 		}
-
-		output = this.getRusage(special_execute);
-		output = this.getResult(special_execute);
+		output = this.getRusage(special_execute, output);
+		output = this.getResult(special_execute, output);
 		return output;
 	}
 
@@ -66,10 +51,10 @@ public class DoSpecialCompare {
 	 * @return
 	 * @throws JudgeException
 	 */
-	private CompareOutput getResult(RunCommand special_execute)
-			throws JudgeException {
+	private ExecuteOutput getResult(RunCommand special_execute,
+			ExecuteOutput output) throws JudgeException {
 		ArrayList<String> outputStream = special_execute.getOutputStream();
-		CompareOutput output = new CompareOutput();
+		// ExecuteOutput output = new ExecuteOutput();
 		String returnline = "";
 		String JUDGE_RESULT = "";
 		String MESSAGE = "";
@@ -174,12 +159,43 @@ public class DoSpecialCompare {
 	 * @return
 	 * @throws JudgeException
 	 */
-	private CompareOutput getRusage(RunCommand special_execute)
-			throws JudgeException {
-		CompareOutput output = new CompareOutput();
+	private ExecuteOutput getRusage(RunCommand special_execute,
+			ExecuteOutput output) throws JudgeException {
+		long timeusage = -1;
+		int memoryusage = -1;
 
 		Rusage rusage = new Rusage(special_execute.getOutputStream(),
 				special_execute.getErrorString());
+		System.out.println("rusage.getTime()=" + rusage.getTime());
+		System.out.println("rusage.getMem()=" + rusage.getMem());
+		if (rusage.getTime() >= 0) {
+			timeusage = (long) ((rusage.getTime() + rusage.getBasetime())
+					* 1000);
+			output.setTimeusage(timeusage);
+		}
+		if (rusage.getMem() >= 0 && rusage.getBasemem() >= 0) {
+			memoryusage = (rusage.getMem() - rusage.getBasemem())
+					* rusage.getPagesize() / 1024;
+			output.setMemoryusage(memoryusage);
+		}
+		if (timeusage > 0
+				&& timeusage >= executeInput.getTimelimit() * 1000 * 0.95) {
+			output.setJudgement(ServerOutput.JUDGEMENT.TLE);
+			output.setTimeusage((long) (executeInput.getTimelimit() * 1000));
+			System.out.println("Execute output=" + output.getTimeusage());
+			output.setReason(ServerOutput.REASON.SPECIALJUDGE_EXECUTE_TLE);
+			output.setHint(special_execute.getErrorString());
+			throw new JudgeException(output);
+		}
+
+		if (memoryusage > 0
+				&& memoryusage >= executeInput.getMemorylimit() * 1024) {
+			output.setJudgement(ServerOutput.JUDGEMENT.MLE);
+			output.setReason(ServerOutput.REASON.SPECIALJUDGE_EXECUTE_MLE);
+			output.setHint(special_execute.getErrorString());
+			throw new JudgeException(output);
+		}
+
 		if (rusage.getWEXITSTATUS() == null) {
 			output.setJudgement(ServerOutput.JUDGEMENT.SE);
 			output.setReason(ServerOutput.REASON.FORCED_STOP);
@@ -192,6 +208,10 @@ public class DoSpecialCompare {
 			output.setHint("您的程式無法正常執行。\n" + special_execute.getErrorString());
 			throw new JudgeException(output);
 		} else if ("0".equals(rusage.getWEXITSTATUS())) {
+			System.out
+					.println("output.getTimeusage()=" + output.getTimeusage());
+			System.out.println(
+					"output.getMemoryusage()=" + output.getMemoryusage());
 			return output;
 		} else if ("1".equals(rusage.getWEXITSTATUS())) {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
@@ -217,21 +237,22 @@ public class DoSpecialCompare {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("SIGABRT");
 			output.setReason(ServerOutput.REASON.RE);
-			output.setHint("系統呼叫了 abort 函式！\n"
-					+ special_execute.getErrorString());
+			output.setHint(
+					"系統呼叫了 abort 函式！\n" + special_execute.getErrorString());
 			throw new JudgeException(output);
 		} else if ("135".equals(rusage.getWEXITSTATUS())) {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("SIGBUS");
 			output.setReason(ServerOutput.REASON.RE);
-			output.setHint("嘗試定址不相符的記憶體位址。\n"
-					+ special_execute.getErrorString());
+			output.setHint(
+					"嘗試定址不相符的記憶體位址。\n" + special_execute.getErrorString());
 			throw new JudgeException(output);
 		} else if ("136".equals(rusage.getWEXITSTATUS())) {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("SIGFPE");
 			output.setReason(ServerOutput.REASON.RE);
-			output.setHint("溢位或者除以0的錯誤!! \n" + special_execute.getErrorString());
+			output.setHint(
+					"溢位或者除以0的錯誤!! \n" + special_execute.getErrorString());
 			throw new JudgeException(output);
 		} else if ("137".equals(rusage.getWEXITSTATUS())) {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
@@ -255,15 +276,15 @@ public class DoSpecialCompare {
 			output.setJudgement(ServerOutput.JUDGEMENT.OLE);
 			output.setInfo("SIGXFSZ");
 			output.setReason(ServerOutput.REASON.OLE);
-			output.setHint("輸出檔大小超過規定上限 !! \n"
-					+ special_execute.getErrorString());
+			output.setHint(
+					"輸出檔大小超過規定上限 !! \n" + special_execute.getErrorString());
 			throw new JudgeException(output);
 		} else {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("code:" + rusage.getWEXITSTATUS());
 			output.setReason(ServerOutput.REASON.RE);
-			output.setHint("執行時期未定義錯誤，code = " + rusage.getWEXITSTATUS()
-					+ " \n" + special_execute.getErrorString());
+			output.setHint("執行時期未定義錯誤，code = " + rusage.getWEXITSTATUS() + " \n"
+					+ special_execute.getErrorString());
 			throw new JudgeException(output);
 		}
 

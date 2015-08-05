@@ -22,6 +22,7 @@ public class RunCommand implements Runnable {
 	private ArrayList<String> errorStream = new ArrayList<String>();
 	private ArrayList<String> outputStream = new ArrayList<String>();
 	private RunnableCause cause = new RunnableCause();
+	private RunnableCause watchcause;
 
 	public int exitCode = -1;
 	private double timelimit = 0;
@@ -65,12 +66,12 @@ public class RunCommand implements Runnable {
 			process = rt.exec(command);
 		} catch (IOException e) {
 			e.printStackTrace();
-			cause.setResourceMessage(ServerOutput.REASON.SYSTEMERROR.toString());
+			cause.setResourceMessage(
+					ServerOutput.REASON.SYSTEMERROR.toString());
 			cause.setPlainMessage("runtime exec IOException!!");
 			return;
 		}
 
-		RunnableCause watchcause;
 		try {
 			WatchDog watch = new WatchDog(process);
 			if (this.timelimit != 0) {
@@ -82,7 +83,8 @@ public class RunCommand implements Runnable {
 			watchcause = watch.getCause();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-			cause.setResourceMessage(ServerOutput.REASON.SYSTEMERROR.toString());
+			cause.setResourceMessage(
+					ServerOutput.REASON.SYSTEMERROR.toString());
 			cause.setPlainMessage("Interrupted Exception!!");
 			return;
 		}
@@ -100,16 +102,16 @@ public class RunCommand implements Runnable {
 		InputStream stderr = process.getErrorStream();
 		try {
 			String s = null;
-			LineNumberReader err = new LineNumberReader(new InputStreamReader(
-					stderr));
+			LineNumberReader err = new LineNumberReader(
+					new InputStreamReader(stderr));
 			while ((s = err.readLine()) != null
 					&& this.errorStream.size() < 500) {
 				this.errorStream.add(s);
 			}
 			System.out.println("errorString=" + this.getErrorString());
 			err.close();
-			LineNumberReader in = new LineNumberReader(new InputStreamReader(
-					stdin));
+			LineNumberReader in = new LineNumberReader(
+					new InputStreamReader(stdin));
 			String outstring = null;
 			while ((outstring = in.readLine()) != null
 					&& this.outputStream.size() < 500) {
@@ -119,13 +121,15 @@ public class RunCommand implements Runnable {
 			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			cause.setResourceMessage(ServerOutput.REASON.SYSTEMERROR.toString());
+			cause.setResourceMessage(
+					ServerOutput.REASON.SYSTEMERROR.toString());
 			cause.setPlainMessage("IOException: " + e.getLocalizedMessage());
 			return;
 		}
 
 		if (process.exitValue() != 0) {
-			cause.setResourceMessage(ServerOutput.REASON.SYSTEMERROR.toString());
+			cause.setResourceMessage(
+					ServerOutput.REASON.SYSTEMERROR.toString());
 			cause.setPlainMessage("程序已被終止！ exit code=" + this.exitCode
 					+ ", exitValue=" + process.exitValue() + ", errorString="
 					+ this.getErrorString());
@@ -210,6 +214,10 @@ public class RunCommand implements Runnable {
 
 	public RunnableCause getCause() {
 		return cause;
+	}
+
+	public RunnableCause getWatchCause() {
+		return watchcause;
 	}
 
 }

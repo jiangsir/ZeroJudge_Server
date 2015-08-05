@@ -48,8 +48,10 @@ public class DoSpecialCompile {
 		if (WEXITSTATUS == null) {
 			compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);
 			compileOutput.setInfo("");
-			compileOutput.setReason(ServerOutput.REASON.FORCED_STOP);
-			compileOutput.setHint("編譯程式被強制結束！");
+			compileOutput.setReason(
+					ServerOutput.REASON.SPECIALJUDGE_COMPILE_FORCEDSTOP);
+			compileOutput.setHint("裁判程式編譯不成功，強制結束！，請出題者修正。\n"
+					+ runCompile.getWatchCause().getPlainMessage());
 			throw new JudgeException(compileOutput);
 		} else if ("0".equals(WEXITSTATUS)) {
 		} else if ("1".equals(WEXITSTATUS)) {
@@ -57,11 +59,12 @@ public class DoSpecialCompile {
 			if (compiletimeusage >= 30) {
 				compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);
 				compileOutput.setInfo("");
-				compileOutput.setReason(ServerOutput.REASON.COMPILE_TOO_LONG);
+				compileOutput.setReason(
+						ServerOutput.REASON.SPECIALJUDGE_COMPILE_TLE);
 				compileOutput.setHint(rusage.getErrmsg());
 				throw new JudgeException(compileOutput);
-			} else if (rusage.getErrmsg().contains(
-					"should be declared in a file named")) {
+			} else if (rusage.getErrmsg()
+					.contains("should be declared in a file named")) {
 				compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);
 				compileOutput.setInfo("");
 				compileOutput.setReason(ServerOutput.REASON.WRONG_JAVA_CLASS);
@@ -70,8 +73,8 @@ public class DoSpecialCompile {
 			} else {
 				compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);
 				compileOutput.setInfo("");
-				compileOutput
-						.setReason(ServerOutput.REASON.SPECIALJUDGE_COMPILE_ERROR);
+				compileOutput.setReason(
+						ServerOutput.REASON.SPECIALJUDGE_COMPILE_ERROR);
 				compileOutput.setHint(rusage.getErrmsg());
 				throw new JudgeException(compileOutput);
 			}

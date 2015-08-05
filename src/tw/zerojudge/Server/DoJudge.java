@@ -129,15 +129,12 @@ public class DoJudge implements Runnable {
 						+ serverInput.getCodename() + ".out\" ";
 				break;
 			case JAVA:
-				command = ""
-						+ serverConfig.getBinPath()
-						+ File.separator
+				command = "" + serverConfig.getBinPath() + File.separator
 						+ "shell.exe "
-						+ (int) Math.ceil(executeInput.getTimelimit())
-						+ " "
-						+ (executeInput.getMemorylimit() + serverConfig
-								.getJVM_MB()) * 1024 * 1024 + " "
-						+ outfilelimit + " \"java -classpath "
+						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
+						+ (executeInput.getMemorylimit()
+								+ serverConfig.getJVM_MB()) * 1024 * 1024
+						+ " " + outfilelimit + " \"java -classpath "
 						+ serverConfig.getBinPath()
 						+ " base_java\" \"java -Dfile.encoding=utf-8 "
 						+ "-classpath " + serverConfig.getTempPath() + " "
@@ -180,19 +177,24 @@ public class DoJudge implements Runnable {
 			executeInput.setCommand(command);
 			executeInput.setLanguage(serverInput.getLanguage());
 			executeInput.setSession_account(serverInput.getSession_account());
+			executeInput.setTestfilename(serverInput.getTestfiles()[i]);
 
 			ExecuteOutput executeOutput = null;
 			try {
 				executeOutput = new DoExecute(executeInput).run();
+				System.out.println("executeOutput.getTimeusage()="
+						+ executeOutput.getTimeusage());
 				serverOutputs[i].setTimeusage(executeOutput.getTimeusage());
 				serverOutputs[i].setMemoryusage(executeOutput.getMemoryusage());
 			} catch (JudgeException e) {
 				e.printStackTrace();
 				executeOutput = (ExecuteOutput) e.getCause();
+				System.out.println("executeOutput.getTimeusage()2="
+						+ executeOutput.getTimeusage());
 				serverOutputs[i].setTimeusage(executeOutput.getTimeusage());
 				serverOutputs[i].setMemoryusage(executeOutput.getMemoryusage());
-				serverOutputs[i].setSession_account(serverInput
-						.getSession_account());
+				serverOutputs[i]
+						.setSession_account(serverInput.getSession_account());
 				serverOutputs[i].setJudgement(executeOutput.getJudgement());
 				serverOutputs[i].setInfo(executeOutput.getInfo());
 				serverOutputs[i].setReason(executeOutput.getReason());
@@ -206,9 +208,15 @@ public class DoJudge implements Runnable {
 			compareInput.setProblemid(serverInput.getProblemid());
 			compareInput.setSession_account(serverInput.getSession_account());
 			compareInput.setShowdetail(serverInput.isDetailvisible());
-			compareInput.setTestfilename(serverInput.getTestfiles()[i]);
+			compareInput.setTimelimit(executeInput.getTimelimit());
+			compareInput.setMemorylimit(executeInput.getMemorylimit());
 			compareInput.setTimeusage(executeOutput.getTimeusage());
 			compareInput.setMemoryusage(executeOutput.getMemoryusage());
+			System.out.println("compareInput.getTimeusage()="
+					+ compareInput.getTimeusage());
+
+			compareInput.setTestfilename(serverInput.getTestfiles()[i]);
+
 			CompareOutput compareOutput = null;
 			try {
 				compareOutput = new DoCompare(serverInput, compareInput).run();
@@ -217,6 +225,10 @@ public class DoJudge implements Runnable {
 				serverOutputs[i].setReason(compareOutput.getReason());
 				serverOutputs[i].setHint(compareOutput.getHint());
 				serverOutputs[i].setScore(scores[i]);
+				serverOutputs[i].setTimeusage(compareOutput.getTimeusage());
+				System.out.println("compareOutput.getTimeusage()="
+						+ compareOutput.getTimeusage());
+				serverOutputs[i].setMemoryusage(compareOutput.getMemoryusage());
 			} catch (JudgeException e) {
 				e.printStackTrace();
 				compareOutput = (CompareOutput) e.getCause();
@@ -224,6 +236,10 @@ public class DoJudge implements Runnable {
 				serverOutputs[i].setInfo(compareOutput.getInfo());
 				serverOutputs[i].setReason(compareOutput.getReason());
 				serverOutputs[i].setHint(compareOutput.getHint());
+				serverOutputs[i].setTimeusage(compareOutput.getTimeusage());
+				System.out.println("compareOutput.getTimeusage()2="
+						+ compareOutput.getTimeusage());
+				serverOutputs[i].setMemoryusage(compareOutput.getMemoryusage());
 				continue;
 			}
 

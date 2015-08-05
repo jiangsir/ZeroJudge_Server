@@ -18,13 +18,12 @@ public class ExecuteOutput extends Throwable {
 	private static final long serialVersionUID = 1L;
 	private ServerOutput.JUDGEMENT judgement = ServerOutput.JUDGEMENT.SE;
 	private String info = "";
-
 	private ServerOutput.REASON reason = ServerOutput.REASON.SYSTEMERROR;
 	private int exitstatus = -1;
-	private long timeusage = -1; 
-	private int memoryusage = -1; 
+	private long timeusage = -1;
+	private int memoryusage = -1;
 
-	private String hint = null;
+	private String hint = "";
 
 	public ServerOutput.JUDGEMENT getJudgement() {
 		return judgement;
