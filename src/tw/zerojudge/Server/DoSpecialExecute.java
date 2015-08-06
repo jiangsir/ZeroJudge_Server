@@ -7,6 +7,8 @@ package tw.zerojudge.Server;
 
 import java.util.ArrayList;
 import org.codehaus.jackson.map.ObjectMapper;
+
+import quicktime.std.qtcomponents.SCInfo;
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;
@@ -45,6 +47,15 @@ public class DoSpecialExecute {
 		return output;
 	}
 
+	public static enum SPECIAL_RESULT {
+		$JUDGE_RESULT, // AC or WA
+		$CASES, // ? ：回報使用者錯誤發生在第幾個 test case，也可以不回報。
+		$LINECOUNT, // ? ：回報使用者錯誤發生在第幾行，也可以不回報。
+		$USEROUT, // xxx ：回報使用者所輸出的答案。
+		$SYSTEMOUT, // xxx ：回報系統標準答案。
+		$MESSAGE, // xxx：回報使用者相關訊息，訊息的詳細程度由出題者自行決定。
+	}
+
 	/**
 	 * 
 	 * @param special_execute
@@ -65,14 +76,14 @@ public class DoSpecialExecute {
 		int linecount = outputStream.size();
 		for (int i = 0; i < linecount; i++) {
 			returnline = outputStream.get(i);
-			if (returnline.startsWith("$JUDGE_RESULT=")) {
+			if (returnline.startsWith(SPECIAL_RESULT.$JUDGE_RESULT + "=")) {
 				JUDGE_RESULT = returnline
 						.substring(returnline.indexOf("=") + 1);
-			} else if (returnline.startsWith("$CASES=")) {
+			} else if (returnline.startsWith(SPECIAL_RESULT.$CASES + "=")) {
 				CASES = returnline.substring(returnline.indexOf("=") + 1);
-			} else if (returnline.startsWith("$LINECOUNT=")) {
+			} else if (returnline.startsWith(SPECIAL_RESULT.$LINECOUNT + "=")) {
 				LINECOUNT = returnline.substring(returnline.indexOf("=") + 1);
-			} else if (returnline.startsWith("$USEROUT=")) {
+			} else if (returnline.startsWith(SPECIAL_RESULT.$USEROUT + "=")) {
 				USEROUT = returnline.substring(returnline.indexOf("=") + 1)
 						+ "\n";
 				while (i < linecount - 1
@@ -81,9 +92,9 @@ public class DoSpecialExecute {
 				}
 				if (USEROUT.length() > 2000) {
 					USEROUT = USEROUT.substring(0, 2000);
-					USEROUT += "... USEROUT太長省略!";
+					USEROUT += "... " + SPECIAL_RESULT.$USEROUT + "太長省略!";
 				}
-			} else if (returnline.startsWith("$SYSTEMOUT=")) {
+			} else if (returnline.startsWith(SPECIAL_RESULT.$SYSTEMOUT + "=")) {
 				SYSTEMOUT = returnline.substring(returnline.indexOf("=") + 1)
 						+ "\n";
 				while (i < linecount - 1
@@ -92,9 +103,9 @@ public class DoSpecialExecute {
 				}
 				if (SYSTEMOUT.length() > 2000) {
 					SYSTEMOUT = SYSTEMOUT.substring(0, 2000);
-					SYSTEMOUT += "... SYSTEMOUT太長省略!";
+					SYSTEMOUT += "... " + SPECIAL_RESULT.$SYSTEMOUT + "太長省略!";
 				}
-			} else if (returnline.startsWith("$MESSAGE=")) {
+			} else if (returnline.startsWith(SPECIAL_RESULT.$MESSAGE + "=")) {
 				MESSAGE = returnline.substring(returnline.indexOf("=") + 1)
 						.trim() + "\n";
 
@@ -104,7 +115,7 @@ public class DoSpecialExecute {
 				}
 				if (MESSAGE.length() >= 2000) {
 					MESSAGE = MESSAGE.substring(0, 2000);
-					MESSAGE += "... MESSAGE太長省略!";
+					MESSAGE += "... " + SPECIAL_RESULT.$MESSAGE + "太長省略!";
 				}
 			}
 		}
@@ -130,7 +141,7 @@ public class DoSpecialExecute {
 
 			if (!"".equals(CASES)) {
 				output.setInfo("case:" + CASES);
-				// output.setHint("與正確輸出不相符");
+				output.setHint("與正確輸出不相符");
 			}
 			if (!"".equals(LINECOUNT)) {
 				output.setInfo("line:" + LINECOUNT);
@@ -164,8 +175,7 @@ public class DoSpecialExecute {
 		long timeusage = -1;
 		int memoryusage = -1;
 
-		Rusage rusage = new Rusage(special_execute.getOutputStream(),
-				special_execute.getErrorString());
+		Rusage rusage = new Rusage(special_execute);
 		System.out.println("rusage.getTime()=" + rusage.getTime());
 		System.out.println("rusage.getMem()=" + rusage.getMem());
 		if (rusage.getTime() >= 0) {

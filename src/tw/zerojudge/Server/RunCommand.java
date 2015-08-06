@@ -169,20 +169,20 @@ public class RunCommand implements Runnable {
 	}
 
 	public ArrayList<String> getErrorStream() {
-		ArrayList<String> errorStream = new ArrayList<String>();
-		Iterator<String> it = this.errorStream.iterator();
-		while (it.hasNext()) {
-			errorStream.add(this.filter(it.next()));
-		}
+		// ArrayList<String> errorStream = new ArrayList<String>();
+		// Iterator<String> it = this.errorStream.iterator();
+		// while (it.hasNext()) {
+		// errorStream.add(this.filter(it.next()));
+		// }
 		return errorStream;
 	}
 
 	public ArrayList<String> getOutputStream() {
-		ArrayList<String> outputStream = new ArrayList<String>();
-		Iterator<String> it = this.outputStream.iterator();
-		while (it.hasNext()) {
-			outputStream.add(this.filter(it.next()));
-		}
+		// ArrayList<String> outputStream = new ArrayList<String>();
+		// Iterator<String> it = this.outputStream.iterator();
+		// while (it.hasNext()) {
+		// outputStream.add(this.filter(it.next()));
+		// }
 		return outputStream;
 	}
 

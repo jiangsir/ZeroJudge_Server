@@ -76,29 +76,28 @@ public class DoCompile {
 					"class " + serverInput.getCodename());
 		}
 		Utils.createfile(
-				new File(serverConfig.getTempPath(), serverInput.getCodename()
-						+ "." + serverInput.getLanguage().getSuffix()), code
-						+ "\n");
+				new File(serverConfig.getTempPath(),
+						serverInput.getCodename() + "."
+								+ serverInput.getLanguage().getSuffix()),
+				code + "\n");
 
 		Compiler compiler = serverInput.getCompiler();
 		String cmd_compile = compiler.getCmd_compile();
 		if (cmd_compile.contains("$S")) {
-			cmd_compile = cmd_compile.replaceAll(
-					"\\$S",
+			cmd_compile = cmd_compile.replaceAll("\\$S",
 					serverConfig.getTempPath() + File.separator
 							+ serverInput.getCodename());
 		}
 		cmd_compile = "" + serverConfig.getBinPath() + File.separator
 				+ "shell.exe " + "10 640000000 100000000 \""
-				+ serverConfig.getBinPath() + File.separator
-				+ "base_c.exe\" \"" + cmd_compile + "\"";
+				+ serverConfig.getBinPath() + File.separator + "base_c.exe\" \""
+				+ cmd_compile + "\"";
 		System.out.println(cmd_compile);
-		RunCommand runCompile = new RunCommand(new String[] { "/bin/sh", "-c",
-				cmd_compile }, 0);
+		RunCommand runCompile = new RunCommand(
+				new String[] { "/bin/sh", "-c", cmd_compile }, 0);
 		runCompile.run();
 
-		Rusage rusage = new Rusage(runCompile.getOutputStream(),
-				runCompile.getErrorString());
+		Rusage rusage = new Rusage(runCompile);
 
 		String WEXITSTATUS = rusage.getWEXITSTATUS();
 		if (WEXITSTATUS == null) {
@@ -116,8 +115,8 @@ public class DoCompile {
 				compileOutput.setReason(ServerOutput.REASON.COMPILE_TOO_LONG);
 				compileOutput.setHint(rusage.getErrmsg());
 				throw new JudgeException(compileOutput);
-			} else if (rusage.getErrmsg().contains(
-					"should be declared in a file named")) {
+			} else if (rusage.getErrmsg()
+					.contains("should be declared in a file named")) {
 				compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);
 				compileOutput.setInfo("");
 				compileOutput.setReason(ServerOutput.REASON.WRONG_JAVA_CLASS);

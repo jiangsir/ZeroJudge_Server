@@ -41,8 +41,7 @@ public class DoSpecialCompile {
 		RunCommand runCompile = new RunCommand(cmd_compile);
 		runCompile.run();
 
-		Rusage rusage = new Rusage(runCompile.getOutputStream(),
-				runCompile.getErrorString());
+		Rusage rusage = new Rusage(runCompile);
 
 		String WEXITSTATUS = rusage.getWEXITSTATUS();
 		if (WEXITSTATUS == null) {
@@ -50,8 +49,7 @@ public class DoSpecialCompile {
 			compileOutput.setInfo("");
 			compileOutput.setReason(
 					ServerOutput.REASON.SPECIALJUDGE_COMPILE_FORCEDSTOP);
-			compileOutput.setHint("裁判程式編譯不成功，強制結束！，請出題者修正。\n"
-					+ runCompile.getWatchCause().getPlainMessage());
+			compileOutput.setHint(runCompile.getWatchCause().getPlainMessage());
 			throw new JudgeException(compileOutput);
 		} else if ("0".equals(WEXITSTATUS)) {
 		} else if ("1".equals(WEXITSTATUS)) {

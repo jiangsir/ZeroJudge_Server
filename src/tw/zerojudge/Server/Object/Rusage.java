@@ -9,13 +9,36 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import tw.zerojudge.Server.RunCommand;
+
 /**
  * @author jiangsir
  * 
  */
 public class Rusage {
 	public static enum STATUS {
-		WIFSIGNALED, WTERMSIG, WEXITSTATUS, WIFEXITED, WCOREDUMP, WSTOPSIG, WIFSTOPPED
+		childstatus, //
+		WIFSIGNALED, //
+		WTERMSIG, //
+		WEXITSTATUS, //
+		WIFEXITED, //
+		WCOREDUMP, //
+		WSTOPSIG, //
+		WIFSTOPPED, //
+		basetime, //
+		time, //
+		basemem, //
+		mem, //
+		pagesize, //
+		ru_majflt, //
+		pid, //
+		ppid; //
+		// WTERMSIG, //
+		// WEXITSTATUS, //
+		// WIFEXITED, //
+		// WCOREDUMP, //
+		// WSTOPSIG, //
+		// WIFSTOPPED;//
 	}
 
 	private String childstatus = null;
@@ -36,10 +59,13 @@ public class Rusage {
 	private int ppid;
 	private String errmsg = "";
 
-	public Rusage(ArrayList<String> outputStream, String errorString) {
-		this.setErrmsg(errorString);
-		for (String output : outputStream) {
-			if (output.contains("=")) {
+	public Rusage(RunCommand runcommand) {
+		this.setErrmsg(runcommand.getErrorString());
+		ArrayList<String> outputStream = runcommand.getOutputStream();
+		ArrayList<String> outputs = (ArrayList<String>) outputStream.clone();
+		System.out.println("outputs=" + outputs);
+		for (String output : outputs) {
+			if (this.startWithSTATUS(output)) {
 				String[] usage = output.split("=");
 				String name = usage[0].trim();
 				Method method;
@@ -49,6 +75,9 @@ public class Rusage {
 									+ name.substring(1),
 							new Class[] { String.class });
 					method.invoke(this, new Object[] { usage[1].trim() });
+					System.out.println("output=" + output);
+					outputStream.remove(output);
+					System.out.println("outputStream=" + outputStream);
 				} catch (SecurityException e) {
 					e.printStackTrace();
 				} catch (NoSuchMethodException e) {
@@ -65,6 +94,52 @@ public class Rusage {
 			}
 		}
 	}
+
+	// public Rusage(ArrayList<String> outputStream, String errorString) {
+	// this.setErrmsg(errorString);
+	// ArrayList<String> outputs = (ArrayList<String>) outputStream.clone();
+	// System.out.println("outputs=" + outputs);
+	// for (String output : outputs) {
+	// if (this.startWithSTATUS(output)) {
+	// String[] usage = output.split("=");
+	// String name = usage[0].trim();
+	// Method method;
+	// try {
+	// method = this.getClass().getMethod(
+	// "set" + name.toUpperCase().substring(0, 1)
+	// + name.substring(1),
+	// new Class[] { String.class });
+	// method.invoke(this, new Object[] { usage[1].trim() });
+	// System.out.println("output=" + output);
+	// outputStream.remove(output);
+	// System.out.println("outputStream=" + outputStream);
+	// } catch (SecurityException e) {
+	// e.printStackTrace();
+	// } catch (NoSuchMethodException e) {
+	// e.printStackTrace();
+	// } catch (IllegalArgumentException e) {
+	// e.printStackTrace();
+	// } catch (IllegalAccessException e) {
+	// e.printStackTrace();
+	// } catch (InvocationTargetException e) {
+	// e.printStackTrace();
+	// }
+	// } else {
+	// this.setErrmsg(this.getErrmsg() + output + "\n");
+	// }
+	// }
+	// }
+
+	private boolean startWithSTATUS(String output) {
+		for (STATUS status : STATUS.values()) {
+			if (output.startsWith(status + "=")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// =============================================================
 
 	public String getWIFSIGNALED() {
 		return WIFSIGNALED;

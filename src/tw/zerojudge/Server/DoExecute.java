@@ -33,11 +33,11 @@ public class DoExecute {
 		execute.setTimelimit(executeInput.getTimelimit());
 		execute.run();
 
-		Rusage rusage = new Rusage(execute.getOutputStream(),
-				execute.getErrorString());
+		Rusage rusage = new Rusage(execute);
 
 		if (rusage.getTime() >= 0) {
-			timeusage = (long) ((rusage.getTime() + rusage.getBasetime()) * 1000);
+			timeusage = (long) ((rusage.getTime() + rusage.getBasetime())
+					* 1000);
 			output.setTimeusage(timeusage);
 		}
 		if (rusage.getMem() >= 0 && rusage.getBasemem() >= 0) {
@@ -79,8 +79,8 @@ public class DoExecute {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("code:" + rusage.getWEXITSTATUS());
 			output.setReason(ServerOutput.REASON.RE);
-			output.setHint("您的程式被監控系統中斷，可能是程式無法正常結束所導致。\n"
-					+ execute.getErrorString());
+			output.setHint(
+					"您的程式被監控系統中斷，可能是程式無法正常結束所導致。\n" + execute.getErrorString());
 			throw new JudgeException(output);
 		} else if ("127".equals(rusage.getWEXITSTATUS())) {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
@@ -144,8 +144,8 @@ public class DoExecute {
 				|| "205".equals(rusage.getWEXITSTATUS())
 				|| "207".equals(rusage.getWEXITSTATUS())
 				|| "204".equals(rusage.getWEXITSTATUS())
-				|| "216".equals(rusage.getWEXITSTATUS()) || "217".equals(rusage
-				.getWEXITSTATUS()))
+				|| "216".equals(rusage.getWEXITSTATUS())
+				|| "217".equals(rusage.getWEXITSTATUS()))
 				&& "PASCAL".equals(executeInput.getLanguage())) {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("code:" + rusage.getWEXITSTATUS());
@@ -157,8 +157,8 @@ public class DoExecute {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("code:" + rusage.getWEXITSTATUS());
 			output.setReason(ServerOutput.REASON.RE);
-			output.setHint("執行時期未定義錯誤，code = " + rusage.getWEXITSTATUS()
-					+ " \n" + execute.getErrorString());
+			output.setHint("執行時期未定義錯誤，code = " + rusage.getWEXITSTATUS() + " \n"
+					+ execute.getErrorString());
 			throw new JudgeException(output);
 		}
 
