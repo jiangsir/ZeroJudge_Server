@@ -52,18 +52,23 @@ public class DoInitial {
 				if (!serverConfig.getTestdataPath().exists()) {
 					serverConfig.getTestdataPath().mkdir();
 				}
-				Utils.createfile(new File(serverConfig.getTestdataPath(),
-						serverInput.getTestfiles()[i] + ".in"), serverInput
-						.getTestjudge_indata());
-				Utils.createfile(new File(serverConfig.getTestdataPath(),
-						serverInput.getTestfiles()[i] + ".out"), serverInput
-						.getTestjudge_outdata());
+				Utils.createfile(
+						new File(serverConfig.getTestdataPath(),
+								serverInput.getTestfiles()[i] + ".in"),
+						serverInput.getTestjudge_indata());
+				Utils.createfile(
+						new File(serverConfig.getTestdataPath(),
+								serverInput.getTestfiles()[i] + ".out"),
+						serverInput.getTestjudge_outdata());
 			}
 
 			File infile = new File(serverConfig.getTestdataPath(),
 					serverInput.getTestfiles()[i] + ".in");
 			File outfile = new File(serverConfig.getTestdataPath(),
 					serverInput.getTestfiles()[i] + ".out");
+			new RunCommand(("dos2unix " + infile.getPath())).run();
+			new RunCommand(("dos2unix " + outfile.getPath())).run();
+
 			if (!outfile.exists() || !infile.exists()) {
 				output.setJudgement(ServerOutput.JUDGEMENT.SE);
 				output.setReason(ServerOutput.REASON.TESTDATA_NOT_FOUND);
@@ -72,5 +77,6 @@ public class DoInitial {
 				throw new JudgeException(output);
 			}
 		}
+
 	}
 }

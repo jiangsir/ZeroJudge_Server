@@ -63,7 +63,6 @@ public class Rusage {
 		this.setErrmsg(runcommand.getErrorString());
 		ArrayList<String> outputStream = runcommand.getOutputStream();
 		ArrayList<String> outputs = (ArrayList<String>) outputStream.clone();
-		System.out.println("outputs=" + outputs);
 		for (String output : outputs) {
 			if (this.startWithSTATUS(output)) {
 				String[] usage = output.split("=");
@@ -75,9 +74,7 @@ public class Rusage {
 									+ name.substring(1),
 							new Class[] { String.class });
 					method.invoke(this, new Object[] { usage[1].trim() });
-					System.out.println("output=" + output);
 					outputStream.remove(output);
-					System.out.println("outputStream=" + outputStream);
 				} catch (SecurityException e) {
 					e.printStackTrace();
 				} catch (NoSuchMethodException e) {
