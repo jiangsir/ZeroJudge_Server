@@ -150,14 +150,18 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 		if (ipgroup.cidr == 0) {
 			return true;
 		}
-		return (this.toInt() & ipgroup.getMask()) == (ipgroup.toInt() & ipgroup
-				.getMask());
+		return (this.toInt() & ipgroup.getMask()) == (ipgroup.toInt()
+				& ipgroup.getMask());
+	}
+
+	public boolean getIsLoopbackAddress() {
+		return ip.isLoopbackAddress();
 	}
 
 	@Override
 	public String toString() {
-		return cidr == 32 ? ip.getHostAddress() : ip.getHostAddress() + "/"
-				+ cidr;
+		return cidr == 32 ? ip.getHostAddress()
+				: ip.getHostAddress() + "/" + cidr;
 	}
 
 	@Override

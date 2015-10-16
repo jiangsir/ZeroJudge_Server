@@ -18,7 +18,8 @@ import tw.zerojudge.Server.Object.IpAddress;
 /**
  * Servlet Filter implementation class EncodingFilter
  */
-@WebFilter(filterName = "IpFilter", urlPatterns = { "/*" }, asyncSupported = true)
+@WebFilter(filterName = "IpFilter", urlPatterns = {
+		"/*" }, asyncSupported = true)
 public class IpFilter implements Filter {
 	// LinkedHashSet<String> iprules = new LinkedHashSet<String>();
 
@@ -42,7 +43,8 @@ public class IpFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		IpAddress ip = new IpAddress(request.getRemoteAddr());
 
-		if (isAddrInIprule(ConfigFactory.getServerConfig().getAllowIPset(), ip)) {
+		if (isAddrInIprule(ConfigFactory.getServerConfig().getAllowIPset(),
+				ip)) {
 			chain.doFilter(req, response);
 			return;
 		}
@@ -57,6 +59,9 @@ public class IpFilter implements Filter {
 	}
 
 	public boolean isAddrInIprule(ArrayList<IpAddress> iprules, IpAddress ip) {
+		if (ip.getIsLoopbackAddress()) {
+			return true;
+		}
 		for (IpAddress rule : iprules) {
 			if (ip.getIsSubnetOf(rule)) {
 				return true;

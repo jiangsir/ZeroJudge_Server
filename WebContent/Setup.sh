@@ -3,6 +3,14 @@
 path=$(cd "$(dirname "$0")"; pwd)
 echo $path
 
+apt-get install sudo
+apt-get install ntpdate
+apt-get install dos2unix
+apt-get install rsync
+apt-get install default-jdk
+apt-get install g++
+apt-get install fpc
+
 sudo find $path -name "*.sh" -exec chmod +x {} +
 sudo find $path -name "*.exe" -exec chmod +x {} +
 sudo find $path -name "*.class" -exec chmod +x {} +

@@ -1,7 +1,7 @@
 /*
-* File: phase1.cpp 
+* File: shell.cpp 
 * Designed for: 
-* ∞™§§•Õµ{¶°∏—√D®t≤Œ ZeroJudge(http://cat.nknush.kh.edu.tw/ZeroJudge/)
+* È´ò‰∏≠ÁîüÁ®ãÂºèËß£È°åÁ≥ªÁµ± ZeroJudge(http://zerojudge.tw)
 * Lastest Modified: May, 2008
 * Author: Jiangsir (jiangsir@tea.nknush.kh.edu.tw)
 */
@@ -10,6 +10,9 @@
 #include <sstream>
 #include <sys/wait.h>
 #include <cstdlib>
+#include <unistd.h>
+#include <sys/time.h>
+#include <sys/resource.h>
 
 using namespace std;
 
@@ -17,13 +20,6 @@ int main(int argc, char *argv[]){
     int basestatus, status;
     rusage baseusage, usage;
     long long int time, memory, outfilesize;
-//    stringstream ss;
-//    ss << argv[1];
-//    ss >> time;
-//    ss << argv[2];
-//    ss >> memory;
-//    ss << argv[3];
-//    ss >> outfilesize;
     stringstream(argv[1]) >> time;
     stringstream(argv[2]) >> memory;
     stringstream(argv[3]) >> outfilesize;
@@ -33,36 +29,36 @@ int main(int argc, char *argv[]){
         rlimit timelimit, memorylimit;
         timelimit.rlim_cur = 1; // seconds
         timelimit.rlim_max = 1;
-        memorylimit.rlim_cur = memory; // ≥Ê¶Ï Byte
+        memorylimit.rlim_cur = memory; // ÂñÆ‰Ωç Byte
         memorylimit.rlim_max = memory;
         setrlimit(RLIMIT_CPU, &timelimit);
         setrlimit(RLIMIT_AS, &memorylimit);
-	system(argv[4]);
-	return 0;
+    system(argv[4]);
+    return 0;
     }
     wait3(&basestatus, 0, &baseusage);
 
 //    pid_t childid = fork();
     if(fork()==0){
         rlimit timelimit, memorylimit, filelimit;
-	timelimit.rlim_cur = time; // seconds
-	timelimit.rlim_max = time;
-	memorylimit.rlim_cur = memory; // ≥Ê¶Ï Byte
-	memorylimit.rlim_max = memory;
-	filelimit.rlim_cur = outfilesize; // ≥Ê¶Ï Byte
-	filelimit.rlim_max = outfilesize;
+    timelimit.rlim_cur = time; // seconds
+    timelimit.rlim_max = time;
+    memorylimit.rlim_cur = memory; // ÂñÆ‰Ωç Byte
+    memorylimit.rlim_max = memory;
+    filelimit.rlim_cur = outfilesize; // ÂñÆ‰Ωç Byte
+    filelimit.rlim_max = outfilesize;
         setrlimit(RLIMIT_CPU, &timelimit);
-	setrlimit(RLIMIT_AS, &memorylimit);
-	setrlimit(RLIMIT_FSIZE, &filelimit);
+    setrlimit(RLIMIT_AS, &memorylimit);
+    setrlimit(RLIMIT_FSIZE, &filelimit);
         int childstatus = system(argv[5]);
-	cout << "childstatus=" << childstatus << endl;
-        cout << "WIFSIGNALED=" << WIFSIGNALED(childstatus) << endl; // ´Dπs•N™Ì¶]¨Y≠” signal ®S¶≥ catch ¶”µ≤ßÙ
-        cout << "WTERMSIG=" << WTERMSIG(childstatus) << endl; // ≥y¶®¶Êµ{µ≤ßÙ™∫ signal Ωs∏π
-        cout << "WEXITSTATUS=" << WEXITSTATUS(childstatus) << endl;  // ®˙±o exit status ≥Ã§p 8 bits
-        cout << "WIFEXITED=" << WIFEXITED(childstatus) << endl; // ´Dπs•N™Ì•ø±`µ≤ßÙ
-        cout << "WCOREDUMP=" << WCOREDUMP(childstatus) << endl; // ´Dπs•N™Ì≤£•Õ core dump
-        cout << "WSTOPSIG=" << WSTOPSIG(childstatus) << endl; // ®˙±o≥y¶®¶Êµ{ stop ™∫ signal
-        cout << "WIFSTOPPED=" << WIFSTOPPED(childstatus) << endl; // ´Dπs•N™Ì§l¶Êµ{§w≥Q stop
+    cout << "childstatus=" << childstatus << endl;
+        cout << "WIFSIGNALED=" << WIFSIGNALED(childstatus) << endl; // ÈùûÈõ∂‰ª£Ë°®Âõ†ÊüêÂÄã signal Ê≤íÊúâ catch ËÄåÁµêÊùü
+        cout << "WTERMSIG=" << WTERMSIG(childstatus) << endl; // ÈÄ†ÊàêË°åÁ®ãÁµêÊùüÁöÑ signal Á∑®Ëôü
+        cout << "WEXITSTATUS=" << WEXITSTATUS(childstatus) << endl;  // ÂèñÂæó exit status ÊúÄÂ∞è 8 bits
+        cout << "WIFEXITED=" << WIFEXITED(childstatus) << endl; // ÈùûÈõ∂‰ª£Ë°®Ê≠£Â∏∏ÁµêÊùü
+        cout << "WCOREDUMP=" << WCOREDUMP(childstatus) << endl; // ÈùûÈõ∂‰ª£Ë°®Áî¢Áîü core dump
+        cout << "WSTOPSIG=" << WSTOPSIG(childstatus) << endl; // ÂèñÂæóÈÄ†ÊàêË°åÁ®ã stop ÁöÑ signal
+        cout << "WIFSTOPPED=" << WIFSTOPPED(childstatus) << endl; // ÈùûÈõ∂‰ª£Ë°®Â≠êË°åÁ®ãÂ∑≤Ë¢´ stop
         return 0;
     }
     wait3(&status, 0, &usage);
