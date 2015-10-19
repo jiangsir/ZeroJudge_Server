@@ -3,6 +3,8 @@ package tw.zerojudge.Server.Configs;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.TreeSet;
+
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -37,7 +39,7 @@ public class ServerConfig extends Config {
 	@Property(key = "cryptKey")
 	private String cryptKey = "ZZEERROO";
 	@Property(key = "allowIPset")
-	private ArrayList<IpAddress> allowIPset = new ArrayList<IpAddress>() {
+	private TreeSet<IpAddress> allowIPset = new TreeSet<IpAddress>() {
 		/**
 		 * 
 		 */
@@ -63,29 +65,27 @@ public class ServerConfig extends Config {
 
 	public void setCompilers(String compilers) throws DataException {
 		if (compilers == null) {
-			throw new DataException(ApplicationScope.getServerConfigFile()
-					.getPath() + " KEY \"Compilers\" is missing.");
+			throw new DataException(
+					ApplicationScope.getServerConfigFile().getPath()
+							+ " KEY \"Compilers\" is missing.");
 		}
 		try {
 			this.setCompilers(mapper.readValue(compilers, Compiler[].class));
 		} catch (JsonParseException e) {
 			e.printStackTrace();
-			throw new DataException(ApplicationScope.getServerConfigFile()
-					.getPath()
-					+ " KEY \"Compilers\" "
-					+ e.getLocalizedMessage());
+			throw new DataException(
+					ApplicationScope.getServerConfigFile().getPath()
+							+ " KEY \"Compilers\" " + e.getLocalizedMessage());
 		} catch (JsonMappingException e) {
 			e.printStackTrace();
-			throw new DataException(ApplicationScope.getServerConfigFile()
-					.getPath()
-					+ " KEY \"Compilers\" "
-					+ e.getLocalizedMessage());
+			throw new DataException(
+					ApplicationScope.getServerConfigFile().getPath()
+							+ " KEY \"Compilers\" " + e.getLocalizedMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new DataException(ApplicationScope.getServerConfigFile()
-					.getPath()
-					+ " KEY \"Compilers\" "
-					+ e.getLocalizedMessage());
+			throw new DataException(
+					ApplicationScope.getServerConfigFile().getPath()
+							+ " KEY \"Compilers\" " + e.getLocalizedMessage());
 		}
 	}
 
@@ -250,12 +250,12 @@ public class ServerConfig extends Config {
 	}
 
 	@JsonIgnore
-	public ArrayList<IpAddress> getAllowIPset() {
+	public TreeSet<IpAddress> getAllowIPset() {
 		return allowIPset;
 	}
 
 	@JsonIgnore
-	public void setAllowIPset(ArrayList<IpAddress> allowIPset) {
+	public void setAllowIPset(TreeSet<IpAddress> allowIPset) {
 		this.allowIPset = allowIPset;
 	}
 
@@ -265,8 +265,8 @@ public class ServerConfig extends Config {
 			return;
 		}
 		try {
-			ArrayList<IpAddress> ipaddress = mapper.readValue(allowIPset,
-					new TypeReference<ArrayList<IpAddress>>() {
+			TreeSet<IpAddress> ipaddress = mapper.readValue(allowIPset,
+					new TypeReference<TreeSet<IpAddress>>() {
 					});
 			this.setAllowIPset(ipaddress);
 		} catch (JsonParseException e) {

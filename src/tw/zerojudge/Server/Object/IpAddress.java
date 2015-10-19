@@ -5,8 +5,7 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
+import java.util.TreeSet;
 
 public class IpAddress implements Comparable<IpAddress>, Serializable {
 
@@ -25,17 +24,13 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 		ONE, // 1 個 ip
 	}
 
-	public IpAddress() {
-		// JSON string 還原時需要用到
-	}
-
 	/**
 	 * 接受 192.168.1.1 or 192.168.1.1/24 兩種格式。
 	 * 
 	 * @param ip
 	 */
 	public IpAddress(String ip) {
-		if (ip == null) {
+		if (ip == null || "null".equals(ip.trim())) {
 			return;
 		}
 		if (ip.contains("/")) {
@@ -103,21 +98,14 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 		this.cidr = cidr;
 	}
 
-	@JsonIgnore
 	public boolean getIsIpv4() {
 		return this.getIp() instanceof Inet4Address;
 	}
 
-	@JsonIgnore
 	public boolean getIsIpv6() {
 		return this.getIp() instanceof Inet6Address;
 	}
 
-	/**
-	 * Compute integer representation of InetAddress
-	 * 
-	 * @return the integer representation
-	 */
 	private int toInt() {
 		byte[] address = this.getIp().getAddress();
 		int net = 0;
@@ -125,17 +113,9 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 			net <<= 8;
 			net |= addres & 0xFF;
 		}
-
 		return net;
 	}
 
-	/**
-	 * Sets the CIDR Netmask<BR>
-	 * i.e.: setCidrNetMask(24);
-	 * 
-	 * @param cidrNetMask
-	 *            a netmask in CIDR notation
-	 */
 	private int getMask() {
 		return 0x80000000 >> cidr - 1;
 	}
@@ -154,18 +134,39 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 				& ipgroup.getMask());
 	}
 
-	public boolean getIsLoopbackAddress() {
-		return ip.isLoopbackAddress();
+	/**
+	 * 判斷這個 IP 是否屬於 一個 network 如：192.168.*.*, 203.1.2.3
+	 * 
+	 * @param iprules
+	 * @return
+	 */
+	public boolean getIsSubnetOf(TreeSet<IpAddress> iprules) {
+		if (iprules == null || iprules.size() == 0
+				|| this.isLookbackAddress()) {
+			return true;
+		}
+		for (IpAddress ip : iprules) {
+			if (this.getIsSubnetOf(ip)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public String toString() {
+		if (ip == null) {
+			return "null";
+		}
 		return cidr == 32 ? ip.getHostAddress()
 				: ip.getHostAddress() + "/" + cidr;
 	}
 
 	@Override
 	public boolean equals(Object arg0) {
+		if (arg0 == null) {
+			return false;
+		}
 		return this.toString().equals(arg0.toString());
 	}
 
@@ -177,6 +178,10 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 	@Override
 	public int hashCode() {
 		return this.toString().hashCode();
+	}
+
+	public boolean isLookbackAddress() {
+		return ip.isLoopbackAddress();
 	}
 
 }

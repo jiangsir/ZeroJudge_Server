@@ -43,12 +43,11 @@ public class IpFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		IpAddress ip = new IpAddress(request.getRemoteAddr());
 
-		if (isAddrInIprule(ConfigFactory.getServerConfig().getAllowIPset(),
-				ip)) {
+		if (ip.getIsSubnetOf(ConfigFactory.getServerConfig().getAllowIPset())) {
 			chain.doFilter(req, response);
 			return;
 		}
-		throw new AlertException("您所在的位置並未允許存取本網站。(" + ip + ")");
+		throw new AlertException("您所在的位置並未允許存取本網站。(" + ip + ")，若有疑問請通知管理員。");
 	}
 
 	/**
@@ -56,18 +55,6 @@ public class IpFilter implements Filter {
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 		// iprules.add("*");
-	}
-
-	public boolean isAddrInIprule(ArrayList<IpAddress> iprules, IpAddress ip) {
-		if (ip.getIsLoopbackAddress()) {
-			return true;
-		}
-		for (IpAddress rule : iprules) {
-			if (ip.getIsSubnetOf(rule)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }

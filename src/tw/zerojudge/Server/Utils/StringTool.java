@@ -50,7 +50,8 @@ public class StringTool {
 		return set;
 	}
 
-	public static LinkedHashSet<IpAddress> String2IpAddressSet(String setstring) {
+	public static LinkedHashSet<IpAddress> String2IpAddressSet(
+			String setstring) {
 		LinkedHashSet<IpAddress> set = new LinkedHashSet<IpAddress>();
 		if (setstring == null) {
 			return set;
@@ -67,8 +68,8 @@ public class StringTool {
 		return set;
 	}
 
-	public static ArrayList<IpAddress> String2IpAddressList(String string) {
-		ArrayList<IpAddress> list = new ArrayList<IpAddress>();
+	public static TreeSet<IpAddress> String2IpAddressList(String string) {
+		TreeSet<IpAddress> list = new TreeSet<IpAddress>();
 		if (string == null) {
 			return list;
 		}
