@@ -8,7 +8,6 @@ package tw.zerojudge.Server;
 import java.util.ArrayList;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import quicktime.std.qtcomponents.SCInfo;
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;

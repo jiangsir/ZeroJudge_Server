@@ -12,20 +12,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-
 import tw.zerojudge.Server.Beans.ServerInput;
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;
 import tw.zerojudge.Server.Exceptions.JudgeException;
-import tw.zerojudge.Server.Factories.ServerFactory;
 import tw.zerojudge.Server.Object.CompareInput;
 import tw.zerojudge.Server.Object.CompareOutput;
 import tw.zerojudge.Server.Object.CompileOutput;
 import tw.zerojudge.Server.Object.ExecuteInput;
 import tw.zerojudge.Server.Object.ExecuteOutput;
-import tw.zerojudge.Server.Object.Rusage;
 
 /**
  * @author jiangsir

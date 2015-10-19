@@ -1,6 +1,5 @@
 package tw.zerojudge.Server.Utils;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;

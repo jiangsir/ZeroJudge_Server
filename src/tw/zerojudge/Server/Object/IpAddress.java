@@ -25,6 +25,13 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 	}
 
 	/**
+	 * 預設取得 loopback address
+	 */
+	public IpAddress() {
+		this.ip = InetAddress.getLoopbackAddress();
+	}
+
+	/**
 	 * 接受 192.168.1.1 or 192.168.1.1/24 兩種格式。
 	 * 
 	 * @param ip

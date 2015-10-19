@@ -5,8 +5,6 @@
  */
 package tw.zerojudge.Server.Object;
 
-import java.io.File;
-
 /**
  * @author jiangsir
  * 

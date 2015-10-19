@@ -5,14 +5,10 @@
  */
 package tw.zerojudge.Server;
 
-import java.io.File;
-
 import org.codehaus.jackson.map.ObjectMapper;
-import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;
 import tw.zerojudge.Server.Exceptions.JudgeException;
-import tw.zerojudge.Server.Object.*;
 
 /**
  * @author jiangsir
