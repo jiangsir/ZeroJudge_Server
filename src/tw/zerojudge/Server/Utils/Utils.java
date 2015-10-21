@@ -14,27 +14,6 @@ import tw.zerojudge.Server.Exceptions.ZjException;
 public class Utils {
 	public static Logger logger = Logger.getLogger(Utils.class.getName());
 
-	public static boolean isIpInRule(String iprule, String currentip) {
-		iprule = iprule.trim();
-		if (iprule == null || "".equals(iprule)) {
-			return false;
-		}
-		if ("*".equals(iprule) || "127.0.0.1".equals(currentip)) {
-			return true;
-		}
-		String[] subip = iprule.split("\\.");
-		String[] curriparray = currentip.split("\\.");
-		if (subip.length != 4 || curriparray.length != 4) {
-			return false;
-		}
-		for (int i = 0; i < subip.length; i++) {
-			if (!"*".equals(subip[i]) && !subip[i].equals(curriparray[i])) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	/**
 	 * 將 set 自動轉出的字串轉回 TreeSet。字串格式如下：["aa", "bb", "cc"]
 	 * 
@@ -93,7 +72,7 @@ public class Utils {
 			s = s.replaceAll("\\]", "");
 		}
 		if (s.trim().equals("")) {
-			return new String[] {};
+			return new String[]{};
 		}
 		String[] sarray = s.split(",");
 		String[] array = new String[sarray.length];
@@ -103,8 +82,7 @@ public class Utils {
 		return array;
 	}
 
-	public static HashMap<String, String> getRequestHeaders(
-			HttpServletRequest request) {
+	public static HashMap<String, String> getRequestHeaders(HttpServletRequest request) {
 		HashMap<String, String> headers = new HashMap<String, String>();
 		Enumeration<?> names = request.getHeaderNames();
 		while (names.hasMoreElements()) {
@@ -175,11 +153,8 @@ public class Utils {
 		return result;
 	}
 
-	public static boolean isLegalDatestring(String datestring)
-			throws ZjException {
-		if (datestring == null
-				|| !datestring
-						.matches("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")) {
+	public static boolean isLegalDatestring(String datestring) throws ZjException {
+		if (datestring == null || !datestring.matches("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")) {
 			throw new ZjException(null, "時間格式錯誤！");
 		} else {
 			return true;
@@ -221,16 +196,11 @@ public class Utils {
 	public static String parsePath(String path) {
 		if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
 			path = path + System.getProperty("file.separator");
-			Matcher m = Pattern.compile(
-					"['" + System.getProperty("file.separator") + "']+")
-					.matcher(path);
+			Matcher m = Pattern.compile("['" + System.getProperty("file.separator") + "']+").matcher(path);
 			return m.replaceAll(System.getProperty("file.separator"));
 		} else {
-			path = System.getProperty("file.separator") + path
-					+ System.getProperty("file.separator");
-			Matcher m = Pattern.compile(
-					"['" + System.getProperty("file.separator") + "']+")
-					.matcher(path);
+			path = System.getProperty("file.separator") + path + System.getProperty("file.separator");
+			Matcher m = Pattern.compile("['" + System.getProperty("file.separator") + "']+").matcher(path);
 			return m.replaceAll(System.getProperty("file.separator"));
 		}
 	}
@@ -297,8 +267,7 @@ public class Utils {
 	/**
 	 * 取得指定目錄下的檔案, 不含目錄
 	 */
-	public static TreeMap<String, Integer> getFilenames(String path,
-			String regex) {
+	public static TreeMap<String, Integer> getFilenames(String path, String regex) {
 		File file = new File(path);
 		TreeMap<String, Integer> fileList = new TreeMap<String, Integer>();
 		if (!file.exists()) {
@@ -308,10 +277,9 @@ public class Utils {
 		for (int i = 0; i < files.length; i++) {
 			String filestring = files[i].toString();
 			if (!files[i].isDirectory() && filestring.matches(regex)) {
-				String filename = filestring.substring(filestring
-						.lastIndexOf(System.getProperty("file.separator")) + 1);
-				fileList.put(filename,
-						Utils.readFile(path, filename).split("\\\n").length);
+				String filename = filestring
+						.substring(filestring.lastIndexOf(System.getProperty("file.separator")) + 1);
+				fileList.put(filename, Utils.readFile(path, filename).split("\\\n").length);
 			}
 		}
 		return fileList;
@@ -328,8 +296,7 @@ public class Utils {
 		StringBuffer text = new StringBuffer(MAX_LENGTH);
 		try {
 			FileInputStream fis = new FileInputStream(path + filename);
-			BufferedReader breader = new BufferedReader(new InputStreamReader(
-					fis, "UTF-8"));
+			BufferedReader breader = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
 			while ((line = breader.readLine()) != null) {
 				text.append(line + "\n");
 				if (text.length() >= MAX_LENGTH) {
@@ -359,8 +326,7 @@ public class Utils {
 		int lines = 0;
 		try {
 			FileInputStream fis = new FileInputStream(path + filename);
-			BufferedReader breader = new BufferedReader(new InputStreamReader(
-					fis, "UTF-8"));
+			BufferedReader breader = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
 			while ((breader.readLine()) != null) {
 				lines++;
 			}
@@ -377,8 +343,7 @@ public class Utils {
 		return lines;
 	}
 
-	public static ArrayList<String> readFilelines(String path, String filename,
-			String encode) {
+	public static ArrayList<String> readFilelines(String path, String filename, String encode) {
 		filename = filename.replaceAll("\\.\\.", "");
 		path = path.replaceAll("\\.\\.", "");
 		if (!path.endsWith(System.getProperty("file.separator"))) {
@@ -388,8 +353,7 @@ public class Utils {
 		ArrayList<String> text = new ArrayList<String>();
 		try {
 			FileInputStream fis = new FileInputStream(path + filename);
-			BufferedReader breader = new BufferedReader(new InputStreamReader(
-					fis, encode));
+			BufferedReader breader = new BufferedReader(new InputStreamReader(fis, encode));
 			while ((line = breader.readLine()) != null) {
 				if (!"".equals(line.trim())) {
 					text.add(line);
@@ -497,12 +461,11 @@ public class Utils {
 	public static final int rule_ALLOW = 1;
 
 	public static String getJavaVersion() {
-		String[] command = { "/bin/sh", "-c", "java -version" };
+		String[] command = {"/bin/sh", "-c", "java -version"};
 		RunCommand runcommand = new RunCommand(command);
 		runcommand.run();
 		ArrayList<?> out = runcommand.getErrorStream();
-		if (out == null || out.size() == 0
-				|| ((String) out.get(0)).contains("java: command not found")) {
+		if (out == null || out.size() == 0 || ((String) out.get(0)).contains("java: command not found")) {
 			return "Java not installed!!";
 		} else {
 			return (String) out.get(0);
@@ -510,12 +473,11 @@ public class Utils {
 	}
 
 	public static String getJAVA_HOME() {
-		String[] command = { "/bin/sh", "-c", "echo $JAVA_HOME" };
+		String[] command = {"/bin/sh", "-c", "echo $JAVA_HOME"};
 		RunCommand runcommand = new RunCommand(command);
 		runcommand.run();
 		ArrayList<?> out = runcommand.getOutputStream();
-		if (out == null || out.size() == 0
-				|| "".equals(out.get(0).toString().trim())) {
+		if (out == null || out.size() == 0 || "".equals(out.get(0).toString().trim())) {
 			return "$JAVA_HOME is empty!!";
 		} else {
 			return (String) out.get(0);
@@ -539,8 +501,7 @@ public class Utils {
 				continue;
 			}
 			String[] query = array[i].trim().split("=");
-			if (query.length == 2 && !"".equals(query[0])
-					&& !"".equals(query[1])
+			if (query.length == 2 && !"".equals(query[0]) && !"".equals(query[1])
 					&& !query[0].matches("^[Pp][Aa][Gg][Ee].*")) {
 				tmap.remove(query[0]);
 				tmap.put(query[0], query[1]);
@@ -557,16 +518,14 @@ public class Utils {
 	}
 
 	public static String getMysqlVersion(String dbuser, String dbpasswd) {
-		if (dbuser == null || dbpasswd == null || "".equals(dbuser)
-				|| "".equals(dbpasswd)) {
+		if (dbuser == null || dbpasswd == null || "".equals(dbuser) || "".equals(dbpasswd)) {
 			return "資料庫的帳號 or 密碼輸入不全!!";
 		}
-		String[] command = { "/bin/sh", "-c", "mysql --version" };
+		String[] command = {"/bin/sh", "-c", "mysql --version"};
 		RunCommand runcommand = new RunCommand(command);
 		runcommand.run();
 		ArrayList<?> out = runcommand.getOutputStream();
-		if (out == null || out.size() == 0
-				|| "".equals(out.get(0).toString().trim())) {
+		if (out == null || out.size() == 0 || "".equals(out.get(0).toString().trim())) {
 			return "mysql 有誤!!";
 		} else {
 			String s = (String) out.get(0);
@@ -646,8 +605,7 @@ public class Utils {
 		return Pattern.compile("[ ]+").matcher(s).replaceAll(" ");
 	}
 
-	public static String translate(String text, String locale_from,
-			String locale_to) {
+	public static String translate(String text, String locale_from, String locale_to) {
 		return text;
 	}
 

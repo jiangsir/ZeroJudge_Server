@@ -19,7 +19,7 @@ import tw.zerojudge.Server.Utils.StringTool;
 
 public class ServerConfig extends Config {
 	@Property(key = "Compilers")
-	private Compiler[] Compilers = new Compiler[] { new Compiler() };
+	private Compiler[] Compilers = new Compiler[]{new Compiler()};
 	@Property(key = "CONSOLE_PATH")
 	private File CONSOLE_PATH = new File("/ZeroJudge_CONSOLE/");
 	@Property(key = "JVM_MB")
@@ -44,9 +44,8 @@ public class ServerConfig extends Config {
 		 * 
 		 */
 		private static final long serialVersionUID = -6735127017873261251L;
-
 		{
-			add(new IpAddress("0.0.0.0", 0));
+			add(new IpAddress("192.168.0.0/16"));
 		}
 	};
 	@Property(key = "isCleanTmpFile")
@@ -66,26 +65,22 @@ public class ServerConfig extends Config {
 	public void setCompilers(String compilers) throws DataException {
 		if (compilers == null) {
 			throw new DataException(
-					ApplicationScope.getServerConfigFile().getPath()
-							+ " KEY \"Compilers\" is missing.");
+					ApplicationScope.getServerConfigFile().getPath() + " KEY \"Compilers\" is missing.");
 		}
 		try {
 			this.setCompilers(mapper.readValue(compilers, Compiler[].class));
 		} catch (JsonParseException e) {
 			e.printStackTrace();
 			throw new DataException(
-					ApplicationScope.getServerConfigFile().getPath()
-							+ " KEY \"Compilers\" " + e.getLocalizedMessage());
+					ApplicationScope.getServerConfigFile().getPath() + " KEY \"Compilers\" " + e.getLocalizedMessage());
 		} catch (JsonMappingException e) {
 			e.printStackTrace();
 			throw new DataException(
-					ApplicationScope.getServerConfigFile().getPath()
-							+ " KEY \"Compilers\" " + e.getLocalizedMessage());
+					ApplicationScope.getServerConfigFile().getPath() + " KEY \"Compilers\" " + e.getLocalizedMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new DataException(
-					ApplicationScope.getServerConfigFile().getPath()
-							+ " KEY \"Compilers\" " + e.getLocalizedMessage());
+					ApplicationScope.getServerConfigFile().getPath() + " KEY \"Compilers\" " + e.getLocalizedMessage());
 		}
 	}
 
@@ -265,9 +260,8 @@ public class ServerConfig extends Config {
 			return;
 		}
 		try {
-			TreeSet<IpAddress> ipaddress = mapper.readValue(allowIPset,
-					new TypeReference<TreeSet<IpAddress>>() {
-					});
+			TreeSet<IpAddress> ipaddress = mapper.readValue(allowIPset, new TypeReference<TreeSet<IpAddress>>() {
+			});
 			this.setAllowIPset(ipaddress);
 		} catch (JsonParseException e) {
 			e.printStackTrace();
