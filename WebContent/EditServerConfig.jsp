@@ -55,7 +55,8 @@
 						value="${serverConfig.sshport}" size="10" />
 				</p>
 				<p>
-					允許進入的 IP(使用 CIDR 表達範圍，多組時用 , 隔開)：<input name="allowIPset"
+					允許進入的 IP，請務必將前端(judgeweb)取得之 IP 加入列表，否則前端將無法取得裁判機資料。(使用 CIDR
+					表達範圍，多組時用 , 隔開)：<input name="allowIPset"
 						value="${serverConfig.allowIPset}" size="100" />
 				</p>
 				<p>
