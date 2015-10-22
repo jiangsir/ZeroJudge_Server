@@ -19,7 +19,7 @@ sudo chmod a+w $path/JudgeServer_CONSOLE/Special
 
 sudo rm -rf /JudgeServer_CONSOLE
 sudo mv $path/JudgeServer_CONSOLE /
-sudo g++ -o shell.exe shell.cpp
+sudo g++ -o /JudgeServer_CONSOLE/Bin/shell.exe /JudgeServer_CONSOLE/Bin/shell.cpp
 
 sudo find /etc/init.d/ -name "tomcat*" -exec bash -c "{} restart" \;
 

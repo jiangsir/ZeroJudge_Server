@@ -64,37 +64,28 @@ public class DoCompile {
 			code = code.replaceAll("[ ]*package .*", "");
 			code = code.replaceFirst("class(?s).*?\\{", "class JAVA \\{");
 
-			if (!code.contains("public class JAVA")
-					&& !code.contains("class JAVA")) {
+			if (!code.contains("public class JAVA") && !code.contains("class JAVA")) {
 				compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);
 				compileOutput.setInfo("");
 				compileOutput.setReason(ServerOutput.REASON.WRONG_JAVA_CLASS);
 				compileOutput.setHint("請使用 public class JAVA 來定義類別名稱。");
 				throw new JudgeException(compileOutput);
 			}
-			code = code.replaceFirst("class JAVA",
-					"class " + serverInput.getCodename());
+			code = code.replaceFirst("class JAVA", "class " + serverInput.getCodename());
 		}
-		Utils.createfile(
-				new File(serverConfig.getTempPath(),
-						serverInput.getCodename() + "."
-								+ serverInput.getLanguage().getSuffix()),
-				code + "\n");
+		Utils.createfile(new File(serverConfig.getTempPath(),
+				serverInput.getCodename() + "." + serverInput.getLanguage().getSuffix()), code + "\n");
 
 		Compiler compiler = serverInput.getCompiler();
 		String cmd_compile = compiler.getCmd_compile();
 		if (cmd_compile.contains("$S")) {
 			cmd_compile = cmd_compile.replaceAll("\\$S",
-					serverConfig.getTempPath() + File.separator
-							+ serverInput.getCodename());
+					serverConfig.getTempPath() + File.separator + serverInput.getCodename());
 		}
-		cmd_compile = "" + serverConfig.getBinPath() + File.separator
-				+ "shell.exe " + "10 640000000 100000000 \""
-				+ serverConfig.getBinPath() + File.separator + "base_c.exe\" \""
-				+ cmd_compile + "\"";
+		cmd_compile = "" + serverConfig.getBinPath() + File.separator + "shell.exe " + "10 1600000000 100000000 \""
+				+ serverConfig.getBinPath() + File.separator + "base_c.exe\" \"" + cmd_compile + "\"";
 		System.out.println(cmd_compile);
-		RunCommand runCompile = new RunCommand(
-				new String[] { "/bin/sh", "-c", cmd_compile }, 0);
+		RunCommand runCompile = new RunCommand(new String[]{"/bin/sh", "-c", cmd_compile}, 0);
 		runCompile.run();
 
 		Rusage rusage = new Rusage(runCompile);
@@ -115,8 +106,7 @@ public class DoCompile {
 				compileOutput.setReason(ServerOutput.REASON.COMPILE_TOO_LONG);
 				compileOutput.setHint(rusage.getErrmsg());
 				throw new JudgeException(compileOutput);
-			} else if (rusage.getErrmsg()
-					.contains("should be declared in a file named")) {
+			} else if (rusage.getErrmsg().contains("should be declared in a file named")) {
 				compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);
 				compileOutput.setInfo("");
 				compileOutput.setReason(ServerOutput.REASON.WRONG_JAVA_CLASS);
@@ -132,8 +122,7 @@ public class DoCompile {
 		} else {
 			compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);
 			compileOutput.setInfo("");
-			compileOutput
-					.setReason(ServerOutput.REASON.SYSTEMERROR_WHEN_COMPILE);
+			compileOutput.setReason(ServerOutput.REASON.SYSTEMERROR_WHEN_COMPILE);
 			compileOutput.setHint(rusage.getErrmsg());
 			throw new JudgeException(compileOutput);
 		}

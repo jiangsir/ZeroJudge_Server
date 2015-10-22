@@ -30,8 +30,7 @@ public class DoInitial {
 	public void run() throws JudgeException {
 		InitialOutput output = new InitialOutput(serverInput);
 		String osname = System.getProperty("os.name");
-		if (!osname.toLowerCase().contains("linux")
-				&& !osname.toLowerCase().contains("mac")) {
+		if (!osname.toLowerCase().contains("linux") && !osname.toLowerCase().contains("mac")) {
 			output.setJudgement(ServerOutput.JUDGEMENT.SE);
 			output.setReason(ServerOutput.REASON.OS_NOT_SUPPORTTED);
 			output.setHint("裁判機不支援之作業系統  " + osname);
@@ -47,27 +46,20 @@ public class DoInitial {
 
 		for (int i = 0; i < serverInput.getTestfiles().length; i++) {
 			if (serverInput.getPriority() == ServerInput.PRIORITY.Testjudge) {
-				System.out.println("serverConfig.getTestdataPath()="
-						+ serverConfig.getTestdataPath());
+				System.out.println("serverConfig.getTestdataPath()=" + serverConfig.getTestdataPath());
 				if (!serverConfig.getTestdataPath().exists()) {
 					serverConfig.getTestdataPath().mkdir();
 				}
-				Utils.createfile(
-						new File(serverConfig.getTestdataPath(),
-								serverInput.getTestfiles()[i] + ".in"),
+				Utils.createfile(new File(serverConfig.getTestdataPath(), serverInput.getTestfiles()[i] + ".in"),
 						serverInput.getTestjudge_indata());
-				Utils.createfile(
-						new File(serverConfig.getTestdataPath(),
-								serverInput.getTestfiles()[i] + ".out"),
+				Utils.createfile(new File(serverConfig.getTestdataPath(), serverInput.getTestfiles()[i] + ".out"),
 						serverInput.getTestjudge_outdata());
 			}
 
-			File infile = new File(serverConfig.getTestdataPath(),
-					serverInput.getTestfiles()[i] + ".in");
-			File outfile = new File(serverConfig.getTestdataPath(),
-					serverInput.getTestfiles()[i] + ".out");
-			new RunCommand(("dos2unix " + infile.getPath())).run();
-			new RunCommand(("dos2unix " + outfile.getPath())).run();
+			File infile = new File(serverConfig.getTestdataPath(), serverInput.getTestfiles()[i] + ".in");
+			File outfile = new File(serverConfig.getTestdataPath(), serverInput.getTestfiles()[i] + ".out");
+			new RunCommand(("sudo -u " + serverConfig.getRsyncAccount() + " dos2unix " + infile.getPath())).run();
+			new RunCommand(("sudo -u " + serverConfig.getRsyncAccount() + " dos2unix " + outfile.getPath())).run();
 
 			if (!outfile.exists() || !infile.exists()) {
 				output.setJudgement(ServerOutput.JUDGEMENT.SE);
