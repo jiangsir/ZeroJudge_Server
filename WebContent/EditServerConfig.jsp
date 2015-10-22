@@ -70,14 +70,15 @@
 			<div id="tabs-2">
 				<p>
 					<strong>使用代號：</strong><br /> $S： 代表程式名稱，每個程式碼實際的名稱由系統決定。<br />
-					$T： 代表測資名稱，系統將自動替換為實際路徑。<br /> 副檔名：程式檔副檔名預設為小寫的語言名稱，如 C -&gt; .c,
+					$T： 代表測資名稱，系統將自動替換為實際路徑。<br /> 
+<!-- 					副檔名：程式檔副檔名預設為小寫的語言名稱，如 C -&gt; .c,
 					CPP -&gt; cpp, PASCAL -&gt; pascal。輸入測資為 .in，輸出測資為 .out
-				</p>
-				<p>
+ -->				</p>
+				<!-- 				<p>
 					<strong>編譯命令： </strong><br /> C++ 編譯指令 g++ -lm -lcrypt -O2 -pipe
 					-DONLINE_JUDGE -o mycode.exe mycode.cpp <br /> 則可以標示為 g++ -lm
 					-lcrypt -O2 -pipe -DONLINE_JUDGE -o $S.exe $S.cpp <br /> gcc $S.c
-					-lm -lcrypt -O2 -pipe -ansi -DONLINE_JUDGE -o $S.exe <br /> javac
+					-lm -lcrypt -O2 -pipe -DONLINE_JUDGE -o $S.exe <br /> javac
 					-encoding UTF-8 $S.java<br /> fpc -o$S.exe -Sg $S.pascal <span
 						id="Compilers" style="display: none;">[tw.zerojudge.JsonObjects.Compiler@92db1f,
 						tw.zerojudge.JsonObjects.Compiler@17004d5,
@@ -91,7 +92,7 @@
 					-classpath $S &lt; $T &gt; $S.out <br /> PASCAL: $S.exe &lt; $T
 					&gt; $S.out
 				</p>
-
+ -->
 				<hr />
 				<c:forEach var="compiler" items="${serverConfig.compilers}">
 					<div id="compiler" style="background-color: #eeeeee">

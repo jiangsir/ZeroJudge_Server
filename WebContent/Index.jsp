@@ -14,7 +14,9 @@
 </head>
 
 <body>
-	<p>裁判機參數</p>
+	<p>
+		<a href="./EditServerConfig">管理裁判機參數</a>
+	</p>
 	<p>裁判機名稱：${applicationScope.serverConfig.servername}</p>
 	<p>裁判機作業系統：${applicationScope.serverConfig.serverOS}</p>
 	<p>裁判機資訊：${applicationScope.serverConfig.serverInfo}</p>
