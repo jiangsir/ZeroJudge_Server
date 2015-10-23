@@ -82,9 +82,9 @@ public class DoCompile {
 			cmd_compile = cmd_compile.replaceAll("\\$S",
 					serverConfig.getTempPath() + File.separator + serverInput.getCodename());
 		}
-		cmd_compile = "" + serverConfig.getBinPath() + File.separator + "shell.exe " + "10 1600000000 100000000 \""
-				+ serverConfig.getBinPath() + File.separator + "base_c.exe\" \"" + cmd_compile + "\"";
-		System.out.println(cmd_compile);
+		cmd_compile = "" + serverConfig.getBinPath() + File.separator + "shell.exe " + "10 "
+				+ serverConfig.getJVM_MB() * 1024 * 1024 + " 100000000 \"" + "java -classpath "
+				+ serverConfig.getBinPath() + " base_java\" \"" + cmd_compile + "\"";
 		RunCommand runCompile = new RunCommand(new String[]{"/bin/sh", "-c", cmd_compile}, 0);
 		runCompile.run();
 

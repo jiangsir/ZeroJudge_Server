@@ -20,6 +20,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import tw.zerojudge.Server.Annotations.Property;
+import tw.zerojudge.Server.Utils.Utils;
 
 public class ConfigFactory {
 	private static ServerConfig serverConfig = null;
@@ -85,6 +86,7 @@ public class ConfigFactory {
 			fis = new FileInputStream(ApplicationScope.getServerConfigFile());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			return serverConfig;
 		}
 		try {
 			props.loadFromXML(fis);
@@ -103,11 +105,9 @@ public class ConfigFactory {
 			Method method;
 			try {
 				method = serverConfig.getClass().getMethod(
-						"set" + field.getName().toUpperCase().substring(0, 1)
-								+ field.getName().substring(1),
-						new Class[] { String.class });
-				method.invoke(serverConfig,
-						new Object[] { props.getProperty((String) key) });
+						"set" + field.getName().toUpperCase().substring(0, 1) + field.getName().substring(1),
+						new Class[]{String.class});
+				method.invoke(serverConfig, new Object[]{props.getProperty((String) key)});
 			} catch (SecurityException e) {
 				e.printStackTrace();
 			} catch (NoSuchMethodException e) {
@@ -132,8 +132,7 @@ public class ConfigFactory {
 		Properties props = new Properties();
 		props.clear();
 		for (Field field : getPropertyFields().values()) {
-			String name = field.getName().toUpperCase().subSequence(0, 1)
-					+ field.getName().substring(1);
+			String name = field.getName().toUpperCase().subSequence(0, 1) + field.getName().substring(1);
 			Property property = field.getAnnotation(Property.class);
 			Method gettermethod;
 			try {
@@ -148,16 +147,13 @@ public class ConfigFactory {
 				if (getter == null) {
 					continue;
 				}
-				if (gettermethod.getReturnType() == File.class
-						|| gettermethod.getReturnType() == String.class
-						|| gettermethod.getReturnType() == int.class
-						|| gettermethod.getReturnType() == double.class
+				if (gettermethod.getReturnType() == File.class || gettermethod.getReturnType() == String.class
+						|| gettermethod.getReturnType() == int.class || gettermethod.getReturnType() == double.class
 						|| gettermethod.getReturnType() == boolean.class
 						|| gettermethod.getReturnType() == Boolean.class) {
 					props.setProperty(property.key(), getter.toString());
 				} else {
-					props.setProperty(property.key(),
-							mapper.writeValueAsString(getter));
+					props.setProperty(property.key(), mapper.writeValueAsString(getter));
 				}
 			} catch (SecurityException e) {
 				e.printStackTrace();
@@ -186,6 +182,16 @@ public class ConfigFactory {
 			fos.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			Utils.createfile(ApplicationScope.getServerConfigFile(), "");
+			try {
+				fos = new FileOutputStream(ApplicationScope.getServerConfigFile());
+				props.storeToXML(fos, "應用程式參數 " + ApplicationScope.getBuilt());
+				fos.close();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

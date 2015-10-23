@@ -22,58 +22,65 @@
 				<li><a href="#tabs-2">裁判機程式編譯器設定</a></li>
 			</ul>
 			<div id="tabs-1">
-				<p>
+				<div>
 					裁判機名稱：<input name="Servername" value="${serverConfig.servername}"
 						size="100" />
-				</p>
-				<p>
+				</div>
+				<div>
 					裁判機作業系統：<input name="ServerOS" value="${serverConfig.serverOS}"
 						size="100" />
-				</p>
-				<p>
+				</div>
+				<div>
 					裁判機相關資訊：<input name="ServerInfo" value="${serverConfig.serverInfo}"
 						size="100" />
-				</p>
-				<p>
+				</div>
+				<div>
 					主控台資料夾：<input name="CONSOLE_PATH"
 						value="${serverConfig.CONSOLE_PATH}" size="100" />
-				</p>
-				<p>
-					JVM 預留記憶體容量：<input name="JVM_MB" value="${serverConfig.JVM_MB}" />MB
-				</p>
-				<p>
+				</div>
+				<div>
+					JVM 預留記憶體容量：<input name="JVM_MB" value="${serverConfig.JVM_MB}" />MB<br />
+					<div>若遇到一下狀況，請加大預留記憶體容量：</div>
+					<div>Error occurred during initialization of VM Could not
+						reserve enough space for object heap</div>
+					<div>There is insufficient memory for the Java Runtime
+						Environment to continue.</div>
+					<div>Error occurred during initialization of VM
+						java.lang.OutOfMemoryError: unable to create new native thread</div>
+				</div>
+				<div>
 					裁判機同步帳號：<input name="rsyncAccount"
 						value="${serverConfig.rsyncAccount}" size="20" />(裁判機系統上必須確實存在這個帳號)<br />必須讓
 					「前台」以這個身份免密碼登入裁判機，通常不要使用 root, 宜使用系統上其它帳號。
-				</p>
-				<p>
+				</div>
+				<div>
 					裁判機加密鎖：<input name="cryptKey" value="${serverConfig.cryptKey}"
 						size="10" maxlength="8" />(加密鎖使用 8 個字元由裁判機決定。「前台」加密鎖的設定必須與這裡相同)
-				</p>
-				<p>
+				</div>
+				<div>
 					ssh port (一般為 22 不需要修改)：<input name="sshport"
 						value="${serverConfig.sshport}" size="10" />
-				</p>
-				<p>
+				</div>
+				<div>
 					允許進入的 IP，請務必將前端(judgeweb)取得之 IP 加入列表，否則前端將無法取得裁判機資料。(使用 CIDR
 					表達範圍，多組時用 , 隔開)：<input name="allowIPset"
 						value="${serverConfig.allowIPset}" size="100" />
-				</p>
-				<p>
+				</div>
+				<div>
 					是否清除暫存檔： <input name="isCleanTmpFile" type="radio" value="true"
 						isCleanTmpFile="${serverConfig.isCleanTmpFile}" /> 是 <input
 						name="isCleanTmpFile" type="radio" value="false"
 						isCleanTmpFile="${serverConfig.isCleanTmpFile}" /> 否 ？<br />
-				</p>
-
+				</div>
 			</div>
 			<div id="tabs-2">
 				<p>
 					<strong>使用代號：</strong><br /> $S： 代表程式名稱，每個程式碼實際的名稱由系統決定。<br />
-					$T： 代表測資名稱，系統將自動替換為實際路徑。<br /> 
-<!-- 					副檔名：程式檔副檔名預設為小寫的語言名稱，如 C -&gt; .c,
+					$T： 代表測資名稱，系統將自動替換為實際路徑。<br />
+					<!-- 					副檔名：程式檔副檔名預設為小寫的語言名稱，如 C -&gt; .c,
 					CPP -&gt; cpp, PASCAL -&gt; pascal。輸入測資為 .in，輸出測資為 .out
- -->				</p>
+ -->
+				</p>
 				<!-- 				<p>
 					<strong>編譯命令： </strong><br /> C++ 編譯指令 g++ -lm -lcrypt -O2 -pipe
 					-DONLINE_JUDGE -o mycode.exe mycode.cpp <br /> 則可以標示為 g++ -lm

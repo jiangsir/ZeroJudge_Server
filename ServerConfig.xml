@@ -4,7 +4,7 @@
 <comment>應用程式參數</comment>
 <entry key="ServerInfo">虛擬機</entry>
 <entry key="isCleanTmpFile">true</entry>
-<entry key="JVM_MB">1024</entry>
+<entry key="JVM_MB">1600</entry>
 <entry key="cryptKey">ZZEERROO</entry>
 <entry key="CONSOLE_PATH">/JudgeServer_CONSOLE</entry>
 <entry key="rsyncAccount">zero</entry>
