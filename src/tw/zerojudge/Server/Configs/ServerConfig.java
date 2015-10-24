@@ -22,7 +22,7 @@ public class ServerConfig extends Config {
 	@Property(key = "Compilers")
 	private Compiler[] Compilers = new Compiler[]{};
 	@Property(key = "CONSOLE_PATH")
-	private File CONSOLE_PATH = new File("/ZeroJudge_CONSOLE/");
+	private File CONSOLE_PATH = new File("/JudgeServer_CONSOLE/");
 	@Property(key = "JVM_MB")
 	private int JVM_MB = 1600;
 	@Property(key = "Servername")
@@ -72,7 +72,7 @@ public class ServerConfig extends Config {
 		Compiler c = new Compiler();
 		c.setLanguage(LANGUAGE.C);
 		c.setPath("");
-		c.setVersion("gcc -std=c11(Debian 4.9.1-1999)");
+		c.setVersion("gcc -std=c11(Debian 4.9.1-19)");
 		c.setSamplecode(
 				"#include&lt;stdio.h&gt;\r\nint main() {\r\n char s[9999];\r\nwhile( scanf(\"%s\",s)!=EOF ) {\r\n printf(\"hello, %s\\n\",s);\r\n }\r\n return 0;\r\n}");
 		c.setEnable(LANGUAGE.C);
