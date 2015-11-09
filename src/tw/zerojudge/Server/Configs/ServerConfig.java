@@ -100,9 +100,9 @@ public class ServerConfig extends Config {
 		cpp.setCmd_makeobject("g++ $S.cpp -o $S.o");
 		cpp.setTimeextension(1.0);
 		cpp.setCommand_end("");
-		cpp.setRestrictedfunctions(new String[]{"system", "fopen", "fclose", "freopen", "fflush", "fstream", "time.h",
-				"#pargma", "conio.h", "fork", "popen", "execl", "execlp", "execle", "execv", "execvp", "getenv",
-				"putenv", "setenv", "unsetenv", "socket", "connect", "fwrite", "gethostbyname"});
+		cpp.setRestrictedfunctions(new String[]{"system", "fopen", "fclose", "freopen", "fflush", "fstream", "ifstream",
+				"ofstream", "time.h", "#pargma", "conio.h", "fork", "popen", "execl", "execlp", "execle", "execv",
+				"execvp", "getenv", "putenv", "setenv", "unsetenv", "socket", "connect", "fwrite", "gethostbyname"});
 		Compiler java = new Compiler();
 		java.setLanguage(LANGUAGE.JAVA);
 		java.setPath("");

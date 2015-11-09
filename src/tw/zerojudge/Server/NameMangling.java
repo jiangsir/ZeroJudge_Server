@@ -36,18 +36,16 @@ public class NameMangling implements Runnable {
 	 */
 	public String doNameMangling() throws JudgeException {
 		Compiler compiler = serverInput.getCompiler();
-		if (serverInput.getLanguage() == Compiler.LANGUAGE.CPP
-				|| serverInput.getLanguage() == Compiler.LANGUAGE.C
+		if (serverInput.getLanguage() == Compiler.LANGUAGE.CPP || serverInput.getLanguage() == Compiler.LANGUAGE.C
 				|| serverInput.getLanguage() == Compiler.LANGUAGE.PASCAL) {
 			String[] restricted_functions = compiler.getRestrictedfunctions();
 			String cmd_nm = compiler.getCmd_namemangling();
 			if (cmd_nm.contains("$S")) {
-				cmd_nm = cmd_nm.replaceAll("\\$S", serverConfig.getTempPath()
-						+ File.separator + serverInput.getCodename());
+				cmd_nm = cmd_nm.replaceAll("\\$S",
+						serverConfig.getTempPath() + File.separator + serverInput.getCodename());
 			}
 			System.out.println("cmd_nm=" + cmd_nm);
-			RunCommand nm = new RunCommand(new String[] { "/bin/sh", "-c",
-					cmd_nm }, 0);
+			RunCommand nm = new RunCommand(new String[]{"/bin/sh", "-c", cmd_nm}, 0);
 			nm.run();
 			String regEx = "[' ']+";
 			Pattern p = Pattern.compile(regEx);
@@ -59,8 +57,7 @@ public class NameMangling implements Runnable {
 				nmline = p.matcher(nmline).replaceAll(" ");
 				nmlist += nmline.split(" ")[2] + "\n";
 				for (String function : restricted_functions) {
-					if (nmline.split(" ")[2].toLowerCase().startsWith(
-							function.trim().toLowerCase())) {
+					if (nmline.split(" ")[2].toLowerCase().contains(function.trim().toLowerCase())) {
 						NameManglingOutput nmoutput = new NameManglingOutput();
 						nmoutput.setJudgement(ServerOutput.JUDGEMENT.RF);
 						nmoutput.setInfo("");
@@ -77,11 +74,9 @@ public class NameMangling implements Runnable {
 				cmd_nm = cmd_nm.replaceAll("\\$S", serverInput.getCodename());
 			}
 			if (cmd_nm.contains("$T")) {
-				cmd_nm = cmd_nm.replaceAll("\\$T", serverConfig.getTempPath()
-						.toString());
+				cmd_nm = cmd_nm.replaceAll("\\$T", serverConfig.getTempPath().toString());
 			}
-			RunCommand nm = new RunCommand(new String[] { "/bin/sh", "-c",
-					cmd_nm }, 0);
+			RunCommand nm = new RunCommand(new String[]{"/bin/sh", "-c", cmd_nm}, 0);
 			nm.run();
 			this.parseJavap7(nm, compiler);
 		}
@@ -95,9 +90,8 @@ public class NameMangling implements Runnable {
 				System.out.println("line=" + line);
 				String constant_pool = line.split("=")[1].trim();
 				if (constant_pool.startsWith("Class")) {
-					constant_pool = constant_pool
-							.substring(constant_pool.indexOf("//") + 2).trim()
-							.replaceAll("/", ".");
+					constant_pool = constant_pool.substring(constant_pool.indexOf("//") + 2).trim().replaceAll("/",
+							".");
 					System.out.println("constant_pool=" + constant_pool);
 					// System.out.println("classname=" + constant_pool);
 					for (String rfunctions : compiler.getRestrictedfunctions()) {
@@ -129,9 +123,7 @@ public class NameMangling implements Runnable {
 			if (line.startsWith("const")) {
 				String classname = line.split("=")[1].trim();
 				if (classname.startsWith("class")) {
-					classname = classname
-							.substring(classname.indexOf("//") + 2).trim()
-							.replaceAll("/", ".");
+					classname = classname.substring(classname.indexOf("//") + 2).trim().replaceAll("/", ".");
 					for (String rfunctions : compiler.getRestrictedfunctions()) {
 						rfunctions = rfunctions.trim();
 						if (classname.matches(rfunctions)) {
