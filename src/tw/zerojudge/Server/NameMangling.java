@@ -50,12 +50,12 @@ public class NameMangling implements Runnable {
 			String regEx = "[' ']+";
 			Pattern p = Pattern.compile(regEx);
 			Iterator<String> it = nm.getOutputStream().iterator();
-			String nmlist = "";
+			// String nmlist = "";
 			while (it.hasNext()) {
 				String nmline = it.next();
-				System.out.println("nmline=" + nmline);
+				// System.out.println("nmline=" + nmline);
 				nmline = p.matcher(nmline).replaceAll(" ");
-				nmlist += nmline.split(" ")[2] + "\n";
+				// nmlist += nmline.split(" ")[2] + "\n";
 				for (String function : restricted_functions) {
 					if (nmline.split(" ")[2].toLowerCase().contains(function.trim().toLowerCase())) {
 						NameManglingOutput nmoutput = new NameManglingOutput();

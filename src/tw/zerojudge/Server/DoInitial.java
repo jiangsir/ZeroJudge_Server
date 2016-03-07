@@ -6,6 +6,9 @@
 package tw.zerojudge.Server;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 
 import tw.zerojudge.Server.Beans.ServerInput;
 import tw.zerojudge.Server.Beans.ServerOutput;
@@ -50,17 +53,30 @@ public class DoInitial {
 				if (!serverConfig.getTestdataPath().exists()) {
 					serverConfig.getTestdataPath().mkdir();
 				}
-				Utils.createfile(new File(serverConfig.getTestdataPath(), serverInput.getTestfiles()[i] + ".in"),
-						serverInput.getTestjudge_indata());
-				Utils.createfile(new File(serverConfig.getTestdataPath(), serverInput.getTestfiles()[i] + ".out"),
-						serverInput.getTestjudge_outdata());
+				// Utils.createfile(new File(serverConfig.getTestdataPath(),
+				// serverInput.getTestfiles()[i] + ".in"),
+				// serverInput.getTestjudge_indata());
+				// Utils.createfile(new File(serverConfig.getTestdataPath(),
+				// serverInput.getTestfiles()[i] + ".out"),
+				// serverInput.getTestjudge_outdata());
+				try {
+					FileUtils.writeStringToFile(
+							new File(serverConfig.getTestdataPath(), serverInput.getTestfiles()[i] + ".in"),
+							serverInput.getTestjudge_indata());
+					FileUtils.writeStringToFile(
+							new File(serverConfig.getTestdataPath(), serverInput.getTestfiles()[i] + ".out"),
+							serverInput.getTestjudge_outdata());
+				} catch (IOException e) {
+					e.printStackTrace();
+					output.setJudgement(ServerOutput.JUDGEMENT.SE);
+					output.setReason(ServerOutput.REASON.WRITE_STRING_TO_FILE_ERROR);
+					output.setHint("系統檔案寫入出錯，請通知管理員。");
+					throw new JudgeException(output);
+				}
 			}
 
 			File infile = new File(serverConfig.getTestdataPath(), serverInput.getTestfiles()[i] + ".in");
 			File outfile = new File(serverConfig.getTestdataPath(), serverInput.getTestfiles()[i] + ".out");
-			new RunCommand(("sudo -u " + serverConfig.getRsyncAccount() + " dos2unix " + infile.getPath())).run();
-			new RunCommand(("sudo -u " + serverConfig.getRsyncAccount() + " dos2unix " + outfile.getPath())).run();
-
 			if (!outfile.exists() || !infile.exists()) {
 				output.setJudgement(ServerOutput.JUDGEMENT.SE);
 				output.setReason(ServerOutput.REASON.TESTDATA_NOT_FOUND);
@@ -68,6 +84,9 @@ public class DoInitial {
 				output.setDebug(infile + " or " + outfile + " 不存在！");
 				throw new JudgeException(output);
 			}
+			new RunCommand(("sudo -u " + serverConfig.getRsyncAccount() + " dos2unix " + infile.getPath())).run();
+			new RunCommand(("sudo -u " + serverConfig.getRsyncAccount() + " dos2unix " + outfile.getPath())).run();
+
 		}
 
 	}

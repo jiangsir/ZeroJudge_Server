@@ -20,8 +20,7 @@ public class ApplicationScope {
 	public static void setAllAttributes(ServletContext servletContext) {
 		ApplicationScope.servletContext = servletContext;
 		ApplicationScope.setAppRoot(new File(servletContext.getRealPath("/")));
-		ApplicationScope.setServerConfigFile(new File(ApplicationScope
-				.getAppRoot() + "/WEB-INF/", "ServerConfig.xml"));
+		ApplicationScope.setServerConfigFile(new File(ApplicationScope.getAppRoot() + "/WEB-INF/", "ServerConfig.xml"));
 		ApplicationScope.setAppName(servletContext.getContextPath());
 		ApplicationScope.setBuilt();
 		ApplicationScope.setDeniedIp(deniedIp);

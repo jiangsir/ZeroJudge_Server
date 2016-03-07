@@ -6,7 +6,9 @@
 package tw.zerojudge.Server;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import tw.zerojudge.Server.Beans.ServerInput;
@@ -73,14 +75,27 @@ public class DoCompile {
 			}
 			code = code.replaceFirst("class JAVA", "class " + serverInput.getCodename());
 		}
-		Utils.createfile(new File(serverConfig.getTempPath(),
-				serverInput.getCodename() + "." + serverInput.getLanguage().getSuffix()), code + "\n");
+		// Utils.createfile(new File(serverConfig.getTempPath(),
+		// serverInput.getCodename() + "." +
+		// serverInput.getLanguage().getSuffix()), code + "\n");
+		try {
+			FileUtils
+					.writeStringToFile(new File(serverConfig.getTempPath() + File.separator + serverInput.getCodename(),
+							"JAVA." + serverInput.getLanguage().getSuffix()), code + "\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+			compileOutput.setJudgement(ServerOutput.JUDGEMENT.SE);
+			compileOutput.setInfo("");
+			compileOutput.setReason(ServerOutput.REASON.WRITE_STRING_TO_FILE_ERROR);
+			compileOutput.setHint("系統檔案寫入出錯，請通知管理員。");
+			throw new JudgeException(compileOutput);
+		}
 
 		Compiler compiler = serverInput.getCompiler();
 		String cmd_compile = compiler.getCmd_compile();
 		if (cmd_compile.contains("$S")) {
 			cmd_compile = cmd_compile.replaceAll("\\$S",
-					serverConfig.getTempPath() + File.separator + serverInput.getCodename());
+					serverConfig.getTempPath() + File.separator + serverInput.getCodename() + File.separator + "JAVA");
 		}
 		cmd_compile = "" + serverConfig.getBinPath() + File.separator + "shell.exe " + "10 "
 				+ serverConfig.getJVM_MB() * 1024 * 1024 + " 100000000 \"" + "java -classpath "

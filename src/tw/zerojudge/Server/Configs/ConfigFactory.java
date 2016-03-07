@@ -15,6 +15,7 @@ import java.util.Properties;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -127,6 +128,7 @@ public class ConfigFactory {
 	 * 將 ServerConfig object 當中的設定寫入 ServerConfig.xml 檔案當中。
 	 * 
 	 * @param serverConfig
+	 * @throws IOException
 	 */
 	public static void writeServerConfig(ServerConfig serverConfig) {
 		Properties props = new Properties();
@@ -182,8 +184,9 @@ public class ConfigFactory {
 			fos.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			Utils.createfile(ApplicationScope.getServerConfigFile(), "");
+			// Utils.createfile(ApplicationScope.getServerConfigFile(), "");
 			try {
+				FileUtils.writeStringToFile(ApplicationScope.getServerConfigFile(), "");
 				fos = new FileOutputStream(ApplicationScope.getServerConfigFile());
 				props.storeToXML(fos, "應用程式參數 " + ApplicationScope.getBuilt());
 				fos.close();

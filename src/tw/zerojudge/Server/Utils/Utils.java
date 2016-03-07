@@ -8,6 +8,9 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.FileUtils;
+
 import tw.zerojudge.Server.RunCommand;
 import tw.zerojudge.Server.Exceptions.ZjException;
 
@@ -219,6 +222,8 @@ public class Utils {
 	 * 
 	 * @param filename
 	 * @param data
+	 * @deprecated 改由 FileUtils.writeStringToFile() 取代。
+	 * 
 	 */
 	public static void createfile(File file, String data) {
 		BufferedWriter outfile = null;

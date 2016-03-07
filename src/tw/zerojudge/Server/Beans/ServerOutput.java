@@ -15,6 +15,7 @@ import org.codehaus.jackson.annotate.JsonValue;
  */
 public class ServerOutput {
 	public static enum REASON {
+		WRITE_STRING_TO_FILE_ERROR, // 寫入檔案系統出錯。SE
 		DES_ERROR, //
 		JsonGenerationException, //
 		CANT_SEND_DATA_TO_JUDGESERVER, //
