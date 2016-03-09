@@ -18,7 +18,6 @@ import tw.zerojudge.Server.Configs.ServerConfig;
 import tw.zerojudge.Server.Exceptions.JudgeException;
 import tw.zerojudge.Server.Object.*;
 import tw.zerojudge.Server.Object.Compiler;
-import tw.zerojudge.Server.Utils.Utils;
 
 /**
  * @author jiangsir
@@ -63,6 +62,7 @@ public class DoCompile {
 			 * Reluctant字面翻譯是勉強，也就是抓最小可能，像這個例子，第一次抓一個x之後發現後面和foo相符，就得第一個結果
 			 * ，然後一直到最後又得到第二個結果。
 			 */
+
 			code = code.replaceAll("[ ]*package .*", "");
 			code = code.replaceFirst("class(?s).*?\\{", "class JAVA \\{");
 
@@ -73,7 +73,8 @@ public class DoCompile {
 				compileOutput.setHint("請使用 public class JAVA 來定義類別名稱。");
 				throw new JudgeException(compileOutput);
 			}
-			code = code.replaceFirst("class JAVA", "class " + serverInput.getCodename());
+			// code = code.replaceFirst("class JAVA", "class " +
+			// serverInput.getCodename());
 		}
 		// Utils.createfile(new File(serverConfig.getTempPath(),
 		// serverInput.getCodename() + "." +
@@ -125,7 +126,7 @@ public class DoCompile {
 				compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);
 				compileOutput.setInfo("");
 				compileOutput.setReason(ServerOutput.REASON.WRONG_JAVA_CLASS);
-				compileOutput.setHint("");
+				compileOutput.setHint(rusage.getErrmsg());
 				throw new JudgeException(compileOutput);
 			} else {
 				compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);

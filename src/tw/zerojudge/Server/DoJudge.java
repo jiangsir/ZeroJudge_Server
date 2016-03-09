@@ -43,8 +43,7 @@ public class DoJudge implements Runnable {
 		} catch (JudgeException e) {
 			e.printStackTrace();
 			InitialOutput output = (InitialOutput) e.getCause();
-			serverOutputs[0] = ServerFactory
-					.newServerOutputFromInput(serverInput);
+			serverOutputs[0] = ServerFactory.newServerOutputFromInput(serverInput);
 			serverOutputs[0].setJudgement(output.getJudgement());
 			serverOutputs[0].setReason(output.getReason());
 			serverOutputs[0].setHint(output.getHint());
@@ -57,8 +56,7 @@ public class DoJudge implements Runnable {
 			e.printStackTrace();
 			CompileOutput compileOutput = (CompileOutput) e.getCause();
 
-			serverOutputs[0] = ServerFactory
-					.newServerOutputFromInput(serverInput);
+			serverOutputs[0] = ServerFactory.newServerOutputFromInput(serverInput);
 			serverOutputs[0].setJudgement(compileOutput.getJudgement());
 			serverOutputs[0].setInfo(compileOutput.getInfo());
 			serverOutputs[0].setReason(compileOutput.getReason());
@@ -72,8 +70,7 @@ public class DoJudge implements Runnable {
 		} catch (JudgeException e) {
 			e.printStackTrace();
 			NameManglingOutput nmOutput = (NameManglingOutput) e.getCause();
-			serverOutputs[0] = ServerFactory
-					.newServerOutputFromInput(serverInput);
+			serverOutputs[0] = ServerFactory.newServerOutputFromInput(serverInput);
 			serverOutputs[0].setJudgement(nmOutput.getJudgement());
 			serverOutputs[0].setInfo(nmOutput.getInfo());
 			serverOutputs[0].setReason(nmOutput.getReason());
@@ -83,8 +80,7 @@ public class DoJudge implements Runnable {
 
 		for (int i = 0; i < serverInput.getTestfiles().length; i++) {
 
-			serverOutputs[i] = ServerFactory
-					.newServerOutputFromInput(serverInput);
+			serverOutputs[i] = ServerFactory.newServerOutputFromInput(serverInput);
 
 			ExecuteInput executeInput = new ExecuteInput();
 			executeInput.setCodename(serverInput.getCodename());
@@ -98,80 +94,54 @@ public class DoJudge implements Runnable {
 			executeInput.setTimelimit(timelimit * compiler.getTimeextension());
 
 			switch (serverInput.getLanguage()) {
-			// case BASIC:
-			// break;
-			case C:
-				command = serverConfig.getBinPath() + File.separator
-						+ "shell.exe "
-						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
-						+ executeInput.getMemorylimit() * 1024 * 1024 + " "
-						+ outfilelimit + " \"" + serverConfig.getBinPath()
-						+ File.separator + "base_c.exe\" \""
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".exe < "
-						+ serverConfig.getTestdataPath() + File.separator
-						+ serverInput.getTestfiles()[i] + ".in > "
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".out\" ";
-				break;
-			case CPP:
-				command = serverConfig.getBinPath() + File.separator
-						+ "shell.exe "
-						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
-						+ executeInput.getMemorylimit() * 1024 * 1024 + " "
-						+ outfilelimit + " \"" + serverConfig.getBinPath()
-						+ File.separator + "base_cpp.exe\" \""
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".exe < "
-						+ serverConfig.getTestdataPath() + File.separator
-						+ serverInput.getTestfiles()[i] + ".in > "
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".out\" ";
-				break;
-			case JAVA:
-				command = "" + serverConfig.getBinPath() + File.separator
-						+ "shell.exe "
-						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
-						+ (executeInput.getMemorylimit()
-								+ serverConfig.getJVM_MB()) * 1024 * 1024
-						+ " " + outfilelimit + " \"java -classpath "
-						+ serverConfig.getBinPath()
-						+ " base_java\" \"java -Dfile.encoding=utf-8 "
-						+ "-classpath " + serverConfig.getTempPath() + " "
-						+ serverInput.getCodename() + " < "
-						+ serverConfig.getTestdataPath() + File.separator
-						+ serverInput.getTestfiles()[i] + ".in > "
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".out\" ";
-				break;
-			case PASCAL:
-				command = "" + serverConfig.getBinPath() + File.separator
-						+ "shell.exe "
-						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
-						+ executeInput.getMemorylimit() * 1024 * 1024 + " "
-						+ outfilelimit + " \"" + serverConfig.getBinPath()
-						+ File.separator + "base_pas.exe\" \""
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".exe < "
-						+ serverConfig.getTestdataPath() + File.separator
-						+ serverInput.getTestfiles()[i] + ".in > "
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".out\" ";
-				break;
-			default:
-				command = serverConfig.getBinPath() + File.separator
-						+ "shell.exe "
-						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
-						+ executeInput.getMemorylimit() * 1024 * 1024 + " "
-						+ outfilelimit + " \"" + serverConfig.getBinPath()
-						+ File.separator + "base_c.exe\" \""
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".exe < "
-						+ serverConfig.getTestdataPath() + File.separator
-						+ serverInput.getTestfiles()[i] + ".in > "
-						+ serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".out\" ";
-				break;
+				// case BASIC:
+				// break;
+				case C :
+					command = serverConfig.getBinPath() + File.separator + "shell.exe "
+							+ (int) Math.ceil(executeInput.getTimelimit()) + " "
+							+ executeInput.getMemorylimit() * 1024 * 1024 + " " + outfilelimit + " \""
+							+ serverConfig.getBinPath() + File.separator + "base_c.exe\" \""
+							+ serverConfig.getTempPath() + File.separator + serverInput.getCodename() + ".exe < "
+							+ serverConfig.getTestdataPath() + File.separator + serverInput.getTestfiles()[i] + ".in > "
+							+ serverConfig.getTempPath() + File.separator + serverInput.getCodename() + ".out\" ";
+					break;
+				case CPP :
+					command = serverConfig.getBinPath() + File.separator + "shell.exe "
+							+ (int) Math.ceil(executeInput.getTimelimit()) + " "
+							+ executeInput.getMemorylimit() * 1024 * 1024 + " " + outfilelimit + " \""
+							+ serverConfig.getBinPath() + File.separator + "base_cpp.exe\" \""
+							+ serverConfig.getTempPath() + File.separator + serverInput.getCodename() + ".exe < "
+							+ serverConfig.getTestdataPath() + File.separator + serverInput.getTestfiles()[i] + ".in > "
+							+ serverConfig.getTempPath() + File.separator + serverInput.getCodename() + ".out\" ";
+					break;
+				case JAVA :
+					command = "" + serverConfig.getBinPath() + File.separator + "shell.exe "
+							+ (int) Math.ceil(executeInput.getTimelimit()) + " "
+							+ (executeInput.getMemorylimit() + serverConfig.getJVM_MB()) * 1024 * 1024 + " "
+							+ outfilelimit + " \"java -classpath " + serverConfig.getBinPath()
+							+ " base_java\" \"java -Dfile.encoding=utf-8 " + "-classpath " + serverConfig.getTempPath()
+							+ File.separator + serverInput.getCodename() + " JAVA < " + serverConfig.getTestdataPath()
+							+ File.separator + serverInput.getTestfiles()[i] + ".in > " + serverConfig.getTempPath()
+							+ File.separator + serverInput.getCodename() + ".out\" ";
+					break;
+				case PASCAL :
+					command = "" + serverConfig.getBinPath() + File.separator + "shell.exe "
+							+ (int) Math.ceil(executeInput.getTimelimit()) + " "
+							+ executeInput.getMemorylimit() * 1024 * 1024 + " " + outfilelimit + " \""
+							+ serverConfig.getBinPath() + File.separator + "base_pas.exe\" \""
+							+ serverConfig.getTempPath() + File.separator + serverInput.getCodename() + ".exe < "
+							+ serverConfig.getTestdataPath() + File.separator + serverInput.getTestfiles()[i] + ".in > "
+							+ serverConfig.getTempPath() + File.separator + serverInput.getCodename() + ".out\" ";
+					break;
+				default :
+					command = serverConfig.getBinPath() + File.separator + "shell.exe "
+							+ (int) Math.ceil(executeInput.getTimelimit()) + " "
+							+ executeInput.getMemorylimit() * 1024 * 1024 + " " + outfilelimit + " \""
+							+ serverConfig.getBinPath() + File.separator + "base_c.exe\" \""
+							+ serverConfig.getTempPath() + File.separator + serverInput.getCodename() + ".exe < "
+							+ serverConfig.getTestdataPath() + File.separator + serverInput.getTestfiles()[i] + ".in > "
+							+ serverConfig.getTempPath() + File.separator + serverInput.getCodename() + ".out\" ";
+					break;
 			}
 
 			executeInput.setCommand(command);
@@ -182,19 +152,16 @@ public class DoJudge implements Runnable {
 			ExecuteOutput executeOutput = null;
 			try {
 				executeOutput = new DoExecute(executeInput).run();
-				System.out.println("executeOutput.getTimeusage()="
-						+ executeOutput.getTimeusage());
+				System.out.println("executeOutput.getTimeusage()=" + executeOutput.getTimeusage());
 				serverOutputs[i].setTimeusage(executeOutput.getTimeusage());
 				serverOutputs[i].setMemoryusage(executeOutput.getMemoryusage());
 			} catch (JudgeException e) {
 				e.printStackTrace();
 				executeOutput = (ExecuteOutput) e.getCause();
-				System.out.println("executeOutput.getTimeusage()2="
-						+ executeOutput.getTimeusage());
+				System.out.println("executeOutput.getTimeusage()2=" + executeOutput.getTimeusage());
 				serverOutputs[i].setTimeusage(executeOutput.getTimeusage());
 				serverOutputs[i].setMemoryusage(executeOutput.getMemoryusage());
-				serverOutputs[i]
-						.setSession_account(serverInput.getSession_account());
+				serverOutputs[i].setSession_account(serverInput.getSession_account());
 				serverOutputs[i].setJudgement(executeOutput.getJudgement());
 				serverOutputs[i].setInfo(executeOutput.getInfo());
 				serverOutputs[i].setReason(executeOutput.getReason());
@@ -212,8 +179,7 @@ public class DoJudge implements Runnable {
 			compareInput.setMemorylimit(executeInput.getMemorylimit());
 			compareInput.setTimeusage(executeOutput.getTimeusage());
 			compareInput.setMemoryusage(executeOutput.getMemoryusage());
-			System.out.println("compareInput.getTimeusage()="
-					+ compareInput.getTimeusage());
+			System.out.println("compareInput.getTimeusage()=" + compareInput.getTimeusage());
 
 			compareInput.setTestfilename(serverInput.getTestfiles()[i]);
 
@@ -226,8 +192,7 @@ public class DoJudge implements Runnable {
 				serverOutputs[i].setHint(compareOutput.getHint());
 				serverOutputs[i].setScore(scores[i]);
 				serverOutputs[i].setTimeusage(compareOutput.getTimeusage());
-				System.out.println("compareOutput.getTimeusage()="
-						+ compareOutput.getTimeusage());
+				System.out.println("compareOutput.getTimeusage()=" + compareOutput.getTimeusage());
 				serverOutputs[i].setMemoryusage(compareOutput.getMemoryusage());
 			} catch (JudgeException e) {
 				e.printStackTrace();
@@ -237,8 +202,7 @@ public class DoJudge implements Runnable {
 				serverOutputs[i].setReason(compareOutput.getReason());
 				serverOutputs[i].setHint(compareOutput.getHint());
 				serverOutputs[i].setTimeusage(compareOutput.getTimeusage());
-				System.out.println("compareOutput.getTimeusage()2="
-						+ compareOutput.getTimeusage());
+				System.out.println("compareOutput.getTimeusage()2=" + compareOutput.getTimeusage());
 				serverOutputs[i].setMemoryusage(compareOutput.getMemoryusage());
 				continue;
 			}
