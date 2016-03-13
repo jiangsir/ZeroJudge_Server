@@ -49,8 +49,7 @@ public class StringTool {
 		return set;
 	}
 
-	public static LinkedHashSet<IpAddress> String2IpAddressSet(
-			String setstring) {
+	public static LinkedHashSet<IpAddress> String2IpAddressSet(String setstring) {
 		LinkedHashSet<IpAddress> set = new LinkedHashSet<IpAddress>();
 		if (setstring == null) {
 			return set;
@@ -108,10 +107,9 @@ public class StringTool {
 	 * @return
 	 */
 	public static String[] String2Array(String string) {
-		string = string.replaceAll("\\[", "").replaceAll("\\]", "")
-				.replaceAll("\"", "").trim();
+		string = string.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\"", "").trim();
 		if (string.equals("")) {
-			return new String[] {};
+			return new String[]{};
 		}
 		String[] array = string.split(",");
 		for (int i = 0; i < array.length; i++) {
@@ -280,4 +278,10 @@ public class StringTool {
 		return str;
 	}
 
+	public static String removeJavaComment(String code) {
+		code = code.replaceAll("\r\n", "\n"); // 將換行符號統一為 \n
+		code = code.replaceAll("//.*\n", ""); // 清除掉單行註解
+		code = code.replaceAll("\\/\\*([\\S\\s]+?)\\*\\/", ""); // 清除多行註解 /**/
+		return code;
+	}
 }

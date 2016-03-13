@@ -7,10 +7,11 @@ package tw.zerojudge.Server;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.map.ObjectMapper;
-
 import tw.zerojudge.Server.Beans.ServerInput;
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
@@ -18,6 +19,7 @@ import tw.zerojudge.Server.Configs.ServerConfig;
 import tw.zerojudge.Server.Exceptions.JudgeException;
 import tw.zerojudge.Server.Object.*;
 import tw.zerojudge.Server.Object.Compiler;
+import tw.zerojudge.Server.Utils.StringTool;
 
 /**
  * @author jiangsir
@@ -30,6 +32,16 @@ public class DoCompile {
 
 	public DoCompile(ServerInput serverInput) {
 		this.serverInput = serverInput;
+	}
+
+	private String getJavaClassname(String code) {
+		code = StringTool.removeJavaComment(code);
+		Pattern pattern = Pattern.compile(".*(public|)\\s+class\\s+(\\w+).*\\{");
+		Matcher matcher = pattern.matcher(code);
+		if (matcher.find()) {
+			return matcher.group(2);
+		}
+		return "JAVA";
 	}
 
 	public void run() throws JudgeException {
@@ -64,25 +76,26 @@ public class DoCompile {
 			 */
 
 			code = code.replaceAll("[ ]*package .*", "");
-			code = code.replaceFirst("class(?s).*?\\{", "class JAVA \\{");
+			serverInput.setCodename(this.getJavaClassname(code));
 
-			if (!code.contains("public class JAVA") && !code.contains("class JAVA")) {
-				compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);
-				compileOutput.setInfo("");
-				compileOutput.setReason(ServerOutput.REASON.WRONG_JAVA_CLASS);
-				compileOutput.setHint("請使用 public class JAVA 來定義類別名稱。");
-				throw new JudgeException(compileOutput);
-			}
+			// code = code.replaceFirst("class(?s).*?\\{", "class JAVA \\{");
+
+			// if (!code.contains("public class JAVA") && !code.contains("class
+			// JAVA")) {
+			// compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);
+			// compileOutput.setInfo("");
+			// compileOutput.setReason(ServerOutput.REASON.WRONG_JAVA_CLASS);
+			// compileOutput.setHint("請使用 public class JAVA 來定義類別名稱。");
+			// throw new JudgeException(compileOutput);
+			// }
 			// code = code.replaceFirst("class JAVA", "class " +
 			// serverInput.getCodename());
 		}
-		// Utils.createfile(new File(serverConfig.getTempPath(),
-		// serverInput.getCodename() + "." +
-		// serverInput.getLanguage().getSuffix()), code + "\n");
 		try {
-			FileUtils
-					.writeStringToFile(new File(serverConfig.getTempPath() + File.separator + serverInput.getCodename(),
-							"JAVA." + serverInput.getLanguage().getSuffix()), code + "\n");
+			File file = new File(serverConfig.getTempPath() + File.separator + serverInput.getSolutionid(),
+					serverInput.getCodename() + "." + serverInput.getLanguage().getSuffix());
+			FileUtils.writeStringToFile(file, code + "\n");
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			compileOutput.setJudgement(ServerOutput.JUDGEMENT.SE);
@@ -95,8 +108,8 @@ public class DoCompile {
 		Compiler compiler = serverInput.getCompiler();
 		String cmd_compile = compiler.getCmd_compile();
 		if (cmd_compile.contains("$S")) {
-			cmd_compile = cmd_compile.replaceAll("\\$S",
-					serverConfig.getTempPath() + File.separator + serverInput.getCodename() + File.separator + "JAVA");
+			cmd_compile = cmd_compile.replaceAll("\\$S", serverConfig.getTempPath() + File.separator
+					+ serverInput.getSolutionid() + File.separator + serverInput.getCodename());
 		}
 		cmd_compile = "" + serverConfig.getBinPath() + File.separator + "shell.exe " + "10 "
 				+ serverConfig.getJVM_MB() * 1024 * 1024 + " 100000000 \"" + "java -classpath "

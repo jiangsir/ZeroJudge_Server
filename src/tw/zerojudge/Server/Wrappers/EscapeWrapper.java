@@ -3,7 +3,7 @@ package tw.zerojudge.Server.Wrappers;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 public class EscapeWrapper extends HttpServletRequestWrapper {
 
@@ -14,7 +14,7 @@ public class EscapeWrapper extends HttpServletRequestWrapper {
 	@Override
 	public String getParameter(String name) {
 		String value = this.getRequest().getParameter(name);
-		return StringEscapeUtils.escapeHtml(value);
+		return StringEscapeUtils.escapeHtml4(value);
 	}
 
 }
