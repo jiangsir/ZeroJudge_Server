@@ -6,6 +6,7 @@ import os
 # echo $path
 path = os.path.dirname(os.path.realpath(__file__))
 
+print("path="+path)
 os.system('sudo apt-get install sudo')
 os.system('sudo apt-get install ntpdate')
 os.system('sudo apt-get install dos2unix')
@@ -19,6 +20,7 @@ os.system('sudo find ' + path + ' -name "*.exe" -exec chmod +x {} +')
 os.system('sudo find ' + path + ' -name "*.class" -exec chmod +x {} +')
 os.system('sudo chmod a+w ' + path + '/JudgeServer_CONSOLE/Testdata')
 os.system('sudo chmod a+w ' + path + '/JudgeServer_CONSOLE/Special')
+os.system('sudo chmod a+w ' + path + '/JudgeServer_CONSOLE/Executable')
 
 os.system('sudo rm -rf /JudgeServer_CONSOLE')
 os.system('sudo mv ' + path + '/JudgeServer_CONSOLE /')

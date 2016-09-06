@@ -18,8 +18,7 @@ import tw.zerojudge.Server.Object.IpAddress;
 /**
  * Servlet Filter implementation class EncodingFilter
  */
-@WebFilter(filterName = "IpFilter", urlPatterns = {
-		"/*" }, asyncSupported = true)
+@WebFilter(filterName = "IpFilter", urlPatterns = {"/*"}, asyncSupported = true)
 public class IpFilter implements Filter {
 	// LinkedHashSet<String> iprules = new LinkedHashSet<String>();
 
@@ -38,8 +37,8 @@ public class IpFilter implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		IpAddress ip = new IpAddress(request.getRemoteAddr());
 
@@ -47,7 +46,7 @@ public class IpFilter implements Filter {
 			chain.doFilter(req, response);
 			return;
 		}
-		throw new AlertException("您所在的位置並未允許存取本網站。(" + ip + ")，若有疑問請通知管理員。");
+		throw new AlertException("您所在的位置並未允許存取本網站。(" + ip + ")，若您第一次安裝起來，請由本機瀏覽器進入修改設定。");
 	}
 
 	/**

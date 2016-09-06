@@ -12,6 +12,6 @@
 	<div>${pageContext.request.remoteAddr }</div>
 	<div>
 		Powered by <a href="http://zerojudge.tw/" target="_blank">ZeroJudge_Server
-		</a> built ${applicationScope.built}
+		</a>${applicationScope.version} built ${applicationScope.built}
 	</div>
 </div>

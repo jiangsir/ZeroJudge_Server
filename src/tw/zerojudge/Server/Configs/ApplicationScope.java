@@ -1,17 +1,21 @@
 package tw.zerojudge.Server.Configs;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
 
+import org.apache.commons.io.FileUtils;
+
 public class ApplicationScope {
 	public static ServletContext servletContext = null;
 	private static File appRoot = null;
 	private static File serverConfigFile = null;
 	private static String appName = null;
+	private static String version = null;
 	private static String built = null;
 	private static TreeSet<String> deniedIp = new TreeSet<String>();
 	private static Date LastContextRestart;
@@ -22,10 +26,37 @@ public class ApplicationScope {
 		ApplicationScope.setAppRoot(new File(servletContext.getRealPath("/")));
 		ApplicationScope.setServerConfigFile(new File(ApplicationScope.getAppRoot() + "/WEB-INF/", "ServerConfig.xml"));
 		ApplicationScope.setAppName(servletContext.getContextPath());
+		ApplicationScope.setVersion();
 		ApplicationScope.setBuilt();
 		ApplicationScope.setDeniedIp(deniedIp);
 		ApplicationScope.setLastContextRestart(new Date());
 		ApplicationScope.setServerConfig(ConfigFactory.getServerConfig());
+	}
+
+	/**
+	 * 取得目前系統的版本。
+	 */
+	public static String getVersion() {
+		if (ApplicationScope.version == null) {
+			setVersion();
+		}
+		return ApplicationScope.version;
+	}
+
+	/**
+	 * 取得目前系統的版本。
+	 */
+	public static void setVersion() {
+		try {
+			ApplicationScope.version = FileUtils
+					.readFileToString(
+							new File(ApplicationScope.getAppRoot() + File.separator + "META-INF", "Version.txt"))
+					.trim();
+		} catch (IOException e) {
+			e.printStackTrace();
+			// ApplicationScope.version = "";
+		}
+		servletContext.setAttribute("version", ApplicationScope.version);
 	}
 
 	public static String getBuilt() {
