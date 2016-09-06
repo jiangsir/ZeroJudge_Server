@@ -46,11 +46,10 @@
 		<delete dir="${CONSOLE}" />
 
 		<mkdir dir="${CONSOLE}" />
-		<move includeemptydirs="true" todir="${CONSOLE}">
-			<fileset dir="${basedir}${CONSOLE}">
-				<include name="**/*" />
-			</fileset>
+		<move todir="${CONSOLE}">
+			<fileset dir="${basedir}${CONSOLE}" />
 		</move>
+
 		<!-- &quot; 代表雙引號, &gt; 代表 大於符號  -->
 
 		<exec executable="bash">
