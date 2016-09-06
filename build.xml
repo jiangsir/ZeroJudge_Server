@@ -37,10 +37,40 @@
 		<format property="now" pattern="yyyy-MM-dd" />
 	</tstamp>
 
-	<target depends="makewar" name="run" description="">
+	<target depends="move_CONSOLE, makewar" name="run" description="">
 		<echo message="完成！" />
 	</target>
 
+	<target name="move_CONSOLE">
+		<property name="CONSOLE" value="/JudgeServer_CONSOLE" />
+		<delete dir="${CONSOLE}" />
+
+		<mkdir dir="${CONSOLE}" />
+		<move includeemptydirs="true" todir="${CONSOLE}">
+			<fileset dir="${basedir}${CONSOLE}">
+				<include name="**/*" />
+			</fileset>
+		</move>
+		<!-- &quot; 代表雙引號, &gt; 代表 大於符號  -->
+
+		<exec executable="bash">
+			<arg line="-c &quot;sudo apt-get install g++&quot;" />
+		</exec>
+		<exec executable="bash">
+			<arg line="-c &quot;sudo g++ -o ${CONSOLE}/Bin/shell.exe ${CONSOLE}/Bin/shell.cpp&quot;" />
+		</exec>
+		<exec executable="bash">
+			<arg line="-c &quot;sudo gcc ${CONSOLE}/Bin/base_c.c -o ${CONSOLE}/Bin/base_c.exe&quot;" />
+		</exec>
+		<exec executable="bash">
+			<arg line="-c &quot;sudo g++ -o ${CONSOLE}/Bin/base_cpp.exe ${CONSOLE}/Bin/base_cpp.cpp&quot;" />
+		</exec>
+
+		<chmod file="${CONSOLE}/**" perm="a+w" type="both" />
+		<chmod file="${CONSOLE}/**/*.exe" perm="+x" type="both" />
+		<chmod file="${CONSOLE}/**/*.sh" perm="+x" type="both" />
+		<chmod file="${CONSOLE}/**/*.class" perm="+x" type="both" />
+	</target>
 
 	<target name="makewar">
 		<mkdir dir="${basedir}/WebContent/WEB-INF/classes" />
@@ -64,6 +94,7 @@
 			<fileset dir="${basedir}/WebContent">
 				<include name="**/*.*" />
 			</fileset>
+
 			<lib dir="${basedir}/WebContent/WEB-INF/lib" />
 			<classes dir="${basedir}/WebContent/WEB-INF/classes" />
 		</war>
