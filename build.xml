@@ -66,9 +66,9 @@
 		</exec>
 
 		<chmod file="${CONSOLE}/**" perm="a+w" type="both" />
-		<chmod file="${CONSOLE}/**/*.exe" perm="+x" type="both" />
-		<chmod file="${CONSOLE}/**/*.sh" perm="+x" type="both" />
-		<chmod file="${CONSOLE}/**/*.class" perm="+x" type="both" />
+		<chmod file="${CONSOLE}/Bin/*.exe" perm="+x" type="both" />
+		<chmod file="${CONSOLE}/Bin/*.sh" perm="+x" type="both" />
+		<chmod file="${CONSOLE}/Bin/*.class" perm="+x" type="both" />
 	</target>
 
 	<target name="makewar">
