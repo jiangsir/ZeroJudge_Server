@@ -137,8 +137,7 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 		if (ipgroup.cidr == 0) {
 			return true;
 		}
-		return (this.toInt() & ipgroup.getMask()) == (ipgroup.toInt()
-				& ipgroup.getMask());
+		return (this.toInt() & ipgroup.getMask()) == (ipgroup.toInt() & ipgroup.getMask());
 	}
 
 	/**
@@ -148,8 +147,7 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 	 * @return
 	 */
 	public boolean getIsSubnetOf(TreeSet<IpAddress> iprules) {
-		if (iprules == null || iprules.size() == 0
-				|| this.isLookbackAddress()) {
+		if (iprules == null || iprules.size() == 0 || this.isLoopbackAddress()) {
 			return true;
 		}
 		for (IpAddress ip : iprules) {
@@ -165,8 +163,7 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 		if (ip == null) {
 			return "null";
 		}
-		return cidr == 32 ? ip.getHostAddress()
-				: ip.getHostAddress() + "/" + cidr;
+		return cidr == 32 ? ip.getHostAddress() : ip.getHostAddress() + "/" + cidr;
 	}
 
 	@Override
@@ -187,7 +184,7 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 		return this.toString().hashCode();
 	}
 
-	public boolean isLookbackAddress() {
+	public boolean isLoopbackAddress() {
 		return ip.isLoopbackAddress();
 	}
 
