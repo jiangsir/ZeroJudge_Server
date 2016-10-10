@@ -9,6 +9,9 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+
+import tw.zerojudge.Server.Configs.ServerConfig;
+import tw.zerojudge.Server.Exceptions.DataException;
 import tw.zerojudge.Server.Utils.Utils;
 
 /**
@@ -17,40 +20,39 @@ import tw.zerojudge.Server.Utils.Utils;
  */
 public class Compiler {
 
-	public static enum LANGUAGE {
-		C("C", "c"), //
-		CPP("C++", "cpp"), //
-		// C11("C11", "c"), //
-		// CPP11("C++11", "cpp"), //
-		JAVA("JAVA", "java"), //
-		PASCAL("PASCAL", "pas"), //
-		// BASIC("BASIC", "bas");
-		PYTHON3("PYTHON3", "py");
-		private String value;
-		private String suffix;
-
-		private LANGUAGE(String value, String suffix) {
-			this.value = value;
-			this.suffix = suffix;
-		}
-
-		public String getValue() {
-			return this.value;
-		}
-
-		public String getSuffix() {
-			return this.suffix;
-		}
-	}
-
-	private String path = "";
-	private LANGUAGE enable = null;
-	private String version = "";
-
-	private LANGUAGE language = null;
+	// public static enum LANGUAGE {
+	// C("C", "c"), //
+	// CPP("C++", "cpp"), //
+	// // C11("C11", "c"), //
+	// // CPP11("C++11", "cpp"), //
+	// JAVA("JAVA", "java"), //
+	// PASCAL("PASCAL", "pas"), //
+	// // BASIC("BASIC", "bas");
+	// PYTHON3("PYTHON3", "py");
+	// private String value;
+	// private String suffix;
+	//
+	// private LANGUAGE(String value, String suffix) {
+	// this.value = value;
+	// this.suffix = suffix;
+	// }
+	//
+	// public String getValue() {
+	// return this.value;
+	// }
+	//
+	// public String getSuffix() {
+	// return this.suffix;
+	// }
+	// }
+	private String enable = null;
+	private String language = "";
+	private String suffix = "";
 	private String samplecode = "";
 	private String command_begin = "";
 	private String command_end = "";
+	private String path = "";
+	private String version = "";
 
 	private double timeextension = 1;
 	private String cmd_compile = "";
@@ -98,7 +100,10 @@ public class Compiler {
 	}
 
 	public void setCmd_namemangling(String cmdNamemangling) {
-		cmd_namemangling = cmdNamemangling;
+		if (cmdNamemangling == null) {
+			return;
+		}
+		cmd_namemangling = cmdNamemangling.trim();
 	}
 
 	public String getCmd_execute() {
@@ -147,30 +152,6 @@ public class Compiler {
 		this.path = path;
 	}
 
-	public LANGUAGE getEnable() {
-		return enable;
-	}
-
-	@JsonIgnore
-	public void setEnable(LANGUAGE enable) {
-		if (enable == null) {
-			this.enable = null;
-		}
-		this.enable = enable;
-	}
-
-	public void setEnable(String enable) {
-		if (enable == null || "".equals(enable)) {
-			this.enable = null;
-			return;
-		}
-		try {
-			this.setEnable(LANGUAGE.valueOf(enable));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public String getVersion() {
 		return version;
 	}
@@ -191,16 +172,8 @@ public class Compiler {
 		this.command_end = command_end;
 	}
 
-	public LANGUAGE getLanguage() {
+	public String getLanguage() {
 		return language;
-	}
-
-	@JsonIgnore
-	public void setLanguage(LANGUAGE language) {
-		if (language == null) {
-			return;
-		}
-		this.language = language;
 	}
 
 	public void setLanguage(String language) {
@@ -208,11 +181,32 @@ public class Compiler {
 			return;
 		}
 		try {
-			this.setLanguage(LANGUAGE.valueOf(language));
+			ServerConfig.SUPPORT_LANGUAGE.valueOf(language);
 		} catch (Exception e) {
 			e.printStackTrace();
-			// throw new DataException("您所指定的語言並不在系統支援清單內。", e);
+			throw new DataException(e.getLocalizedMessage());
 		}
+
+		this.language = language.toUpperCase().trim();
+	}
+
+	public String getEnable() {
+		return enable;
+	}
+
+	public void setEnable(String enable) {
+		if (enable == null) {
+			return;
+		}
+		this.enable = enable;
+	}
+
+	public String getSuffix() {
+		return suffix;
+	}
+
+	public void setSuffix(String suffix) {
+		this.suffix = suffix;
 	}
 
 	public String getSamplecode() {
@@ -265,14 +259,14 @@ public class Compiler {
 		}
 	}
 
-	@JsonIgnore
-	public LANGUAGE[] getLANGUAGES() {
-		return LANGUAGE.values();
-	}
+	// @JsonIgnore
+	// public LANGUAGE[] getLANGUAGES() {
+	// return LANGUAGE.values();
+	// }
 
 	@Override
 	public String toString() {
-		return this.getLanguage() + ":*." + this.getLanguage().getSuffix();
+		return this.getLanguage() + ":*." + this.getSuffix();
 	}
 
 }

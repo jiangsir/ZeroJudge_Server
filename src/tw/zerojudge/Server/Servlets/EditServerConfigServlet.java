@@ -9,7 +9,7 @@ import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;
 import tw.zerojudge.Server.Object.Compiler;
 
-@WebServlet(urlPatterns = { "/EditServerConfig" })
+@WebServlet(urlPatterns = {"/EditServerConfig"})
 public class EditServerConfigServlet extends HttpServlet {
 	/**
 	 * 
@@ -17,16 +17,15 @@ public class EditServerConfigServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	ObjectMapper mapper = new ObjectMapper();
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		request.setAttribute("serverConfig", ConfigFactory.getServerConfig());
-		request.getRequestDispatcher("EditServerConfig.jsp").forward(request,
-				response);
+		request.getRequestDispatcher("EditServerConfig.jsp").forward(request, response);
 	}
 
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		ServerConfig serverConfig = ConfigFactory.getServerConfig();
 		serverConfig.setServername(request.getParameter("Servername"));
 		serverConfig.setServerOS(request.getParameter("ServerOS"));
@@ -39,28 +38,23 @@ public class EditServerConfigServlet extends HttpServlet {
 		serverConfig.setCryptKey(request.getParameter("cryptKey"));
 		serverConfig.setIsCleanTmpFile(request.getParameter("isCleanTmpFile"));
 
-		String[] compiler_enable = request
-				.getParameterValues("compiler_enable");
-		String[] compiler_language = request
-				.getParameterValues("compiler_language");
-		String[] compiler_version = request
-				.getParameterValues("compiler_version");
+		String[] compiler_enable = request.getParameterValues("compiler_enable");
+		String[] compiler_language = request.getParameterValues("compiler_language");
+		String[] compiler_version = request.getParameterValues("compiler_version");
 		String[] compiler_path = request.getParameterValues("compiler_path");
 		String[] cmd_compile = request.getParameterValues("cmd_compile");
 		String[] timeextension = request.getParameterValues("timeextension");
 		String[] cmd_execute = request.getParameterValues("cmd_execute");
 		String[] cmd_makeobject = request.getParameterValues("cmd_makeobject");
-		String[] cmd_namemagling = request
-				.getParameterValues("cmd_namemangling");
+		String[] cmd_namemagling = request.getParameterValues("cmd_namemangling");
 		String[] samplecode = request.getParameterValues("samplecode");
-		String[] restrictedfunctions = request
-				.getParameterValues("restrictedfunctions");
+		String[] restrictedfunctions = request.getParameterValues("restrictedfunctions");
 		Compiler[] compilers = new Compiler[compiler_language.length];
 		for (int i = 0; i < compiler_language.length; i++) {
 			Compiler compiler = new Compiler();
 			compiler.setLanguage(compiler_language[i]);
 			for (String enable : compiler_enable) {
-				if (enable.equals(compiler.getLanguage().name())) {
+				if (enable.equals(compiler.getLanguage())) {
 					compiler.setEnable(compiler.getLanguage());
 					break;
 				}

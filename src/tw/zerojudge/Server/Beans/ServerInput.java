@@ -18,7 +18,7 @@ public class ServerInput {
 	private String session_account = "";
 	private int solutionid = 0;
 	private String problemid = "";
-	private Compiler.LANGUAGE language = null;
+	private Compiler compiler = null;
 	private double[] timelimits;
 	private int memorylimit;
 	private String code;
@@ -68,23 +68,12 @@ public class ServerInput {
 		session_account = sessionAccount;
 	}
 
-	public Compiler.LANGUAGE getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(Compiler.LANGUAGE language) {
-		this.language = language;
+	public void setCompiler(Compiler compiler) {
+		this.compiler = compiler;
 	}
 
 	public Compiler getCompiler() {
-		System.out.println("language=" + language);
-		for (Compiler compiler : ConfigFactory.getServerConfig().getCompilers()) {
-			System.out.println("Compiler=" + compiler);
-			if (compiler.getLanguage() == language) {
-				return compiler;
-			}
-		}
-		return null;
+		return compiler;
 	}
 
 	/**

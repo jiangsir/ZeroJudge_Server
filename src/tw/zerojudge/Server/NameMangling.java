@@ -36,8 +36,21 @@ public class NameMangling implements Runnable {
 	 */
 	public String doNameMangling() throws JudgeException {
 		Compiler compiler = serverInput.getCompiler();
-		if (serverInput.getLanguage() == Compiler.LANGUAGE.CPP || serverInput.getLanguage() == Compiler.LANGUAGE.C
-				|| serverInput.getLanguage() == Compiler.LANGUAGE.PASCAL) {
+		if ("".equals(compiler.getCmd_namemangling())) {
+			return "";
+		}
+		if (serverInput.getCompiler().getLanguage().equals("JAVA")) {
+			String cmd_nm = compiler.getCmd_namemangling();
+			if (cmd_nm.contains("$S")) {
+				cmd_nm = cmd_nm.replaceAll("\\$S", serverInput.getCodename());
+			}
+			if (cmd_nm.contains("$T")) {
+				cmd_nm = cmd_nm.replaceAll("\\$T", serverConfig.getTempPath().toString());
+			}
+			RunCommand nm = new RunCommand(new String[]{"/bin/sh", "-c", cmd_nm}, 0);
+			nm.run();
+			this.parseJavap7(nm, compiler);
+		} else {
 			String[] restricted_functions = compiler.getRestrictedfunctions();
 			String cmd_nm = compiler.getCmd_namemangling();
 			if (cmd_nm.contains("$S")) {
@@ -67,18 +80,6 @@ public class NameMangling implements Runnable {
 					}
 				}
 			}
-		} else if (serverInput.getLanguage() == Compiler.LANGUAGE.JAVA) {
-			String cmd_nm = compiler.getCmd_namemangling();
-
-			if (cmd_nm.contains("$S")) {
-				cmd_nm = cmd_nm.replaceAll("\\$S", serverInput.getCodename());
-			}
-			if (cmd_nm.contains("$T")) {
-				cmd_nm = cmd_nm.replaceAll("\\$T", serverConfig.getTempPath().toString());
-			}
-			RunCommand nm = new RunCommand(new String[]{"/bin/sh", "-c", cmd_nm}, 0);
-			nm.run();
-			this.parseJavap7(nm, compiler);
 		}
 		return "";
 	}

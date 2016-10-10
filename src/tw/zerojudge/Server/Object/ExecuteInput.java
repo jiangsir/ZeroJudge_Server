@@ -12,7 +12,7 @@ package tw.zerojudge.Server.Object;
 public class ExecuteInput {
 	private String codename;
 	private String session_account;
-	private Compiler.LANGUAGE language = null;
+	private Compiler compiler = null;
 	private double timelimit;
 	private int memorylimit;
 	private String testfilename;
@@ -26,12 +26,12 @@ public class ExecuteInput {
 		session_account = sessionAccount;
 	}
 
-	public Compiler.LANGUAGE getLanguage() {
-		return language;
+	public Compiler getCompiler() {
+		return compiler;
 	}
 
-	public void setLanguage(Compiler.LANGUAGE language) {
-		this.language = language;
+	public void setCompiler(Compiler compiler) {
+		this.compiler = compiler;
 	}
 
 	/**

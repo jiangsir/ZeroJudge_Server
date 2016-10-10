@@ -93,64 +93,83 @@ public class DoJudge implements Runnable {
 			executeInput.setMemorylimit(serverInput.getMemorylimit());
 			executeInput.setTimelimit(timelimit * compiler.getTimeextension());
 
-			switch (serverInput.getLanguage()) {
-				// case BASIC:
-				// break;
-				case C :
-					command = serverConfig.getBinPath() + File.separator + "shell.exe "
-							+ (int) Math.ceil(executeInput.getTimelimit()) + " "
-							+ executeInput.getMemorylimit() * 1024 * 1024 + " " + outfilelimit + " \""
-							+ serverConfig.getBinPath() + File.separator + "base_c.exe\" \""
-							+ serverConfig.getTempPath() + File.separator + serverInput.getSolutionid() + File.separator
-							+ serverInput.getCodename() + ".exe < " + serverConfig.getTestdataPath() + File.separator
-							+ serverInput.getTestfiles()[i] + ".in > " + serverConfig.getTempPath() + File.separator
-							+ serverInput.getCodename() + ".out\" ";
-					break;
-				case CPP :
-					command = serverConfig.getBinPath() + File.separator + "shell.exe "
-							+ (int) Math.ceil(executeInput.getTimelimit()) + " "
-							+ executeInput.getMemorylimit() * 1024 * 1024 + " " + outfilelimit + " \""
-							+ serverConfig.getBinPath() + File.separator + "base_cpp.exe\" \""
-							+ serverConfig.getTempPath() + File.separator + serverInput.getSolutionid() + File.separator
-							+ serverInput.getCodename() + ".exe < " + serverConfig.getTestdataPath() + File.separator
-							+ serverInput.getTestfiles()[i] + ".in > " + serverConfig.getTempPath() + File.separator
-							+ serverInput.getCodename() + ".out\" ";
-					break;
-				case JAVA :
-					command = "" + serverConfig.getBinPath() + File.separator + "shell.exe "
-							+ (int) Math.ceil(executeInput.getTimelimit()) + " "
-							+ (executeInput.getMemorylimit() + serverConfig.getJVM_MB()) * 1024 * 1024 + " "
-							+ outfilelimit + " \"java -classpath " + serverConfig.getBinPath()
-							+ " base_java\" \"java -Dfile.encoding=utf-8 " + "-classpath " + serverConfig.getTempPath()
-							+ File.separator + serverInput.getSolutionid() + File.separator + " "
-							+ serverInput.getCodename() + " < " + serverConfig.getTestdataPath() + File.separator
-							+ serverInput.getTestfiles()[i] + ".in > " + serverConfig.getTempPath() + File.separator
-							+ serverInput.getCodename() + ".out\" ";
-					break;
-				case PASCAL :
-					command = "" + serverConfig.getBinPath() + File.separator + "shell.exe "
-							+ (int) Math.ceil(executeInput.getTimelimit()) + " "
-							+ executeInput.getMemorylimit() * 1024 * 1024 + " " + outfilelimit + " \""
-							+ serverConfig.getBinPath() + File.separator + "base_pas.exe\" \""
-							+ serverConfig.getTempPath() + File.separator + serverInput.getSolutionid() + File.separator
-							+ serverInput.getCodename() + ".exe < " + serverConfig.getTestdataPath() + File.separator
-							+ serverInput.getTestfiles()[i] + ".in > " + serverConfig.getTempPath() + File.separator
-							+ serverInput.getCodename() + ".out\" ";
-					break;
-				default :
-					command = serverConfig.getBinPath() + File.separator + "shell.exe "
-							+ (int) Math.ceil(executeInput.getTimelimit()) + " "
-							+ executeInput.getMemorylimit() * 1024 * 1024 + " " + outfilelimit + " \""
-							+ serverConfig.getBinPath() + File.separator + "base_c.exe\" \""
-							+ serverConfig.getTempPath() + File.separator + serverInput.getSolutionid() + File.separator
-							+ serverInput.getCodename() + ".exe < " + serverConfig.getTestdataPath() + File.separator
-							+ serverInput.getTestfiles()[i] + ".in > " + serverConfig.getTempPath() + File.separator
-							+ serverInput.getCodename() + ".out\" ";
-					break;
+			if (compiler.getLanguage().equals("JAVA")) {
+				command = serverConfig.getBinPath() + File.separator + "shell.exe "
+						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
+						+ (executeInput.getMemorylimit() + serverConfig.getJVM_MB()) * 1024 * 1024 + " " + outfilelimit
+						+ " \"java -classpath " + serverConfig.getBinPath()
+						+ " base_java\" \"java -Dfile.encoding=utf-8 " + "-classpath " + serverConfig.getTempPath()
+						+ File.separator + serverInput.getSolutionid() + File.separator + " "
+						+ serverInput.getCodename() + " < " + serverConfig.getTestdataPath() + File.separator
+						+ serverInput.getTestfiles()[i] + ".in > " + serverConfig.getTempPath() + File.separator
+						+ serverInput.getCodename() + ".out\" ";
+			} else {
+				command = serverConfig.getBinPath() + File.separator + "shell.exe "
+						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
+						+ executeInput.getMemorylimit() * 1024 * 1024 + " " + outfilelimit + " \""
+						+ serverConfig.getBinPath() + File.separator + "base_" + serverInput.getCompiler().getSuffix()
+						+ ".exe\" \"" + serverConfig.getTempPath() + File.separator + serverInput.getSolutionid()
+						+ File.separator + serverInput.getCodename() + ".exe < " + serverConfig.getTestdataPath()
+						+ File.separator + serverInput.getTestfiles()[i] + ".in > " + serverConfig.getTempPath()
+						+ File.separator + serverInput.getCodename() + ".out\" ";
+
 			}
 
+			// switch (serverInput.getLanguage()) {
+			// case C :
+			// command = serverConfig.getBinPath() + File.separator + "shell.exe
+			// "
+			// + (int) Math.ceil(executeInput.getTimelimit()) + " "
+			// + executeInput.getMemorylimit() * 1024 * 1024 + " " +
+			// outfilelimit + " \""
+			// + serverConfig.getBinPath() + File.separator + "base_c.exe\" \""
+			// + serverConfig.getTempPath() + File.separator +
+			// serverInput.getSolutionid() + File.separator
+			// + serverInput.getCodename() + ".exe < " +
+			// serverConfig.getTestdataPath() + File.separator
+			// + serverInput.getTestfiles()[i] + ".in > " +
+			// serverConfig.getTempPath() + File.separator
+			// + serverInput.getCodename() + ".out\" ";
+			// break;
+			// case CPP :
+			// break;
+			// case JAVA :
+			// break;
+			// case PASCAL :
+			// command = "" + serverConfig.getBinPath() + File.separator +
+			// "shell.exe "
+			// + (int) Math.ceil(executeInput.getTimelimit()) + " "
+			// + executeInput.getMemorylimit() * 1024 * 1024 + " " +
+			// outfilelimit + " \""
+			// + serverConfig.getBinPath() + File.separator + "base_pas.exe\"
+			// \""
+			// + serverConfig.getTempPath() + File.separator +
+			// serverInput.getSolutionid() + File.separator
+			// + serverInput.getCodename() + ".exe < " +
+			// serverConfig.getTestdataPath() + File.separator
+			// + serverInput.getTestfiles()[i] + ".in > " +
+			// serverConfig.getTempPath() + File.separator
+			// + serverInput.getCodename() + ".out\" ";
+			// break;
+			// default :
+			// command = serverConfig.getBinPath() + File.separator + "shell.exe
+			// "
+			// + (int) Math.ceil(executeInput.getTimelimit()) + " "
+			// + executeInput.getMemorylimit() * 1024 * 1024 + " " +
+			// outfilelimit + " \""
+			// + serverConfig.getBinPath() + File.separator + "base_c.exe\" \""
+			// + serverConfig.getTempPath() + File.separator +
+			// serverInput.getSolutionid() + File.separator
+			// + serverInput.getCodename() + ".exe < " +
+			// serverConfig.getTestdataPath() + File.separator
+			// + serverInput.getTestfiles()[i] + ".in > " +
+			// serverConfig.getTempPath() + File.separator
+			// + serverInput.getCodename() + ".out\" ";
+			// break;
+			// }
+
 			executeInput.setCommand(command);
-			executeInput.setLanguage(serverInput.getLanguage());
+			executeInput.setCompiler(serverInput.getCompiler());
 			executeInput.setSession_account(serverInput.getSession_account());
 			executeInput.setTestfilename(serverInput.getTestfiles()[i]);
 

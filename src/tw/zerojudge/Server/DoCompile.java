@@ -55,7 +55,7 @@ public class DoCompile {
 			throw new JudgeException(compileOutput);
 		}
 
-		if (serverInput.getLanguage() == Compiler.LANGUAGE.JAVA) {
+		if (serverInput.getCompiler().getLanguage().toUpperCase().equals("JAVA")) {
 
 			/*
 			 * 問題：找出第一組 class { 之間的任何資源，代換成 class JAVA { 即可。
@@ -93,9 +93,8 @@ public class DoCompile {
 		}
 		try {
 			File file = new File(serverConfig.getTempPath() + File.separator + serverInput.getSolutionid(),
-					serverInput.getCodename() + "." + serverInput.getLanguage().getSuffix());
+					serverInput.getCodename() + "." + serverInput.getCompiler().getSuffix());
 			FileUtils.writeStringToFile(file, code + "\n");
-
 		} catch (IOException e) {
 			e.printStackTrace();
 			compileOutput.setJudgement(ServerOutput.JUDGEMENT.SE);

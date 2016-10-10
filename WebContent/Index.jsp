@@ -36,7 +36,7 @@
 		items="${applicationScope.serverConfig.enableCompilers}">
 		<div
 			style="margin-top: 2em; border: thin; border-width: 1px; border-color: black;">
-			程式語言: ${compiler.language.value}<br /> 編譯器版本: ${compiler.version}<br />
+			程式語言: ${compiler.language}<br /> 編譯器版本: ${compiler.version}<br />
 			範例程式碼:<br />
 			<textarea name="samplecode" rows="8" id="samplecode"
 				style="width: 80%">${compiler.samplecode}</textarea>

@@ -14,7 +14,6 @@ import org.codehaus.jackson.type.TypeReference;
 import tw.zerojudge.Server.Exceptions.DataException;
 import tw.zerojudge.Server.Annotations.Property;
 import tw.zerojudge.Server.Object.Compiler;
-import tw.zerojudge.Server.Object.Compiler.LANGUAGE;
 import tw.zerojudge.Server.Object.IpAddress;
 import tw.zerojudge.Server.Utils.StringTool;
 
@@ -52,6 +51,10 @@ public class ServerConfig extends Config {
 	@Property(key = "isCleanTmpFile")
 	private boolean isCleanTmpFile = true;
 
+	public static enum SUPPORT_LANGUAGE {
+		C, CPP, JAVA, PASCAL, PYTHON3;
+	}
+
 	// =============================================================================
 
 	public ServerConfig() {
@@ -70,12 +73,13 @@ public class ServerConfig extends Config {
 	@JsonIgnore
 	public void setInitComilers() {
 		Compiler c = new Compiler();
-		c.setLanguage(LANGUAGE.C);
+		c.setEnable(SUPPORT_LANGUAGE.C.name());
+		c.setLanguage(SUPPORT_LANGUAGE.C.name());
+		c.setSuffix("c");
 		c.setPath("");
 		c.setVersion("gcc -std=c11(Debian 4.9.1-19)");
 		c.setSamplecode(
 				"#include&lt;stdio.h&gt;\r\nint main() {\r\n char s[9999];\r\nwhile( scanf(\"%s\",s)!=EOF ) {\r\n printf(\"hello, %s\\n\",s);\r\n }\r\n return 0;\r\n}");
-		c.setEnable(LANGUAGE.C);
 		c.setCommand_begin("");
 		c.setCmd_compile("gcc $S.c -std=c11 -lm -lcrypt -O2 -pipe -DONLINE_JUDGE -o $S.exe");
 		c.setCmd_namemangling("nm -A $S.exe");
@@ -87,12 +91,13 @@ public class ServerConfig extends Config {
 				"#pargma", "conio.h", "fork", "popen", "execl", "execlp", "execle", "execv", "execvp", "getenv",
 				"putenv", "setenv", "unsetenv", "socket", "connect", "fwrite", "gethostbyname"});
 		Compiler cpp = new Compiler();
-		cpp.setLanguage(LANGUAGE.CPP);
+		cpp.setEnable(SUPPORT_LANGUAGE.CPP.name());
+		cpp.setLanguage(SUPPORT_LANGUAGE.CPP.name());
+		cpp.setSuffix("cpp");
 		cpp.setPath("");
 		cpp.setVersion("g++ -std=c++14(Debian 4.9.1-19)");
 		cpp.setSamplecode(
 				"#include &lt;iostream&gt;\r\nusing namespace std;\r\n\r\nint main() {\r\nstring s;\r\n while(cin &gt;&gt; s){\r\ncout &lt;&lt; \"hello,\"&lt;&lt; s &lt;&lt; endl;\r\n }\r\n return 0;\r\n}");
-		cpp.setEnable(LANGUAGE.CPP);
 		cpp.setCommand_begin("");
 		cpp.setCmd_compile("g++ -std=c++14 -lm -lcrypt -O2 -pipe -DONLINE_JUDGE -o $S.exe $S.cpp");
 		cpp.setCmd_namemangling("nm -A $S.exe");
@@ -104,12 +109,13 @@ public class ServerConfig extends Config {
 				"ofstream", "time.h", "#pargma", "conio.h", "fork", "popen", "execl", "execlp", "execle", "execv",
 				"execvp", "getenv", "putenv", "setenv", "unsetenv", "socket", "connect", "fwrite", "gethostbyname"});
 		Compiler java = new Compiler();
-		java.setLanguage(LANGUAGE.JAVA);
+		java.setEnable(SUPPORT_LANGUAGE.JAVA.name());
+		java.setLanguage(SUPPORT_LANGUAGE.JAVA.name());
+		java.setSuffix("java");
 		java.setPath("");
 		java.setVersion("OpenJDK java version 1.7.0_65");
 		java.setSamplecode(
 				"import java.util.Scanner;\r\npublic class JAVA {\r\n\tpublic static void main(String[] args) {\r\n\t\tScanner cin= new Scanner(System.in);\r\n\t\tString s;\r\n\t\twhile (cin.hasNext()) {\r\n\t\t\ts=cin.nextLine();\r\n\t\t\tSystem.out.println(\"hello, \" + s);\r\n\t\t}\r\n\t}\r\n}");
-		java.setEnable(LANGUAGE.JAVA);
 		java.setCommand_begin("");
 		java.setCmd_compile("javac -encoding UTF-8 $S.java");
 		java.setCmd_namemangling("javap -classpath $T -verbose $S");
@@ -123,12 +129,13 @@ public class ServerConfig extends Config {
 				"java\\.lang\\.Exception", "java\\.lang\\.RuntimeException"});
 
 		Compiler pascal = new Compiler();
-		pascal.setLanguage(LANGUAGE.PASCAL);
+		pascal.setEnable(SUPPORT_LANGUAGE.PASCAL.name());
+		pascal.setLanguage(SUPPORT_LANGUAGE.PASCAL.name());
+		pascal.setSuffix("pas");
 		pascal.setPath("");
 		pascal.setVersion("Free Pascal Compiler version 2.6.4");
 		pascal.setSamplecode(
 				"var s : string;\r\nbegin\r\nwhile not eof do begin\r\nreadln(s);\r\nwriteln('hello, ',s);\r\nend;\r\nend.");
-		pascal.setEnable(LANGUAGE.PASCAL);
 		pascal.setCommand_begin("");
 		pascal.setCmd_compile("fpc -o$S.exe -Sg $S.pas");
 		pascal.setCmd_namemangling("nm -A $S.o");
@@ -172,6 +179,10 @@ public class ServerConfig extends Config {
 		return CONSOLE_PATH;
 	}
 
+	public SUPPORT_LANGUAGE[] getSUPPORT_LANGUAGES() {
+		return SUPPORT_LANGUAGE.values();
+	}
+
 	@JsonIgnore
 	public void setCONSOLE_PATH(File cONSOLE_PATH) {
 		CONSOLE_PATH = cONSOLE_PATH;
@@ -190,7 +201,7 @@ public class ServerConfig extends Config {
 	public ArrayList<Compiler> getEnableCompilers() {
 		ArrayList<Compiler> compilers = new ArrayList<Compiler>();
 		for (Compiler compiler : getCompilers()) {
-			if (compiler.getEnable() == compiler.getLanguage()) {
+			if (compiler.getEnable().equals(compiler.getLanguage())) {
 				compilers.add(compiler);
 			}
 		}
@@ -358,4 +369,5 @@ public class ServerConfig extends Config {
 			this.setAllowIPset(StringTool.String2IpAddressList(allowIPset));
 		}
 	}
+
 }

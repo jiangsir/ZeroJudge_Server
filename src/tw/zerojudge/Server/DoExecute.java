@@ -28,25 +28,21 @@ public class DoExecute {
 		ExecuteOutput output = new ExecuteOutput();
 		String cmd = executeInput.getCommand();
 		System.out.println(cmd);
-		RunCommand execute = new RunCommand(
-				new String[] { "/bin/sh", "-c", cmd }, 0);
+		RunCommand execute = new RunCommand(new String[]{"/bin/sh", "-c", cmd}, 0);
 		execute.setTimelimit(executeInput.getTimelimit());
 		execute.run();
 
 		Rusage rusage = new Rusage(execute);
 
 		if (rusage.getTime() >= 0) {
-			timeusage = (long) ((rusage.getTime() + rusage.getBasetime())
-					* 1000);
+			timeusage = (long) ((rusage.getTime() + rusage.getBasetime()) * 1000);
 			output.setTimeusage(timeusage);
 		}
 		if (rusage.getMem() >= 0 && rusage.getBasemem() >= 0) {
-			memoryusage = (rusage.getMem() - rusage.getBasemem())
-					* rusage.getPagesize() / 1024;
+			memoryusage = (rusage.getMem() - rusage.getBasemem()) * rusage.getPagesize() / 1024;
 			output.setMemoryusage(memoryusage);
 		}
-		if (timeusage > 0
-				&& timeusage >= executeInput.getTimelimit() * 1000 * 0.95) {
+		if (timeusage > 0 && timeusage >= executeInput.getTimelimit() * 1000 * 0.95) {
 			output.setJudgement(ServerOutput.JUDGEMENT.TLE);
 			output.setTimeusage((long) (executeInput.getTimelimit() * 1000));
 			output.setReason(ServerOutput.REASON.TLE);
@@ -54,8 +50,7 @@ public class DoExecute {
 			throw new JudgeException(output);
 		}
 
-		if (memoryusage > 0
-				&& memoryusage >= executeInput.getMemorylimit() * 1024) {
+		if (memoryusage > 0 && memoryusage >= executeInput.getMemorylimit() * 1024) {
 			output.setJudgement(ServerOutput.JUDGEMENT.MLE);
 			output.setReason(ServerOutput.REASON.MLE);
 			output.setHint(execute.getErrorString());
@@ -79,8 +74,7 @@ public class DoExecute {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("code:" + rusage.getWEXITSTATUS());
 			output.setReason(ServerOutput.REASON.RE);
-			output.setHint(
-					"您的程式被監控系統中斷，可能是程式無法正常結束所導致。\n" + execute.getErrorString());
+			output.setHint("您的程式被監控系統中斷，可能是程式無法正常結束所導致。\n" + execute.getErrorString());
 			throw new JudgeException(output);
 		} else if ("127".equals(rusage.getWEXITSTATUS())) {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
@@ -137,28 +131,22 @@ public class DoExecute {
 			output.setReason(ServerOutput.REASON.OLE);
 			output.setHint("輸出檔大小超過規定上限 !! \n" + execute.getErrorString());
 			throw new JudgeException(output);
-		} else if (("106".equals(rusage.getWEXITSTATUS())
-				|| "200".equals(rusage.getWEXITSTATUS())
-				|| "201".equals(rusage.getWEXITSTATUS())
-				|| "202".equals(rusage.getWEXITSTATUS())
-				|| "205".equals(rusage.getWEXITSTATUS())
-				|| "207".equals(rusage.getWEXITSTATUS())
-				|| "204".equals(rusage.getWEXITSTATUS())
-				|| "216".equals(rusage.getWEXITSTATUS())
+		} else if (("106".equals(rusage.getWEXITSTATUS()) || "200".equals(rusage.getWEXITSTATUS())
+				|| "201".equals(rusage.getWEXITSTATUS()) || "202".equals(rusage.getWEXITSTATUS())
+				|| "205".equals(rusage.getWEXITSTATUS()) || "207".equals(rusage.getWEXITSTATUS())
+				|| "204".equals(rusage.getWEXITSTATUS()) || "216".equals(rusage.getWEXITSTATUS())
 				|| "217".equals(rusage.getWEXITSTATUS()))
-				&& "PASCAL".equals(executeInput.getLanguage())) {
+				&& "PASCAL".equals(executeInput.getCompiler().getLanguage())) {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("code:" + rusage.getWEXITSTATUS());
 			output.setReason(ServerOutput.REASON.RE);
-			output.setHint("PASCAL 代碼(code:" + rusage.getWEXITSTATUS() + ")\n"
-					+ execute.getErrorString());
+			output.setHint("PASCAL 代碼(code:" + rusage.getWEXITSTATUS() + ")\n" + execute.getErrorString());
 			throw new JudgeException(output);
 		} else {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("code:" + rusage.getWEXITSTATUS());
 			output.setReason(ServerOutput.REASON.RE);
-			output.setHint("執行時期未定義錯誤，code = " + rusage.getWEXITSTATUS() + " \n"
-					+ execute.getErrorString());
+			output.setHint("執行時期未定義錯誤，code = " + rusage.getWEXITSTATUS() + " \n" + execute.getErrorString());
 			throw new JudgeException(output);
 		}
 

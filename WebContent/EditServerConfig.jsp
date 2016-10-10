@@ -116,7 +116,8 @@
 									</div></td>
 								<td width="50%">程式語言: <select name="compiler_language"
 									compiler_language="${compiler.language}">
-										<c:forEach var="LANGUAGE" items="${compiler.LANGUAGES }">
+										<c:forEach var="LANGUAGE"
+											items="${serverConfig.SUPPORT_LANGUAGES }">
 											<option>${LANGUAGE}</option>
 										</c:forEach>
 								</select> <br /> 編譯器版本: <input name="compiler_version" type="text"
