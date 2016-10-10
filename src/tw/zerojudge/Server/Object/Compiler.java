@@ -23,8 +23,9 @@ public class Compiler {
 		// C11("C11", "c"), //
 		// CPP11("C++11", "cpp"), //
 		JAVA("JAVA", "java"), //
-		PASCAL("PASCAL", "pas"); //
+		PASCAL("PASCAL", "pas"), //
 		// BASIC("BASIC", "bas");
+		PYTHON3("PYTHON3", "py");
 		private String value;
 		private String suffix;
 
@@ -56,7 +57,7 @@ public class Compiler {
 	private String cmd_makeobject = "";
 	private String cmd_namemangling = "";
 	private String cmd_execute = "";
-	private String[] restrictedfunctions = new String[] {};
+	private String[] restrictedfunctions = new String[]{};
 
 	/** ******************************************************************** */
 	@JsonIgnore
@@ -68,9 +69,13 @@ public class Compiler {
 
 	//
 
-	/** *********************************************************************** */
+	/**
+	 * ***********************************************************************
+	 */
 
-	/** *********************************************************************** */
+	/**
+	 * ***********************************************************************
+	 */
 
 	public String getCommand_begin() {
 		return command_begin;
@@ -248,8 +253,7 @@ public class Compiler {
 			return;
 		}
 		try {
-			this.setRestrictedfunctions(mapper.readValue(restrictedfunctions,
-					String[].class));
+			this.setRestrictedfunctions(mapper.readValue(restrictedfunctions, String[].class));
 		} catch (JsonParseException e) {
 			e.printStackTrace();
 			this.setRestrictedfunctions(Utils.String2Array(restrictedfunctions));
