@@ -179,6 +179,7 @@ public class ServerConfig extends Config {
 		return CONSOLE_PATH;
 	}
 
+	@JsonIgnore
 	public SUPPORT_LANGUAGE[] getSUPPORT_LANGUAGES() {
 		return SUPPORT_LANGUAGE.values();
 	}
