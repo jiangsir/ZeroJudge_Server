@@ -6,6 +6,7 @@
 package tw.zerojudge.Server.Beans;
 
 import tw.zerojudge.Server.Configs.ConfigFactory;
+import tw.zerojudge.Server.Configs.ServerConfig;
 import tw.zerojudge.Server.Object.Compiler;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -18,7 +19,8 @@ public class ServerInput {
 	private String session_account = "";
 	private int solutionid = 0;
 	private String problemid = "";
-	private Compiler compiler = null;
+	// private Compiler compiler = null;
+	private String language = null;
 	private double[] timelimits;
 	private int memorylimit;
 	private String code;
@@ -68,13 +70,13 @@ public class ServerInput {
 		session_account = sessionAccount;
 	}
 
-	public void setCompiler(Compiler compiler) {
-		this.compiler = compiler;
-	}
-
-	public Compiler getCompiler() {
-		return compiler;
-	}
+	// public void setCompiler(Compiler compiler) {
+	// this.compiler = compiler;
+	// }
+	//
+	// public Compiler getCompiler() {
+	// return compiler;
+	// }
 
 	/**
 	 * 單位為秒，允許小數點。
@@ -83,6 +85,27 @@ public class ServerInput {
 	 */
 	public double[] getTimelimits() {
 		return timelimits;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		if (language == null) {
+			return;
+		}
+		this.language = language;
+	}
+
+	public Compiler getCompiler() {
+		ServerConfig serverConfig = ConfigFactory.getServerConfig();
+		for (Compiler compiler : serverConfig.getCompilers()) {
+			if (compiler.getLanguage().equals(this.getLanguage())) {
+				return compiler;
+			}
+		}
+		return null;
 	}
 
 	/**

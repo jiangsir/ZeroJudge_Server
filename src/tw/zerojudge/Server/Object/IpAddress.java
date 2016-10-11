@@ -52,6 +52,7 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 			}
 		} else {
 			try {
+				System.out.println("ipstring=[" + ip + "]");
 				this.ip = InetAddress.getByName(ip.trim());
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
@@ -176,6 +177,9 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 
 	@Override
 	public int compareTo(IpAddress o) {
+		if (this.getIp() == null || o == null) {
+			return -1;
+		}
 		return this.getIp().toString().compareTo(o.getIp().toString());
 	}
 
