@@ -106,13 +106,17 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 		this.cidr = cidr;
 	}
 
-	public boolean getIsIpv4() {
-		return this.getIp() instanceof Inet4Address;
-	}
-
-	public boolean getIsIpv6() {
-		return this.getIp() instanceof Inet6Address;
-	}
+	// public boolean getIsIpv4() {
+	// return this.getIp() instanceof Inet4Address;
+	// }
+	//
+	// public void setIsIpv4() {
+	//
+	// }
+	//
+	// public boolean getIsIpv6() {
+	// return this.getIp() instanceof Inet6Address;
+	// }
 
 	private int toInt() {
 		byte[] address = this.getIp().getAddress();
@@ -177,8 +181,13 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 
 	@Override
 	public int compareTo(IpAddress o) {
-		if (this.getIp() == null || o == null) {
+		if (this.getIp() == null && o.getIp() == null) {
+			return 0;
+		}
+		if (this.getIp() == null) {
 			return -1;
+		} else if (o.getIp() == null) {
+			return 1;
 		}
 		return this.getIp().toString().compareTo(o.getIp().toString());
 	}
