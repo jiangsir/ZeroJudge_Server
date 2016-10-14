@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeSet;
+import java.util.logging.Logger;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -54,6 +55,8 @@ public class ServerConfig extends Config {
 	public static enum SUPPORT_LANGUAGE {
 		C, CPP, JAVA, PASCAL, PYTHON3;
 	}
+
+	private Logger logger = Logger.getAnonymousLogger();
 
 	// =============================================================================
 
@@ -352,10 +355,11 @@ public class ServerConfig extends Config {
 
 	@JsonIgnore
 	public void setAllowIPset(String allowIPset) {
-		if (allowIPset == null) {
+		if (allowIPset == null || "null".equals(allowIPset)) {
 			return;
 		}
 		try {
+			logger.info("allowIPset=" + allowIPset);
 			TreeSet<IpAddress> ipaddress = mapper.readValue(allowIPset, new TypeReference<TreeSet<IpAddress>>() {
 			});
 			this.setAllowIPset(ipaddress);

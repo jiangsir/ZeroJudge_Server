@@ -123,66 +123,97 @@
                     &gt; $S.out
                 </p>
  -->
+					<div class="panel-group" id="accordion" role="tablist"
+						aria-multiselectable="true">
+						<c:forEach var="compiler" items="${serverConfig.compilers}"
+							varStatus="varstatus">
+							<div class="panel panel-default">
+								<div class="panel-heading" role="tab" id="headingOne">
+									<div class="row" id="compiler">
+										<div class="col-lg-6">
+											<div class="input-group">
+												<span class="input-group-addon"> <input
+													type="checkbox" name="compiler_enable"
+													value="${compiler.language}" language="${compiler.enable}" />
+													啟用
+												</span>
+												<h4 class="panel-title">
+
+													<!-- /input-group -->
+													<a role="button" data-toggle="collapse"
+														data-parent="#accordion"
+														href="#collapse${varstatus.count }" aria-expanded="false"
+														aria-controls="collapse${varstatus.count}"
+														class="form-control"> ${compiler.language} ｜
+														${compiler.version}</a>
+												</h4>
+											</div>
+										</div>
+										<!-- /.col-lg-6 -->
+									</div>
+								</div>
+								<div id="collapse${varstatus.count}"
+									class="panel-collapse collapse" role="tabpanel"
+									aria-labelledby="heading${varstatus.count}">
+									<div class="panel-body">
+										<div id="compiler" style="background-color: #eeeeee">
+											<table style="width: 100%; border: 1px 1px 1px 1px;">
+												<tr>
+													<td width="50%"><input name="compiler_language"
+														type="text" value="${compiler.language}" hidden="hidden" />
+														<%-- 程式語言: <select name="compiler_language"
+														compiler_language="${compiler.language}">
+															<c:forEach var="LANGUAGE"
+																items="${serverConfig.SUPPORT_LANGUAGES }">
+																<option>${LANGUAGE}</option>
+															</c:forEach>
+													</select> --%> <br /> 編譯器版本: <input
+														name="compiler_version" type="text"
+														value="${compiler.version}" size="50" /> <br /> 編譯器路徑: <input
+														name="compiler_path" type="text" value="${compiler.path}"
+														size="50" />(有兩個以上編譯器才需特別指定編譯器路徑) <br /> 編譯指令： <input
+														name="cmd_compile" type="text"
+														value="${compiler.cmd_compile}" size="80" /> <br />
+														時間寬限值： <input name="timeextension" type="text"
+														id="timeextension" value="${compiler.timeextension}"
+														size="5" maxlength="5" /> (可以讓某些語言較長的執行時間,標準時間 * 寬限值)<br />
+														執行指令：<input name="cmd_execute" type="text"
+														id="cmd_execute" value="${compiler.cmd_execute}" size="80" />
+														<br /> make object 指令：<input name="cmd_makeobject"
+														type="text" id="cmd_makeobject"
+														value="${compiler.cmd_makeobject}" size="80" /> <br />
+														Name Mangling 指令：<input name="cmd_namemangling"
+														type="text" id="cmd_namemangling"
+														value="${compiler.cmd_namemangling}" size="80" />
+
+														<p>
+															限制使用的函數：<br />
+															<textarea name="restrictedfunctions" rows="3"
+																id="restrictedfunctions" style="width: 80%">${compiler.restrictedfunctionsString}</textarea>
+														</p>
+														<p>
+															範例程式碼：<br />
+															<textarea name="samplecode" rows="8" id="samplecode"
+																style="width: 80%">${compiler.samplecode}</textarea>
+														</p></td>
+												</tr>
+											</table>
+											<!-- 											<button class="btn btn-primary" id="newCompiler">此處加入一個程式語言</button>
+											<button class="btn btn-primary" id="deleteCompiler">刪除本程式語言</button>
+ -->
+											<hr></hr>
+										</div>
+									</div>
+								</div>
+							</div>
+						</c:forEach>
+					</div>
 					<hr />
 					<c:forEach var="compiler" items="${serverConfig.compilers}">
-						<div id="compiler" style="background-color: #eeeeee">
-							<table style="width: 100%; border: 1px 1px 1px 1px;">
-								<tr class="imcontent">
-									<th>啟用</th>
-									<th style="text-align: left">設定值</th>
-								</tr>
-								<tr>
-									<td width="5%" valign="top"><div
-											style="text-align: center;">
-											<input type="checkbox" name="compiler_enable"
-												value="${compiler.language}" language="${compiler.enable}" />
-										</div></td>
-									<td width="50%">程式語言: <select name="compiler_language"
-										compiler_language="${compiler.language}">
-											<c:forEach var="LANGUAGE"
-												items="${serverConfig.SUPPORT_LANGUAGES }">
-												<option>${LANGUAGE}</option>
-											</c:forEach>
-									</select> <br /> 編譯器版本: <input name="compiler_version" type="text"
-										value="${compiler.version}" size="50" /> <br /> 編譯器路徑: <input
-										name="compiler_path" type="text" value="${compiler.path}"
-										size="50" />(有兩個以上編譯器才需特別指定編譯器路徑) <br /> 編譯指令： <input
-										name="cmd_compile" type="text" value="${compiler.cmd_compile}"
-										size="80" /> <br /> 時間寬限值： <input name="timeextension"
-										type="text" id="timeextension"
-										value="${compiler.timeextension}" size="5" maxlength="5" />
-										(可以讓某些語言較長的執行時間,標準時間 * 寬限值)<br /> 執行指令：<input
-										name="cmd_execute" type="text" id="cmd_execute"
-										value="${compiler.cmd_execute}" size="80" /> <br /> make
-										object 指令：<input name="cmd_makeobject" type="text"
-										id="cmd_makeobject" value="${compiler.cmd_makeobject}"
-										size="80" /> <br /> Name Mangling 指令：<input
-										name="cmd_namemangling" type="text" id="cmd_namemangling"
-										value="${compiler.cmd_namemangling}" size="80" />
 
-										<p>
-											限制使用的函數：<br />
-											<textarea name="restrictedfunctions" rows="3"
-												id="restrictedfunctions" style="width: 80%">${compiler.restrictedfunctionsString}</textarea>
-										</p>
-										<p>
-											範例程式碼：<br />
-											<textarea name="samplecode" rows="8" id="samplecode"
-												style="width: 80%">${compiler.samplecode}</textarea>
-										</p>
-									</td>
-								</tr>
-							</table>
-							<button class="btn btn-primary" id="newCompiler">此處加入一個程式語言</button>
-							<button class="btn btn-primary" id="deleteCompiler">刪除本程式語言</button>
-							<hr></hr>
-						</div>
 					</c:forEach>
 				</div>
 			</div>
-
-
-
 			<button type="submit" class="btn btn-success" name="Submit">存入</button>
 		</form>
 	</div>

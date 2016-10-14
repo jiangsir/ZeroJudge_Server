@@ -1,8 +1,6 @@
 package tw.zerojudge.Server.Object;
 
 import java.io.Serializable;
-import java.net.Inet4Address;
-import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.TreeSet;
@@ -37,6 +35,7 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 	 * @param ip
 	 */
 	public IpAddress(String ip) {
+		System.out.println("ipstring=[" + ip + "]");
 		if (ip == null || "null".equals(ip.trim())) {
 			return;
 		}
@@ -52,7 +51,6 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 			}
 		} else {
 			try {
-				System.out.println("ipstring=[" + ip + "]");
 				this.ip = InetAddress.getByName(ip.trim());
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
