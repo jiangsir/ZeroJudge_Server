@@ -5,6 +5,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.TreeSet;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 public class IpAddress implements Comparable<IpAddress>, Serializable {
 
 	/**
@@ -195,6 +197,7 @@ public class IpAddress implements Comparable<IpAddress>, Serializable {
 		return this.toString().hashCode();
 	}
 
+	@JsonIgnore
 	public boolean isLoopbackAddress() {
 		return ip.isLoopbackAddress();
 	}

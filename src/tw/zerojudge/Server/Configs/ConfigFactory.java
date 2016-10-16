@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
@@ -152,7 +153,8 @@ public class ConfigFactory {
 				if (gettermethod.getReturnType() == File.class || gettermethod.getReturnType() == String.class
 						|| gettermethod.getReturnType() == int.class || gettermethod.getReturnType() == double.class
 						|| gettermethod.getReturnType() == boolean.class
-						|| gettermethod.getReturnType() == Boolean.class) {
+						|| gettermethod.getReturnType() == Boolean.class
+						|| gettermethod.getReturnType() == TreeSet.class) {
 					props.setProperty(property.key(), getter.toString());
 				} else {
 					props.setProperty(property.key(), mapper.writeValueAsString(getter));

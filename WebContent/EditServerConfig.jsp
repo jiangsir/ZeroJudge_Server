@@ -134,11 +134,10 @@
 											<div class="input-group">
 												<span class="input-group-addon"> <input
 													type="checkbox" name="compiler_enable"
-													value="${compiler.language}" language="${compiler.enable}" />
+													value="${compiler.language}" compiler_enable="${compiler.enable}" />
 													啟用
 												</span>
-												<h4 class="panel-title">
-
+												<div class="panel-title">
 													<!-- /input-group -->
 													<a role="button" data-toggle="collapse"
 														data-parent="#accordion"
@@ -146,7 +145,17 @@
 														aria-controls="collapse${varstatus.count}"
 														class="form-control"> ${compiler.language} ｜
 														${compiler.version}</a>
-												</h4>
+												</div>
+												<span class="input-group-btn">
+													<button class="btn btn-primary" type="button"
+														id="newCompiler">此處新增程式語言</button>
+												</span> <span class="input-group-btn">
+													<button class="btn btn-primary" type="button"
+														id="deleteCompiler">刪除本程式語言</button>
+												</span>
+												<!-- 												<button class="btn btn-primary" id="newCompiler">此處加入一個程式語言</button>
+												<button class="btn btn-primary" id="deleteCompiler">刪除本程式語言</button>
+ -->
 											</div>
 										</div>
 										<!-- /.col-lg-6 -->
@@ -159,9 +168,8 @@
 										<div id="compiler" style="background-color: #eeeeee">
 											<table style="width: 100%; border: 1px 1px 1px 1px;">
 												<tr>
-													<td width="50%"><input name="compiler_language"
-														type="text" value="${compiler.language}" hidden="hidden" />
-														<%-- 程式語言: <select name="compiler_language"
+													<td width="50%">程式語言：<input name="compiler_language"
+														type="text" value="${compiler.language}" /> <%-- 程式語言: <select name="compiler_language"
 														compiler_language="${compiler.language}">
 															<c:forEach var="LANGUAGE"
 																items="${serverConfig.SUPPORT_LANGUAGES }">
@@ -198,9 +206,6 @@
 														</p></td>
 												</tr>
 											</table>
-											<!-- 											<button class="btn btn-primary" id="newCompiler">此處加入一個程式語言</button>
-											<button class="btn btn-primary" id="deleteCompiler">刪除本程式語言</button>
- -->
 											<hr></hr>
 										</div>
 									</div>

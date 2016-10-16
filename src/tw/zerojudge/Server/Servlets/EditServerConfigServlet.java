@@ -54,7 +54,7 @@ public class EditServerConfigServlet extends HttpServlet {
 			Compiler compiler = new Compiler();
 			compiler.setLanguage(compiler_language[i]);
 			for (String enable : compiler_enable) {
-				if (enable.equals(compiler.getLanguage())) {
+				if (enable != null && enable.equals(compiler.getLanguage())) {
 					compiler.setEnable(compiler.getLanguage());
 					break;
 				}

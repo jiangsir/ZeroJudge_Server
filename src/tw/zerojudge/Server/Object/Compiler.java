@@ -180,12 +180,12 @@ public class Compiler {
 		if (language == null) {
 			return;
 		}
-		try {
-			ServerConfig.SUPPORT_LANGUAGE.valueOf(language);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new DataException(e.getLocalizedMessage());
-		}
+//		try {
+//			ServerConfig.SUPPORT_LANGUAGE.valueOf(language);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			throw new DataException(e.getLocalizedMessage());
+//		}
 
 		this.language = language.toUpperCase().trim();
 	}

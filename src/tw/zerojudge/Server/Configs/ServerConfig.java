@@ -205,7 +205,7 @@ public class ServerConfig extends Config {
 	public ArrayList<Compiler> getEnableCompilers() {
 		ArrayList<Compiler> compilers = new ArrayList<Compiler>();
 		for (Compiler compiler : getCompilers()) {
-			if (compiler.getEnable().equals(compiler.getLanguage())) {
+			if (compiler.getLanguage().equals(compiler.getEnable())) {
 				compilers.add(compiler);
 			}
 		}
