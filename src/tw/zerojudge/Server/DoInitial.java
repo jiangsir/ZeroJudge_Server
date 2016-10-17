@@ -16,7 +16,6 @@ import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;
 import tw.zerojudge.Server.Exceptions.JudgeException;
 import tw.zerojudge.Server.Object.*;
-import tw.zerojudge.Server.Utils.Utils;
 
 /**
  * @author jiangsir

@@ -98,8 +98,8 @@
 				</div>
 				<div role="tabpanel" class="tab-pane" id="compilers">
 					<p>
-						<strong>使用代號：</strong><br /> $S： 代表程式名稱，每個程式碼實際的名稱由系統決定。<br />
-						$T： 代表測資名稱，系統將自動替換為實際路徑。<br />
+						<strong>使用代號：</strong><br /> $S： 代表程式檔路徑，實際的路徑由系統決定。<br /> $C：
+						代表程式名稱，每個程式碼實際的名稱由系統決定。<br /> $T： 代表測資名稱，系統將自動替換為實際路徑。<br />
 						<!--                    副檔名：程式檔副檔名預設為小寫的語言名稱，如 C -&gt; .c,
                     CPP -&gt; cpp, PASCAL -&gt; pascal。輸入測資為 .in，輸出測資為 .out
  -->
@@ -134,8 +134,8 @@
 											<div class="input-group">
 												<span class="input-group-addon"> <input
 													type="checkbox" name="compiler_enable"
-													value="${compiler.language}" compiler_enable="${compiler.enable}" />
-													啟用
+													value="${compiler.language}"
+													compiler_enable="${compiler.enable}" /> 啟用
 												</span>
 												<div class="panel-title">
 													<!-- /input-group -->
@@ -175,10 +175,8 @@
 																items="${serverConfig.SUPPORT_LANGUAGES }">
 																<option>${LANGUAGE}</option>
 															</c:forEach>
-													</select> --%> <br /> 
-													程式語言副檔名：<input name="suffix"
-                                                        type="text" value="${compiler.suffix}" /><br/>
-													編譯器版本: <input
+													</select> --%> <br /> 程式語言副檔名：<input name="suffix"
+														type="text" value="${compiler.suffix}" /><br /> 編譯器版本: <input
 														name="compiler_version" type="text"
 														value="${compiler.version}" size="50" /> <br /> 編譯器路徑: <input
 														name="compiler_path" type="text" value="${compiler.path}"

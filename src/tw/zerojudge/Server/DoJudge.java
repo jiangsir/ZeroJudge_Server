@@ -96,8 +96,11 @@ public class DoJudge implements Runnable {
 			executeInput.setTimelimit(timelimit * compiler.getTimeextension());
 			String cmd_execute = compiler.getCmd_execute();
 			if (cmd_execute.contains("$S")) {
-				cmd_execute = cmd_execute.replaceAll("\\$S", serverConfig.getTempPath() + File.separator
-						+ serverInput.getSolutionid() + File.separator + serverInput.getCodename());
+				cmd_execute = cmd_execute.replaceAll("\\$S",
+						serverConfig.getTempPath() + File.separator + serverInput.getSolutionid() + File.separator);
+			}
+			if (cmd_execute.contains("$C")) {
+				cmd_execute = cmd_execute.replaceAll("\\$C", serverInput.getCodename());
 			}
 			if (cmd_execute.contains("$T")) {
 				cmd_execute = cmd_execute.replaceAll("\\$T",
@@ -113,8 +116,8 @@ public class DoJudge implements Runnable {
 				// + (executeInput.getMemorylimit() + serverConfig.getJVM_MB())
 				// * 1024 * 1024 + " " + outfilelimit
 				// + " \"java -classpath " + serverConfig.getBinPath()
-				// + " base_java\" \"java -Dfile.encoding=utf-8 " + "-classpath
-				// " + serverConfig.getTempPath()
+				// + " base_java\" \"java -Dfile.encoding=UTF-8 " + "-classpath"
+				// + serverConfig.getTempPath()
 				// + File.separator + serverInput.getSolutionid() +
 				// File.separator + " "
 				// + serverInput.getCodename() + " < " +
