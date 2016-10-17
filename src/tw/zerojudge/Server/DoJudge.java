@@ -6,6 +6,7 @@
 package tw.zerojudge.Server;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 import tw.zerojudge.Server.Beans.ServerInput;
 import tw.zerojudge.Server.Beans.ServerOutput;
@@ -24,6 +25,7 @@ public class DoJudge implements Runnable {
 	ServerConfig serverConfig = ConfigFactory.getServerConfig();
 	ServerInput serverInput;
 	ServerOutput[] serverOutputs = null;
+	Logger logger = Logger.getAnonymousLogger();
 
 	public DoJudge(ServerInput serverInput) {
 		this.serverInput = serverInput;
@@ -92,26 +94,58 @@ public class DoJudge implements Runnable {
 			Compiler compiler = serverInput.getCompiler();
 			executeInput.setMemorylimit(serverInput.getMemorylimit());
 			executeInput.setTimelimit(timelimit * compiler.getTimeextension());
+			String cmd_execute = compiler.getCmd_execute();
+			if (cmd_execute.contains("$S")) {
+				cmd_execute = cmd_execute.replaceAll("\\$S", serverConfig.getTempPath() + File.separator
+						+ serverInput.getSolutionid() + File.separator + serverInput.getCodename());
+			}
+			if (cmd_execute.contains("$T")) {
+				cmd_execute = cmd_execute.replaceAll("\\$T",
+						serverConfig.getTestdataPath() + File.separator + serverInput.getTestfiles()[i] + ".in");
+			}
+
+			logger.info("cmd_execute=" + cmd_execute);
 
 			if (compiler.getLanguage().equals("JAVA")) {
+				// command = serverConfig.getBinPath() + File.separator +
+				// "shell.exe "
+				// + (int) Math.ceil(executeInput.getTimelimit()) + " "
+				// + (executeInput.getMemorylimit() + serverConfig.getJVM_MB())
+				// * 1024 * 1024 + " " + outfilelimit
+				// + " \"java -classpath " + serverConfig.getBinPath()
+				// + " base_java\" \"java -Dfile.encoding=utf-8 " + "-classpath
+				// " + serverConfig.getTempPath()
+				// + File.separator + serverInput.getSolutionid() +
+				// File.separator + " "
+				// + serverInput.getCodename() + " < " +
+				// serverConfig.getTestdataPath() + File.separator
+				// + serverInput.getTestfiles()[i] + ".in > " +
+				// serverConfig.getTempPath() + File.separator
+				// + serverInput.getCodename() + ".out\" ";
 				command = serverConfig.getBinPath() + File.separator + "shell.exe "
 						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
 						+ (executeInput.getMemorylimit() + serverConfig.getJVM_MB()) * 1024 * 1024 + " " + outfilelimit
-						+ " \"java -classpath " + serverConfig.getBinPath()
-						+ " base_java\" \"java -Dfile.encoding=utf-8 " + "-classpath " + serverConfig.getTempPath()
-						+ File.separator + serverInput.getSolutionid() + File.separator + " "
-						+ serverInput.getCodename() + " < " + serverConfig.getTestdataPath() + File.separator
-						+ serverInput.getTestfiles()[i] + ".in > " + serverConfig.getTempPath() + File.separator
-						+ serverInput.getCodename() + ".out\" ";
+						+ " \"" + cmd_execute + "\" ";
 			} else {
+				// command = serverConfig.getBinPath() + File.separator +
+				// "shell.exe "
+				// + (int) Math.ceil(executeInput.getTimelimit()) + " "
+				// + executeInput.getMemorylimit() * 1024 * 1024 + " " +
+				// outfilelimit + " \""
+				// + serverConfig.getBinPath() + File.separator + "base_" +
+				// serverInput.getCompiler().getSuffix()
+				// + ".exe\" \"" + serverConfig.getTempPath() + File.separator +
+				// serverInput.getSolutionid()
+				// + File.separator + serverInput.getCodename() + ".exe < " +
+				// serverConfig.getTestdataPath()
+				// + File.separator + serverInput.getTestfiles()[i] + ".in > " +
+				// serverConfig.getTempPath()
+				// + File.separator + serverInput.getCodename() + ".out\" ";
 				command = serverConfig.getBinPath() + File.separator + "shell.exe "
 						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
 						+ executeInput.getMemorylimit() * 1024 * 1024 + " " + outfilelimit + " \""
 						+ serverConfig.getBinPath() + File.separator + "base_" + serverInput.getCompiler().getSuffix()
-						+ ".exe\" \"" + serverConfig.getTempPath() + File.separator + serverInput.getSolutionid()
-						+ File.separator + serverInput.getCodename() + ".exe < " + serverConfig.getTestdataPath()
-						+ File.separator + serverInput.getTestfiles()[i] + ".in > " + serverConfig.getTempPath()
-						+ File.separator + serverInput.getCodename() + ".out\" ";
+						+ ".exe\" \"" + cmd_execute + "\" ";
 
 			}
 

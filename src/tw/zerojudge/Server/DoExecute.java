@@ -5,6 +5,8 @@
  */
 package tw.zerojudge.Server;
 
+import java.util.logging.Logger;
+
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Exceptions.JudgeException;
 import tw.zerojudge.Server.Object.ExecuteInput;
@@ -17,6 +19,7 @@ import tw.zerojudge.Server.Object.Rusage;
  */
 public class DoExecute {
 	ExecuteInput executeInput;
+	Logger logger = Logger.getAnonymousLogger();
 
 	public DoExecute(ExecuteInput executeInput) {
 		this.executeInput = executeInput;
@@ -27,7 +30,7 @@ public class DoExecute {
 		int memoryusage = -1;
 		ExecuteOutput output = new ExecuteOutput();
 		String cmd = executeInput.getCommand();
-		System.out.println(cmd);
+		logger.info("DoExecute: " + cmd);
 		RunCommand execute = new RunCommand(new String[]{"/bin/sh", "-c", cmd}, 0);
 		execute.setTimelimit(executeInput.getTimelimit());
 		execute.run();

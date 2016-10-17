@@ -7,6 +7,7 @@ package tw.zerojudge.Server;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,6 +30,7 @@ public class DoCompile {
 	ServerInput serverInput;
 	ServerConfig serverConfig = ConfigFactory.getServerConfig();
 	ObjectMapper mapper = new ObjectMapper();
+	Logger logger = Logger.getAnonymousLogger();
 
 	public DoCompile(ServerInput serverInput) {
 		this.serverInput = serverInput;
@@ -53,6 +55,10 @@ public class DoCompile {
 			compileOutput.setReason(ServerOutput.REASON.COMPILE_ERROR);
 			compileOutput.setHint("程式碼為空字串！");
 			throw new JudgeException(compileOutput);
+		}
+		if ("".equals(serverInput.getCompiler().getCmd_compile())) {
+			logger.info("serverInput.getCompiler().getCmd_compile() 為空！" + serverInput.getLanguage() + " 不需編譯！");
+			return;
 		}
 
 		if (serverInput.getLanguage().toUpperCase().equals("JAVA")) {
