@@ -52,8 +52,8 @@ public class DoCompare {
 			// new File(serverConfig.getTempPath(), compareInput.getCodename() +
 			// ".out"));
 			FileInputStream user = new FileInputStream(
-					new File(serverConfig.getTempPath() + File.separator + serverInput.getSolutionid() + File.separator
-							+ serverInput.getCodename(), compareInput.getCodename() + ".out"));
+					new File(serverConfig.getTempPath() + File.separator + serverInput.getSolutionid(),
+							compareInput.getCodename() + ".out"));
 
 			systemout = new BufferedReader(new InputStreamReader(system, "UTF-8"));
 			userout = new BufferedReader(new InputStreamReader(user, "UTF-8"));
