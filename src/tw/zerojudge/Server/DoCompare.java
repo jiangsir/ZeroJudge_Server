@@ -43,31 +43,30 @@ public class DoCompare {
 		BufferedReader userout = null;
 		compareOutput.setTimeusage(compareInput.getTimeusage());
 		compareOutput.setMemoryusage(compareInput.getMemoryusage());
-		System.out.println(
-				"compareOutput.getTimeusage()=" + compareOutput.getTimeusage());
+		System.out.println("compareOutput.getTimeusage()=" + compareOutput.getTimeusage());
 
 		try {
-			FileInputStream system = new FileInputStream(
-					new File(ConfigFactory.getServerConfig().getTestdataPath(),
-							compareInput.getTestfilename() + ".out"));
+			FileInputStream system = new FileInputStream(new File(ConfigFactory.getServerConfig().getTestdataPath(),
+					compareInput.getTestfilename() + ".out"));
+			// FileInputStream user = new FileInputStream(
+			// new File(serverConfig.getTempPath(), compareInput.getCodename() +
+			// ".out"));
 			FileInputStream user = new FileInputStream(
-					new File(serverConfig.getTempPath(),
-							compareInput.getCodename() + ".out"));
-			systemout = new BufferedReader(
-					new InputStreamReader(system, "UTF-8"));
+					new File(serverConfig.getTempPath() + File.separator + serverInput.getSolutionid() + File.separator
+							+ serverInput.getCodename(), compareInput.getCodename() + ".out"));
+
+			systemout = new BufferedReader(new InputStreamReader(system, "UTF-8"));
 			userout = new BufferedReader(new InputStreamReader(user, "UTF-8"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			compareOutput.setJudgement(ServerOutput.JUDGEMENT.SE);
-			compareOutput
-					.setReason(ServerOutput.REASON.SYSTEMERROR_WHEN_COMPARE);
+			compareOutput.setReason(ServerOutput.REASON.SYSTEMERROR_WHEN_COMPARE);
 			compareOutput.setHint("未產生輸出檔。(" + e.getLocalizedMessage() + ")");
 			throw new JudgeException(compareOutput);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			compareOutput.setJudgement(ServerOutput.JUDGEMENT.SE);
-			compareOutput
-					.setReason(ServerOutput.REASON.SYSTEMERROR_WHEN_COMPARE);
+			compareOutput.setReason(ServerOutput.REASON.SYSTEMERROR_WHEN_COMPARE);
 			compareOutput.setHint("編碼錯誤。 (UnsupportedEncodingException)");
 			throw new JudgeException(compareOutput);
 		}
@@ -79,14 +78,10 @@ public class DoCompare {
 			compareOutput = this.StrictlyComparison(systemout, userout);
 			return compareOutput;
 		} else if (ServerInput.MODE.Special == compareInput.getMode()) {
-			File useroutfile = new File(serverConfig.getTempPath(),
-					compareInput.getCodename() + ".out");
+			File useroutfile = new File(serverConfig.getTempPath(), compareInput.getCodename() + ".out");
 			compareOutput = this.SpecialComparison(
-					new File(serverConfig.getTestdataPath(),
-							compareInput.getTestfilename() + ".in"),
-					new File(serverConfig.getTestdataPath(),
-							compareInput.getTestfilename() + ".out"),
-					useroutfile);
+					new File(serverConfig.getTestdataPath(), compareInput.getTestfilename() + ".in"),
+					new File(serverConfig.getTestdataPath(), compareInput.getTestfilename() + ".out"), useroutfile);
 			try {
 				systemout.close();
 				userout.close();
@@ -96,8 +91,7 @@ public class DoCompare {
 			return compareOutput;
 		} else {
 			compareOutput.setJudgement(ServerOutput.JUDGEMENT.SE);
-			compareOutput.setHint("未知的 judge mode(" + compareInput.getMode()
-					+ "), 必須是 寬鬆 or 嚴格 or 特殊 其中之一！");
+			compareOutput.setHint("未知的 judge mode(" + compareInput.getMode() + "), 必須是 寬鬆 or 嚴格 or 特殊 其中之一！");
 			try {
 				systemout.close();
 				userout.close();
@@ -123,8 +117,7 @@ public class DoCompare {
 	/**
 	 * 寬鬆比對，掠過空行，並且 trim 處理。
 	 */
-	private CompareOutput TolerantComparison(BufferedReader systemout,
-			BufferedReader userout) throws JudgeException {
+	private CompareOutput TolerantComparison(BufferedReader systemout, BufferedReader userout) throws JudgeException {
 		// CompareOutput compareOutput = new CompareOutput();
 		int count = 0;
 		String systemline = null;
@@ -151,14 +144,12 @@ public class DoCompare {
 					continue;
 				} else {
 					if (userline.length() > systemline.length() + 4) {
-						userline = userline.substring(0,
-								(int) (systemline.length() + 6) - 1) + " ...略";
+						userline = userline.substring(0, (int) (systemline.length() + 6) - 1) + " ...略";
 					}
 					compareOutput.setJudgement(ServerOutput.JUDGEMENT.WA);
-					compareOutput
-							.setReason(ServerOutput.REASON.ANSWER_NOT_MATCHED);
-					compareOutput.setHint("您的答案為: " + this.parseLine(userline)
-							+ "\n正確答案為: " + this.parseLine(systemline) + "\n");
+					compareOutput.setReason(ServerOutput.REASON.ANSWER_NOT_MATCHED);
+					compareOutput.setHint(
+							"您的答案為: " + this.parseLine(userline) + "\n正確答案為: " + this.parseLine(systemline) + "\n");
 					compareOutput.setInfo("line:" + count);
 					throw new JudgeException(compareOutput);
 				}
@@ -172,15 +163,13 @@ public class DoCompare {
 		if (userline == null && systemline != null) {
 			compareOutput.setJudgement(ServerOutput.JUDGEMENT.WA);
 			compareOutput.setInfo("line:" + count);
-			compareOutput
-					.setReason(ServerOutput.REASON.LESS_THAN_STANDARD_OUTPUT);
+			compareOutput.setReason(ServerOutput.REASON.LESS_THAN_STANDARD_OUTPUT);
 			compareOutput.setHint("您共輸出 " + (count - 1) + " 行。");
 			throw new JudgeException(compareOutput);
 		} else if (userline != null && systemline == null) {
 			compareOutput.setJudgement(ServerOutput.JUDGEMENT.OLE);
 			compareOutput.setInfo("line:" + count);
-			compareOutput
-					.setReason(ServerOutput.REASON.MORE_THAN_STANDARD_OUTPUT);
+			compareOutput.setReason(ServerOutput.REASON.MORE_THAN_STANDARD_OUTPUT);
 			compareOutput.setHint("請勿輸出題目未要求的文字: \n" + userline);
 			throw new JudgeException(compareOutput);
 		} else if (systemline == null && userline == null) {
@@ -199,8 +188,7 @@ public class DoCompare {
 	/**
 	 * 嚴格比對，就如同 UVa/ACM 一樣，只要有一個空格，空行不同就算錯誤。
 	 */
-	private CompareOutput StrictlyComparison(BufferedReader systemout,
-			BufferedReader userout) throws JudgeException {
+	private CompareOutput StrictlyComparison(BufferedReader systemout, BufferedReader userout) throws JudgeException {
 		int count = 0;
 		String systemline = null;
 		String userline = null;
@@ -219,15 +207,14 @@ public class DoCompare {
 				continue;
 			} else {
 				if (userline.length() > systemline.length() + 4) {
-					userline = userline.substring(0,
-							(int) (systemline.length() + 6) - 1) + " ...略";
+					userline = userline.substring(0, (int) (systemline.length() + 6) - 1) + " ...略";
 				}
 
 				compareOutput.setJudgement(ServerOutput.JUDGEMENT.WA);
 				compareOutput.setReason(ServerOutput.REASON.ANSWER_NOT_MATCHED);
 				compareOutput.setInfo("line:" + count);
-				compareOutput.setHint("您的答案為: " + this.parseLine(userline)
-						+ "\n正確答案為: " + this.parseLine(systemline) + "\n");
+				compareOutput.setHint(
+						"您的答案為: " + this.parseLine(userline) + "\n正確答案為: " + this.parseLine(systemline) + "\n");
 				throw new JudgeException(compareOutput);
 			}
 		} while (systemline != null && userline != null);
@@ -235,15 +222,13 @@ public class DoCompare {
 		if (userline == null && systemline != null) {
 			compareOutput.setJudgement(ServerOutput.JUDGEMENT.WA);
 			compareOutput.setInfo("line:" + count);
-			compareOutput
-					.setReason(ServerOutput.REASON.LESS_THAN_STANDARD_OUTPUT);
+			compareOutput.setReason(ServerOutput.REASON.LESS_THAN_STANDARD_OUTPUT);
 			compareOutput.setHint("您只輸出了 " + (count - 1) + " 行。");
 			throw new JudgeException(compareOutput);
 		} else if (userline != null && systemline == null) {
 			compareOutput.setJudgement(ServerOutput.JUDGEMENT.OLE);
 			compareOutput.setInfo("line:" + count);
-			compareOutput
-					.setReason(ServerOutput.REASON.MORE_THAN_STANDARD_OUTPUT);
+			compareOutput.setReason(ServerOutput.REASON.MORE_THAN_STANDARD_OUTPUT);
 			compareOutput.setHint("請勿輸出題目未要求的文字: \n" + userline);
 			throw new JudgeException(compareOutput);
 		} else if (systemline == null && userline == null) {
@@ -284,19 +269,17 @@ public class DoCompare {
 	 * @param useroutfile
 	 * @return
 	 */
-	private CompareOutput SpecialComparison(File systeminfile,
-			File systemoutfile, File useroutfile) throws JudgeException {
+	private CompareOutput SpecialComparison(File systeminfile, File systemoutfile, File useroutfile)
+			throws JudgeException {
 
 		// String judgecmd = serverConfig.getSpecialPath(compareInput
 		// .getProblemid())
 		// + "Special_"
 		// + compareInput.getProblemid()
 		// + ".exe";
-		File special_source = new File(
-				serverConfig.getSpecialPath(compareInput.getProblemid()),
+		File special_source = new File(serverConfig.getSpecialPath(compareInput.getProblemid()),
 				"Special_" + compareInput.getProblemid() + ".cpp");
-		File special_exe = new File(
-				special_source.toString().replaceAll(".cpp", ".exe"));
+		File special_exe = new File(special_source.toString().replaceAll(".cpp", ".exe"));
 		// if (!judgefile.exists()) {
 		// judgecmd = serverConfig.getSpecialPath() + File.separator
 		// + compareInput.getProblemid() + File.separator + "Special_"
@@ -304,8 +287,7 @@ public class DoCompare {
 		// judgefile = new File(judgecmd);
 		if (!special_source.exists()) {
 			compareOutput.setJudgement(ServerOutput.JUDGEMENT.SE);
-			compareOutput
-					.setReason(ServerOutput.REASON.SPECIAL_JUDGE_NOT_FOUND);
+			compareOutput.setReason(ServerOutput.REASON.SPECIAL_JUDGE_NOT_FOUND);
 			compareOutput.setHint("Special Judge 原始程式不存在！" + special_source);
 			throw new JudgeException(compareOutput);
 		} else if (!special_exe.exists()) {
@@ -321,13 +303,11 @@ public class DoCompare {
 				throw new JudgeException(compareOutput);
 			}
 		}
-		String cmd_special = serverConfig.getBinPath() + File.separator
-				+ "shell.exe " + (int) Math.ceil(compareInput.getTimelimit())
-				+ " " + compareInput.getMemorylimit() * 1024 * 1024 + " "
-				+ 100 * 1024 * 1024 + " \"" + serverConfig.getBinPath()
-				+ File.separator + "base_cpp.exe\" \"" + special_exe + " \""
-				+ systeminfile + "\"" + " \"" + systemoutfile + "\"" + " \""
-				+ useroutfile + "\"" + "\"";
+		String cmd_special = serverConfig.getBinPath() + File.separator + "shell.exe "
+				+ (int) Math.ceil(compareInput.getTimelimit()) + " " + compareInput.getMemorylimit() * 1024 * 1024 + " "
+				+ 100 * 1024 * 1024 + " \"" + serverConfig.getBinPath() + File.separator + "base_cpp.exe\" \""
+				+ special_exe + " \"" + systeminfile + "\"" + " \"" + systemoutfile + "\"" + " \"" + useroutfile + "\""
+				+ "\"";
 		ExecuteInput executeInput = new ExecuteInput();
 		executeInput.setCommand(cmd_special);
 		executeInput.setMemorylimit(compareInput.getMemorylimit());
@@ -336,16 +316,13 @@ public class DoCompare {
 		executeInput.setSession_account(serverInput.getSession_account());
 
 		try {
-			ExecuteOutput executeOutput = new DoSpecialExecute(executeInput)
-					.run();
+			ExecuteOutput executeOutput = new DoSpecialExecute(executeInput).run();
 			compareOutput.setJudgement(executeOutput.getJudgement());
 			compareOutput.setInfo(executeOutput.getInfo());
 			compareOutput.setReason(executeOutput.getReason());
 			compareOutput.setHint(executeOutput.getHint());
-			System.out.println("executeOutput.getTimeusage(1)="
-					+ executeOutput.getTimeusage());
-			System.out.println("executeOutput.getMemoryusage(1)="
-					+ executeOutput.getMemoryusage());
+			System.out.println("executeOutput.getTimeusage(1)=" + executeOutput.getTimeusage());
+			System.out.println("executeOutput.getMemoryusage(1)=" + executeOutput.getMemoryusage());
 			compareOutput.setTimeusage(executeOutput.getTimeusage());
 			compareOutput.setMemoryusage(executeOutput.getMemoryusage());
 			return compareOutput;
@@ -358,10 +335,8 @@ public class DoCompare {
 			compareOutput.setHint(executeOutput.getHint());
 			compareOutput.setTimeusage(executeOutput.getTimeusage());
 			compareOutput.setMemoryusage(executeOutput.getMemoryusage());
-			System.out.println("executeOutput.getTimeusage(2)="
-					+ executeOutput.getTimeusage());
-			System.out.println("executeOutput.getMemoryusage(2)="
-					+ executeOutput.getMemoryusage());
+			System.out.println("executeOutput.getTimeusage(2)=" + executeOutput.getTimeusage());
+			System.out.println("executeOutput.getMemoryusage(2)=" + executeOutput.getMemoryusage());
 			throw new JudgeException(compareOutput);
 		}
 
@@ -372,8 +347,7 @@ public class DoCompare {
 	 * 
 	 * @return
 	 */
-	private boolean isEquals(int linenumber, String userline,
-			String systemline) {
+	private boolean isEquals(int linenumber, String userline, String systemline) {
 		userline = userline.trim();
 		systemline = systemline.trim();
 		if (userline.equals(systemline)) {
