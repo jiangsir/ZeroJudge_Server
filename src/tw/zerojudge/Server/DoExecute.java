@@ -65,12 +65,13 @@ public class DoExecute {
 			output.setReason(ServerOutput.REASON.FORCED_STOP);
 			output.setHint(execute.getErrorString());
 			throw new JudgeException(output);
-		} else if ("1".equals(rusage.getWIFSIGNALED())) {
-			output.setJudgement(ServerOutput.JUDGEMENT.RE);
-			output.setInfo("SIG:" + rusage.getWTERMSIG());
-			output.setReason(ServerOutput.REASON.RE);
-			output.setHint("您的程式無法正常執行。\n" + execute.getErrorString());
-			throw new JudgeException(output);
+			// 20161017 JAVA 會因此 RE 原因不明
+			// } else if ("1".equals(rusage.getWIFSIGNALED())) {
+			// output.setJudgement(ServerOutput.JUDGEMENT.RE);
+			// output.setInfo("SIG:" + rusage.getWTERMSIG());
+			// output.setReason(ServerOutput.REASON.RE);
+			// output.setHint("您的程式無法正常執行。\n" + execute.getErrorString());
+			// throw new JudgeException(output);
 		} else if ("0".equals(rusage.getWEXITSTATUS())) {
 			return output;
 		} else if ("1".equals(rusage.getWEXITSTATUS())) {

@@ -121,7 +121,7 @@ public class ServerConfig extends Config {
 				"import java.util.Scanner;\r\npublic class JAVA {\r\n\tpublic static void main(String[] args) {\r\n\t\tScanner cin= new Scanner(System.in);\r\n\t\tString s;\r\n\t\twhile (cin.hasNext()) {\r\n\t\t\ts=cin.nextLine();\r\n\t\t\tSystem.out.println(\"hello, \" + s);\r\n\t\t}\r\n\t}\r\n}");
 		java.setCommand_begin("");
 		java.setCmd_compile("javac -encoding UTF-8 $S$C.java");
-		java.setCmd_namemangling("javap -classpath $T -verbose $S$C");
+		java.setCmd_namemangling("javap -classpath $S -verbose $C");
 		java.setCmd_execute("java -Dfile.encoding=utf-8 -classpath $S $C &lt; $T &gt; $S$C.out");
 		java.setCmd_makeobject("");
 		java.setTimeextension(3.0);
@@ -151,11 +151,11 @@ public class ServerConfig extends Config {
 				"OBJPAS_CLOSEFILE", "OBJPAS_ASSIGNFILE", "GenerateInstruction_CALL_FAR", "SysProc_SeekFile",
 				"SysProc_EraseFile", "SysProc_RenameFileC", "SysProc_TruncFile"});
 		Compiler python = new Compiler();
-		python.setEnable(SUPPORT_LANGUAGE.PASCAL.name());
-		python.setLanguage(SUPPORT_LANGUAGE.PASCAL.name());
+		python.setEnable("PYTHON");
+		python.setLanguage("PYTHON");
 		python.setSuffix("py");
 		python.setPath("");
-		python.setVersion("Free Pascal Compiler version 2.6.4");
+		python.setVersion("Python 3.5.2");
 		python.setSamplecode("import sys\r\nfor s in sys.stdin:\r\n    s = input()\r\n    print('hello '+s)");
 		python.setCommand_begin("");
 		python.setCmd_compile("");
