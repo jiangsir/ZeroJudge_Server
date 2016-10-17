@@ -40,6 +40,7 @@ public class EditServerConfigServlet extends HttpServlet {
 
 		String[] compiler_enable = request.getParameterValues("compiler_enable");
 		String[] compiler_language = request.getParameterValues("compiler_language");
+		String[] suffix = request.getParameterValues("suffix");
 		String[] compiler_version = request.getParameterValues("compiler_version");
 		String[] compiler_path = request.getParameterValues("compiler_path");
 		String[] cmd_compile = request.getParameterValues("cmd_compile");
@@ -59,7 +60,7 @@ public class EditServerConfigServlet extends HttpServlet {
 					break;
 				}
 			}
-
+			compiler.setSuffix(suffix[i]);
 			compiler.setVersion(compiler_version[i]);
 			compiler.setPath(compiler_path[i]);
 			compiler.setCmd_compile(cmd_compile[i]);

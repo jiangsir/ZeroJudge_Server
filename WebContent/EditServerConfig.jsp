@@ -175,7 +175,10 @@
 																items="${serverConfig.SUPPORT_LANGUAGES }">
 																<option>${LANGUAGE}</option>
 															</c:forEach>
-													</select> --%> <br /> 編譯器版本: <input
+													</select> --%> <br /> 
+													程式語言副檔名：<input name="suffix"
+                                                        type="text" value="${compiler.suffix}" /><br/>
+													編譯器版本: <input
 														name="compiler_version" type="text"
 														value="${compiler.version}" size="50" /> <br /> 編譯器路徑: <input
 														name="compiler_path" type="text" value="${compiler.path}"
