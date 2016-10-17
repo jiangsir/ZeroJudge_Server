@@ -12,6 +12,7 @@ import tw.zerojudge.Server.Beans.ServerInput;
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;
+import tw.zerojudge.Server.Configs.ServerConfig.KNOWNED_LANGUAGE;
 import tw.zerojudge.Server.Exceptions.JudgeException;
 import tw.zerojudge.Server.Factories.ServerFactory;
 import tw.zerojudge.Server.Object.*;
@@ -108,8 +109,19 @@ public class DoJudge implements Runnable {
 			}
 
 			logger.info("cmd_execute=" + cmd_execute);
+			String base = "base_";
 
-			if (compiler.getLanguage().equals("JAVA")) {
+			if (compiler.getLanguage().equals(ServerConfig.KNOWNED_LANGUAGE.C.name())
+					|| compiler.getLanguage().equals(ServerConfig.KNOWNED_LANGUAGE.CPP.name())
+					|| compiler.getLanguage().equals(ServerConfig.KNOWNED_LANGUAGE.PASCAL.name())
+					|| compiler.getLanguage().equals(ServerConfig.KNOWNED_LANGUAGE.PYTHON.name())) {
+				base = base + compiler.getSuffix() + ".exe";
+			} else if (compiler.getLanguage().equals(ServerConfig.KNOWNED_LANGUAGE.JAVA.name())) {
+				base = base + compiler.getSuffix();
+			} else {
+				base = base + ".exe";
+			}
+			if (compiler.getLanguage().equals(ServerConfig.KNOWNED_LANGUAGE.JAVA.name())) {
 				// command = serverConfig.getBinPath() + File.separator +
 				// "shell.exe "
 				// + (int) Math.ceil(executeInput.getTimelimit()) + " "
@@ -128,7 +140,8 @@ public class DoJudge implements Runnable {
 				command = serverConfig.getBinPath() + File.separator + "shell.exe "
 						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
 						+ (executeInput.getMemorylimit() + serverConfig.getJVM_MB()) * 1024 * 1024 + " " + outfilelimit
-						+ " \"" + cmd_execute + "\" ";
+						+ " \"java -classpath " + serverConfig.getBinPath() + " " + base + "\" \"" + cmd_execute
+						+ "\" ";
 			} else {
 				// command = serverConfig.getBinPath() + File.separator +
 				// "shell.exe "
@@ -147,9 +160,7 @@ public class DoJudge implements Runnable {
 				command = serverConfig.getBinPath() + File.separator + "shell.exe "
 						+ (int) Math.ceil(executeInput.getTimelimit()) + " "
 						+ executeInput.getMemorylimit() * 1024 * 1024 + " " + outfilelimit + " \""
-						+ serverConfig.getBinPath() + File.separator + "base_" + serverInput.getCompiler().getSuffix()
-						+ ".exe\" \"" + cmd_execute + "\" ";
-
+						+ serverConfig.getBinPath() + File.separator + base + "\" \"" + cmd_execute + "\" ";
 			}
 
 			// switch (serverInput.getLanguage()) {
@@ -213,13 +224,11 @@ public class DoJudge implements Runnable {
 			ExecuteOutput executeOutput = null;
 			try {
 				executeOutput = new DoExecute(executeInput).run();
-				System.out.println("executeOutput.getTimeusage()=" + executeOutput.getTimeusage());
 				serverOutputs[i].setTimeusage(executeOutput.getTimeusage());
 				serverOutputs[i].setMemoryusage(executeOutput.getMemoryusage());
 			} catch (JudgeException e) {
 				e.printStackTrace();
 				executeOutput = (ExecuteOutput) e.getCause();
-				System.out.println("executeOutput.getTimeusage()2=" + executeOutput.getTimeusage());
 				serverOutputs[i].setTimeusage(executeOutput.getTimeusage());
 				serverOutputs[i].setMemoryusage(executeOutput.getMemoryusage());
 				serverOutputs[i].setSession_account(serverInput.getSession_account());
@@ -240,8 +249,6 @@ public class DoJudge implements Runnable {
 			compareInput.setMemorylimit(executeInput.getMemorylimit());
 			compareInput.setTimeusage(executeOutput.getTimeusage());
 			compareInput.setMemoryusage(executeOutput.getMemoryusage());
-			System.out.println("compareInput.getTimeusage()=" + compareInput.getTimeusage());
-
 			compareInput.setTestfilename(serverInput.getTestfiles()[i]);
 
 			CompareOutput compareOutput = null;
@@ -253,7 +260,6 @@ public class DoJudge implements Runnable {
 				serverOutputs[i].setHint(compareOutput.getHint());
 				serverOutputs[i].setScore(scores[i]);
 				serverOutputs[i].setTimeusage(compareOutput.getTimeusage());
-				System.out.println("compareOutput.getTimeusage()=" + compareOutput.getTimeusage());
 				serverOutputs[i].setMemoryusage(compareOutput.getMemoryusage());
 			} catch (JudgeException e) {
 				e.printStackTrace();
@@ -263,7 +269,6 @@ public class DoJudge implements Runnable {
 				serverOutputs[i].setReason(compareOutput.getReason());
 				serverOutputs[i].setHint(compareOutput.getHint());
 				serverOutputs[i].setTimeusage(compareOutput.getTimeusage());
-				System.out.println("compareOutput.getTimeusage()2=" + compareOutput.getTimeusage());
 				serverOutputs[i].setMemoryusage(compareOutput.getMemoryusage());
 				continue;
 			}

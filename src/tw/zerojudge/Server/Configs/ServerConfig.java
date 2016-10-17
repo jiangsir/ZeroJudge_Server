@@ -52,8 +52,14 @@ public class ServerConfig extends Config {
 	@Property(key = "isCleanTmpFile")
 	private boolean isCleanTmpFile = true;
 
-	public static enum SUPPORT_LANGUAGE {
-		C, CPP, JAVA, PASCAL, PYTHON3;
+	/**
+	 * 列舉「已知」的語言。
+	 * 
+	 * @author jiangsir
+	 *
+	 */
+	public static enum KNOWNED_LANGUAGE {
+		C, CPP, JAVA, PASCAL, PYTHON;
 	}
 
 	private Logger logger = Logger.getAnonymousLogger();
@@ -76,8 +82,8 @@ public class ServerConfig extends Config {
 	@JsonIgnore
 	public void setInitComilers() {
 		Compiler c = new Compiler();
-		c.setEnable(SUPPORT_LANGUAGE.C.name());
-		c.setLanguage(SUPPORT_LANGUAGE.C.name());
+		c.setEnable(KNOWNED_LANGUAGE.C.name());
+		c.setLanguage(KNOWNED_LANGUAGE.C.name());
 		c.setSuffix("c");
 		c.setPath("");
 		c.setVersion("gcc -std=c11(Debian 4.9.1-19)");
@@ -94,8 +100,8 @@ public class ServerConfig extends Config {
 				"#pargma", "conio.h", "fork", "popen", "execl", "execlp", "execle", "execv", "execvp", "getenv",
 				"putenv", "setenv", "unsetenv", "socket", "connect", "fwrite", "gethostbyname"});
 		Compiler cpp = new Compiler();
-		cpp.setEnable(SUPPORT_LANGUAGE.CPP.name());
-		cpp.setLanguage(SUPPORT_LANGUAGE.CPP.name());
+		cpp.setEnable(KNOWNED_LANGUAGE.CPP.name());
+		cpp.setLanguage(KNOWNED_LANGUAGE.CPP.name());
 		cpp.setSuffix("cpp");
 		cpp.setPath("");
 		cpp.setVersion("g++ -std=c++14(Debian 4.9.1-19)");
@@ -112,8 +118,8 @@ public class ServerConfig extends Config {
 				"ofstream", "time.h", "#pargma", "conio.h", "fork", "popen", "execl", "execlp", "execle", "execv",
 				"execvp", "getenv", "putenv", "setenv", "unsetenv", "socket", "connect", "fwrite", "gethostbyname"});
 		Compiler java = new Compiler();
-		java.setEnable(SUPPORT_LANGUAGE.JAVA.name());
-		java.setLanguage(SUPPORT_LANGUAGE.JAVA.name());
+		java.setEnable(KNOWNED_LANGUAGE.JAVA.name());
+		java.setLanguage(KNOWNED_LANGUAGE.JAVA.name());
 		java.setSuffix("java");
 		java.setPath("");
 		java.setVersion("OpenJDK java version 1.7.0_65");
@@ -132,8 +138,8 @@ public class ServerConfig extends Config {
 				"java\\.lang\\.Exception", "java\\.lang\\.RuntimeException"});
 
 		Compiler pascal = new Compiler();
-		pascal.setEnable(SUPPORT_LANGUAGE.PASCAL.name());
-		pascal.setLanguage(SUPPORT_LANGUAGE.PASCAL.name());
+		pascal.setEnable(KNOWNED_LANGUAGE.PASCAL.name());
+		pascal.setLanguage(KNOWNED_LANGUAGE.PASCAL.name());
 		pascal.setSuffix("pas");
 		pascal.setPath("");
 		pascal.setVersion("Free Pascal Compiler version 2.6.4");
@@ -198,8 +204,8 @@ public class ServerConfig extends Config {
 	}
 
 	@JsonIgnore
-	public SUPPORT_LANGUAGE[] getSUPPORT_LANGUAGES() {
-		return SUPPORT_LANGUAGE.values();
+	public KNOWNED_LANGUAGE[] getSUPPORT_LANGUAGES() {
+		return KNOWNED_LANGUAGE.values();
 	}
 
 	@JsonIgnore
