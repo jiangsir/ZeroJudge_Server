@@ -56,10 +56,6 @@ public class DoCompile {
 			compileOutput.setHint("程式碼為空字串！");
 			throw new JudgeException(compileOutput);
 		}
-		if ("".equals(serverInput.getCompiler().getCmd_compile())) {
-			logger.info("serverInput.getCompiler().getCmd_compile() 為空！" + serverInput.getLanguage() + " 不需編譯！");
-			return;
-		}
 
 		if (serverInput.getLanguage().toUpperCase().equals("JAVA")) {
 
@@ -109,6 +105,11 @@ public class DoCompile {
 			compileOutput.setReason(ServerOutput.REASON.WRITE_STRING_TO_FILE_ERROR);
 			compileOutput.setHint("系統檔案寫入出錯，請通知管理員。");
 			throw new JudgeException(compileOutput);
+		}
+
+		if ("".equals(serverInput.getCompiler().getCmd_compile())) {
+			logger.info("serverInput.getCompiler().getCmd_compile() 為空！" + serverInput.getLanguage() + " 不需編譯！");
+			return;
 		}
 
 		Compiler compiler = serverInput.getCompiler();
