@@ -157,18 +157,18 @@ public class ServerConfig extends Config {
 				"OBJPAS_CLOSEFILE", "OBJPAS_ASSIGNFILE", "GenerateInstruction_CALL_FAR", "SysProc_SeekFile",
 				"SysProc_EraseFile", "SysProc_RenameFileC", "SysProc_TruncFile"});
 		Compiler python = new Compiler();
-		python.setEnable("PYTHON");
-		python.setLanguage("PYTHON");
+		python.setEnable(KNOWNED_LANGUAGE.PYTHON.name());
+		python.setLanguage(KNOWNED_LANGUAGE.PYTHON.name());
 		python.setSuffix("py");
 		python.setPath("");
 		python.setVersion("Python 3.5.2");
-		python.setSamplecode("import sys\r\nfor s in sys.stdin:\r\n    s = input()\r\n    print('hello '+s)");
+		python.setSamplecode("import sys\r\nfor s in sys.stdin:\r\n    print('hello '+s)");
 		python.setCommand_begin("");
 		python.setCmd_compile("");
 		python.setCmd_namemangling("");
 		python.setCmd_execute("python3 $S$C.py &lt; $T &gt; $S$C.out");
 		python.setCmd_makeobject("");
-		python.setTimeextension(1.0);
+		python.setTimeextension(3.0);
 		python.setCommand_end("");
 		python.setRestrictedfunctions(new String[]{});
 
