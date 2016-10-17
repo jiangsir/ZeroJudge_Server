@@ -64,6 +64,9 @@
 		<exec executable="bash">
 			<arg line="-c &quot;sudo g++ -o ${CONSOLE}/Bin/base_cpp.exe ${CONSOLE}/Bin/base_cpp.cpp&quot;" />
 		</exec>
+        <exec executable="bash">
+            <arg line="-c &quot;sudo g++ -o ${CONSOLE}/Bin/base_py.exe ${CONSOLE}/Bin/base_cpp.cpp&quot;" />
+        </exec>
 
 		<chmod file="${CONSOLE}/**" perm="a+w" type="both" />
 		<chmod file="${CONSOLE}/Bin/*.exe" perm="+x" type="both" />
