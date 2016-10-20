@@ -50,15 +50,20 @@ public class DoCompare {
 		String lxc_name = "lxc-" + serverInput.getLanguage().toUpperCase();
 		String lxc_path = "/var/lib/lxc/" + lxc_name + "/rootfs";
 
+		String cmd_moveout = "sudo scp " + lxc_path + ConfigFactory.getServerConfig().getTestdataPath()
+				+ compareInput.getTestfilename() + ".out" + " " + ConfigFactory.getServerConfig().getTestdataPath();
+		RunCommand runCommand = new RunCommand(cmd_moveout);
+		runCommand.run();
+
 		try {
-			File testOutfile = new File(lxc_path + ConfigFactory.getServerConfig().getTestdataPath(),
+			File testOutfile = new File(ConfigFactory.getServerConfig().getTestdataPath(),
 					compareInput.getTestfilename() + ".out");
 			FileInputStream system = new FileInputStream(testOutfile);
 			// FileInputStream user = new FileInputStream(
 			// new File(serverConfig.getTempPath(), compareInput.getCodename() +
 			// ".out"));
 			FileInputStream user = new FileInputStream(
-					new File(lxc_path + serverConfig.getTempPath() + File.separator + serverInput.getSolutionid(),
+					new File(serverConfig.getTempPath() + File.separator + serverInput.getSolutionid(),
 							compareInput.getCodename() + ".out"));
 
 			systemout = new BufferedReader(new InputStreamReader(system, "UTF-8"));
@@ -84,11 +89,10 @@ public class DoCompare {
 			compareOutput = this.StrictlyComparison(systemout, userout);
 			return compareOutput;
 		} else if (ServerInput.MODE.Special == compareInput.getMode()) {
-			File useroutfile = new File(lxc_path + serverConfig.getTempPath(), compareInput.getCodename() + ".out");
+			File useroutfile = new File(serverConfig.getTempPath(), compareInput.getCodename() + ".out");
 			compareOutput = this.SpecialComparison(
-					new File(lxc_path + serverConfig.getTestdataPath(), compareInput.getTestfilename() + ".in"),
-					new File(lxc_path + serverConfig.getTestdataPath(), compareInput.getTestfilename() + ".out"),
-					useroutfile);
+					new File(serverConfig.getTestdataPath(), compareInput.getTestfilename() + ".in"),
+					new File(serverConfig.getTestdataPath(), compareInput.getTestfilename() + ".out"), useroutfile);
 			try {
 				systemout.close();
 				userout.close();
