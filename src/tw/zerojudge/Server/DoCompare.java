@@ -48,10 +48,11 @@ public class DoCompare {
 		compareOutput.setMemoryusage(compareInput.getMemoryusage());
 		System.out.println("compareOutput.getTimeusage()=" + compareOutput.getTimeusage());
 		String lxc_name = "lxc-" + serverInput.getLanguage().toUpperCase();
-		String lxc_path = "/var/lib/lxc/" + lxc_name + "/rootfs";
+		String lxc_path = "/var/lib/lxc/" + lxc_name + "/rootfs/";
 
-		String cmd_moveout = "sudo scp " + lxc_path + ConfigFactory.getServerConfig().getTestdataPath()
-				+ compareInput.getTestfilename() + ".out" + " " + ConfigFactory.getServerConfig().getTestdataPath();
+		File source_path = new File(serverConfig.getTempPath() + File.separator + serverInput.getSolutionid());
+		String cmd_moveout = "sudo scp " + lxc_path + new File(source_path, compareInput.getCodename() + ".out") + " "
+				+ source_path;
 		RunCommand runCommand = new RunCommand(cmd_moveout);
 		runCommand.run();
 
