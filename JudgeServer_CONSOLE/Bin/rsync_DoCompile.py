@@ -17,4 +17,5 @@ print(rsync_CONSOLE)
 os.system(rsync_CONSOLE)
 
 rsync_source = "rsync -av " + source + " " + lxc_path + "tmp/"
+print(rsync_source)
 os.system(rsync_source)
