@@ -30,8 +30,9 @@ public class DoExecute {
 		int memoryusage = -1;
 		ExecuteOutput output = new ExecuteOutput();
 		String cmd = executeInput.getCommand();
-		String lxc_name = "lxc-" + executeInput.getCompiler().getLanguage().toUpperCase();
-		String lxc_attach = "lxc-attach -n " + lxc_name + " --";
+		// String lxc_name = "lxc-" +
+		// executeInput.getCompiler().getLanguage().toUpperCase();
+		String lxc_attach = "lxc-attach -n lxc-ALL --";
 
 		cmd = "sudo " + lxc_attach + " " + cmd;
 

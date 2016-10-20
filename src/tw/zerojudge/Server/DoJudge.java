@@ -276,7 +276,7 @@ public class DoJudge implements Runnable {
 
 		}
 		if (serverConfig.getIsCleanTmpFile()) {
-			new DoClean(source_path, serverInput.getLanguage()).run();
+			new DoClean(source_path).run();
 		}
 	}
 

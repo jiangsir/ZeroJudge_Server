@@ -2,15 +2,12 @@
 import sys
 import os
 
-if(len(sys.argv) == 1):
-    print("請輸入參數：C $S")
+if(len(sys.argv) != 2):
+    print("請輸入參數：$S")
     exit()
 
-language = sys.argv[1]
-print("language=" + language)
-source = sys.argv[2]
-
-lxc_path = "/var/lib/lxc/lxc-" + language + "/rootfs/";
+source = sys.argv[1]
+lxc_path = "/var/lib/lxc/lxc-ALL/rootfs/"
 
 rsync_CONSOLE = "rsync -av /JudgeServer_CONSOLE " + lxc_path
 print(rsync_CONSOLE)

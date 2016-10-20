@@ -122,10 +122,10 @@ public class DoCompile {
 			cmd_compile = cmd_compile.replaceAll("\\$C", serverInput.getCodename());
 		}
 
-		String lxc_name = "lxc-" + serverInput.getLanguage().toUpperCase();
+		// String lxc_name = "lxc-" + serverInput.getLanguage().toUpperCase();
 		// String lxc_path = "/var/lib/lxc/" + lxc_name + "/rootfs/tmp";
 		// 執行 lxc 內的 shell.exe 要用 lxc-attach
-		String lxc_attach = "lxc-attach -n " + lxc_name + " --";
+		String lxc_attach = "lxc-attach -n lxc-ALL --";
 
 		// cmd_compile = "sudo " + lxc_attach + " " + serverConfig.getBinPath()
 		// + File.separator + "shell.exe " + "10 "

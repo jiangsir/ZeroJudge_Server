@@ -47,8 +47,8 @@ public class DoCompare {
 		compareOutput.setTimeusage(compareInput.getTimeusage());
 		compareOutput.setMemoryusage(compareInput.getMemoryusage());
 		System.out.println("compareOutput.getTimeusage()=" + compareOutput.getTimeusage());
-		String lxc_name = "lxc-" + serverInput.getLanguage().toUpperCase();
-		String lxc_path = "/var/lib/lxc/" + lxc_name + "/rootfs/";
+		// String lxc_name = "lxc-" + serverInput.getLanguage().toUpperCase();
+		String lxc_path = "/var/lib/lxc/lxc-ALL/rootfs/";
 
 		File source_path = new File(serverConfig.getTempPath() + File.separator + serverInput.getSolutionid());
 		String cmd_moveout = "sudo scp " + lxc_path + new File(source_path, compareInput.getCodename() + ".out") + " "
