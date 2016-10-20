@@ -142,8 +142,8 @@ public class DoCompile {
 		// -classpath "
 		// + serverConfig.getBinPath() + " base_java\" \"" + cmd_compile + "\"";
 		cmd_compile = "sudo " + lxc_attach + " " + serverConfig.getBinPath() + File.separator + "shell.exe " + "10 "
-				+ serverConfig.getJVM_MB() * 1024 * 1024 + " 100000000 \"" + "\"" + serverConfig.getBinPath()
-				+ File.separator + "base_c.exe\" \"" + cmd_compile + "\"";
+				+ serverConfig.getJVM_MB() * 1024 * 1024 + " 100000000 \"" + serverConfig.getBinPath() + File.separator
+				+ "base_c.exe\" \"" + cmd_compile + "\"";
 		RunCommand runCompile = new RunCommand(new String[]{"/bin/sh", "-c", cmd_compile}, 0);
 		runCompile.run();
 
