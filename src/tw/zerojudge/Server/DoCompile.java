@@ -121,9 +121,9 @@ public class DoCompile {
 
 		// 將 DoCompile 相關檔案同步到 LXC 內。
 		RunCommand rsync_DoCompile = new RunCommand(new String[]{"/bin/sh", "-c",
-				"rsync_DoCompile.py " + serverInput.getLanguage().toUpperCase() + " " + serverConfig.getTempPath()
-						+ File.separator + serverInput.getSolutionid() + File.separator + serverInput.getCodename()
-						+ ".c"},
+				serverConfig.getBinPath() + File.separator + "rsync_DoCompile.py "
+						+ serverInput.getLanguage().toUpperCase() + " " + serverConfig.getTempPath() + File.separator
+						+ serverInput.getSolutionid() + File.separator + serverInput.getCodename() + ".c"},
 				0);
 		rsync_DoCompile.run();
 
