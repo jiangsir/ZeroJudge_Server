@@ -59,10 +59,7 @@ public class NameMangling implements Runnable {
 			String cmd_nm = compiler.getCmd_namemangling();
 			if (cmd_nm.contains("$S")) {
 				cmd_nm = cmd_nm.replaceAll("\\$S",
-						serverConfig.getTempPath() + File.separator + serverInput.getCodename());
-			}
-			if (cmd_nm.contains("$T")) {
-				cmd_nm = cmd_nm.replaceAll("\\$T", serverConfig.getTempPath().toString());
+						serverConfig.getTempPath() + File.separator + serverInput.getSolutionid());
 			}
 			if (cmd_nm.contains("$C")) {
 				cmd_nm = cmd_nm.replaceAll("\\$C", serverInput.getCodename());

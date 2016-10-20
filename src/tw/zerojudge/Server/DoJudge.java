@@ -99,7 +99,7 @@ public class DoJudge implements Runnable {
 			String cmd_execute = compiler.getCmd_execute();
 			if (cmd_execute.contains("$S")) {
 				cmd_execute = cmd_execute.replaceAll("\\$S",
-						serverConfig.getTempPath() + File.separator + serverInput.getSolutionid() + File.separator);
+						serverConfig.getTempPath() + File.separator + serverInput.getSolutionid());
 			}
 			if (cmd_execute.contains("$C")) {
 				cmd_execute = cmd_execute.replaceAll("\\$C", serverInput.getCodename());

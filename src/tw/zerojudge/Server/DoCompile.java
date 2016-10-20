@@ -115,8 +115,8 @@ public class DoCompile {
 		Compiler compiler = serverInput.getCompiler();
 		String cmd_compile = compiler.getCmd_compile();
 		if (cmd_compile.contains("$S")) {
-			cmd_compile = cmd_compile.replaceAll("\\$S", serverConfig.getTempPath() + File.separator
-					+ serverInput.getSolutionid() + File.separator + serverInput.getCodename());
+			cmd_compile = cmd_compile.replaceAll("\\$S",
+					serverConfig.getTempPath() + File.separator + serverInput.getSolutionid());
 		}
 		if (cmd_compile.contains("$C")) {
 			cmd_compile = cmd_compile.replaceAll("\\$C", serverInput.getCodename());
