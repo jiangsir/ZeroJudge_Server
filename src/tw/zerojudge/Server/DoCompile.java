@@ -118,6 +118,9 @@ public class DoCompile {
 			cmd_compile = cmd_compile.replaceAll("\\$S", serverConfig.getTempPath() + File.separator
 					+ serverInput.getSolutionid() + File.separator + serverInput.getCodename());
 		}
+		if (cmd_compile.contains("$C")) {
+			cmd_compile = cmd_compile.replaceAll("\\$C", serverInput.getCodename());
+		}
 
 		// 將 DoCompile 相關檔案同步到 LXC 內。
 		// cmd= sudo rsync -av /tmp/604 /var/lib/lxc/lxc-C/rootfs/tmp/
@@ -140,7 +143,7 @@ public class DoCompile {
 		// + serverConfig.getBinPath() + " base_java\" \"" + cmd_compile + "\"";
 		cmd_compile = "sudo " + lxc_attach + " " + serverConfig.getBinPath() + File.separator + "shell.exe " + "10 "
 				+ serverConfig.getJVM_MB() * 1024 * 1024 + " 100000000 \"" + "\"" + serverConfig.getBinPath()
-				+ File.separator + "base_c.exe \"" + cmd_compile + "\"";
+				+ File.separator + "base_c.exe\" \"" + cmd_compile + "\"";
 		RunCommand runCompile = new RunCommand(new String[]{"/bin/sh", "-c", cmd_compile}, 0);
 		runCompile.run();
 

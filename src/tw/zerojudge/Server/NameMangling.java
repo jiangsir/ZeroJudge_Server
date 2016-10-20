@@ -47,6 +47,10 @@ public class NameMangling implements Runnable {
 			if (cmd_nm.contains("$T")) {
 				cmd_nm = cmd_nm.replaceAll("\\$T", serverConfig.getTempPath().toString());
 			}
+			if (cmd_nm.contains("$C")) {
+				cmd_nm = cmd_nm.replaceAll("\\$C", serverInput.getCodename());
+			}
+
 			RunCommand nm = new RunCommand(new String[]{"/bin/sh", "-c", cmd_nm}, 0);
 			nm.run();
 			this.parseJavap7(nm, compiler);
@@ -56,6 +60,12 @@ public class NameMangling implements Runnable {
 			if (cmd_nm.contains("$S")) {
 				cmd_nm = cmd_nm.replaceAll("\\$S",
 						serverConfig.getTempPath() + File.separator + serverInput.getCodename());
+			}
+			if (cmd_nm.contains("$T")) {
+				cmd_nm = cmd_nm.replaceAll("\\$T", serverConfig.getTempPath().toString());
+			}
+			if (cmd_nm.contains("$C")) {
+				cmd_nm = cmd_nm.replaceAll("\\$C", serverInput.getCodename());
 			}
 			System.out.println("cmd_nm=" + cmd_nm);
 			RunCommand nm = new RunCommand(new String[]{"/bin/sh", "-c", cmd_nm}, 0);

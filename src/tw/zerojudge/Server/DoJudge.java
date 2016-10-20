@@ -95,6 +95,7 @@ public class DoJudge implements Runnable {
 			Compiler compiler = serverInput.getCompiler();
 			executeInput.setMemorylimit(serverInput.getMemorylimit());
 			executeInput.setTimelimit(timelimit * compiler.getTimeextension());
+
 			String cmd_execute = compiler.getCmd_execute();
 			if (cmd_execute.contains("$S")) {
 				cmd_execute = cmd_execute.replaceAll("\\$S",
