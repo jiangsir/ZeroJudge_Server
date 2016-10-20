@@ -129,12 +129,12 @@ public class DoCompile {
 		rsync_DoCompile.run();
 
 		String lxc_name = "lxc-" + serverInput.getLanguage().toUpperCase();
-		String lxc_path = "/var/lib/lxc/" + lxc_name + "/rootfs/tmp";
+		// String lxc_path = "/var/lib/lxc/" + lxc_name + "/rootfs/tmp";
 		// 執行 lxc 內的 shell.exe 要用 lxc-attach
 		String lxc_attach = "lxc-attach -n " + lxc_name + " --";
 
-		cmd_compile = "sudo " + lxc_attach + " " + lxc_path + serverConfig.getBinPath() + File.separator + "shell.exe "
-				+ "10 " + serverConfig.getJVM_MB() * 1024 * 1024 + " 100000000 \"" + "java -classpath "
+		cmd_compile = "sudo " + lxc_attach + " " + serverConfig.getBinPath() + File.separator + "shell.exe " + "10 "
+				+ serverConfig.getJVM_MB() * 1024 * 1024 + " 100000000 \"" + "java -classpath "
 				+ serverConfig.getBinPath() + " base_java\" \"" + cmd_compile + "\"";
 		RunCommand runCompile = new RunCommand(new String[]{"/bin/sh", "-c", cmd_compile}, 0);
 		runCompile.run();
