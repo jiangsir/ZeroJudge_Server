@@ -122,15 +122,6 @@ public class DoCompile {
 			cmd_compile = cmd_compile.replaceAll("\\$C", serverInput.getCodename());
 		}
 
-		// 將 DoCompile 相關檔案同步到 LXC 內。
-		// cmd= sudo rsync -av /tmp/604 /var/lib/lxc/lxc-C/rootfs/tmp/
-		RunCommand rsync_DoCompile = new RunCommand(new String[]{"/bin/sh", "-c",
-				"sudo " + serverConfig.getBinPath() + File.separator + "rsync_DoCompile.py "
-						+ serverInput.getLanguage().toUpperCase() + " " + serverConfig.getTempPath() + File.separator
-						+ serverInput.getSolutionid()},
-				0);
-		rsync_DoCompile.run();
-
 		String lxc_name = "lxc-" + serverInput.getLanguage().toUpperCase();
 		// String lxc_path = "/var/lib/lxc/" + lxc_name + "/rootfs/tmp";
 		// 執行 lxc 內的 shell.exe 要用 lxc-attach

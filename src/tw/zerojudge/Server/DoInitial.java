@@ -86,6 +86,15 @@ public class DoInitial {
 			new RunCommand(("sudo -u " + serverConfig.getRsyncAccount() + " dos2unix " + infile.getPath())).run();
 			new RunCommand(("sudo -u " + serverConfig.getRsyncAccount() + " dos2unix " + outfile.getPath())).run();
 
+			// 將 DoCompile 相關檔案同步到 LXC 內。
+			// cmd= sudo rsync -av /tmp/604 /var/lib/lxc/lxc-C/rootfs/tmp/
+			RunCommand rsync_DoCompile = new RunCommand(new String[]{"/bin/sh", "-c",
+					"sudo " + serverConfig.getBinPath() + File.separator + "rsync_DoInitial.py "
+							+ serverInput.getLanguage().toUpperCase() + " " + serverConfig.getTempPath()
+							+ File.separator + serverInput.getSolutionid()},
+					0);
+			rsync_DoCompile.run();
+
 		}
 
 	}
