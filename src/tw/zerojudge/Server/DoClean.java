@@ -16,16 +16,21 @@ import tw.zerojudge.Server.Configs.ServerConfig;
  */
 public class DoClean {
 	ServerConfig serverConfig = ConfigFactory.getServerConfig();
-	private String codename;
+	private String source_path;
+	private String language;
 
-	public DoClean(String codename) {
-		this.codename = codename;
+	public DoClean(String source_path, String language) {
+		this.source_path = source_path;
+		this.language = language;
 	}
 
 	public void run() {
-		File tempPath = serverConfig.getTempPath();
-		new RunCommand("rm -rf " + tempPath.getPath() + File.separator
-				+ this.codename + "*").run();
+		String lxc_name = "lxc-" + this.language.toUpperCase();
+		String lxc_attach = "lxc-attach -n " + lxc_name + " --";
+
+		String do_clean = "sudo " + lxc_attach + " " + "rm -rf " + source_path;
+
+		new RunCommand(do_clean).run();
 	}
 
 }

@@ -64,6 +64,12 @@ public class NameMangling implements Runnable {
 			if (cmd_nm.contains("$C")) {
 				cmd_nm = cmd_nm.replaceAll("\\$C", serverInput.getCodename());
 			}
+			String lxc_name = "lxc-" + serverInput.getLanguage().toUpperCase();
+			// String lxc_path = "/var/lib/lxc/" + lxc_name + "/rootfs/tmp";
+			// 執行 lxc 內的 shell.exe 要用 lxc-attach
+			String lxc_attach = "lxc-attach -n " + lxc_name + " --";
+			cmd_nm = "sudo " + lxc_attach + " " + cmd_nm;
+
 			System.out.println("cmd_nm=" + cmd_nm);
 			RunCommand nm = new RunCommand(new String[]{"/bin/sh", "-c", cmd_nm}, 0);
 			nm.run();
