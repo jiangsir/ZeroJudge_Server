@@ -107,7 +107,7 @@ public class DoCompile {
 			throw new JudgeException(compileOutput);
 		}
 
-		if ("".equals(serverInput.getCompiler().getCmd_compile())) {
+		if ("".equals(serverInput.getCompiler().getCmd_compile().trim())) {
 			logger.info("serverInput.getCompiler().getCmd_compile() 為空！" + serverInput.getLanguage() + " 不需編譯！");
 			return;
 		}

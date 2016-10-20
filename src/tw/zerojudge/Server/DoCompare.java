@@ -12,6 +12,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+
+import org.apache.commons.io.FileUtils;
+
 import tw.zerojudge.Server.Beans.ServerInput;
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
@@ -44,15 +47,18 @@ public class DoCompare {
 		compareOutput.setTimeusage(compareInput.getTimeusage());
 		compareOutput.setMemoryusage(compareInput.getMemoryusage());
 		System.out.println("compareOutput.getTimeusage()=" + compareOutput.getTimeusage());
+		String lxc_name = "lxc-" + serverInput.getLanguage().toUpperCase();
+		String lxc_path = "/var/lib/lxc/" + lxc_name + "/rootfs";
 
 		try {
-			FileInputStream system = new FileInputStream(new File(ConfigFactory.getServerConfig().getTestdataPath(),
-					compareInput.getTestfilename() + ".out"));
+			File testOutfile = new File(lxc_path + ConfigFactory.getServerConfig().getTestdataPath(),
+					compareInput.getTestfilename() + ".out");
+			FileInputStream system = new FileInputStream(testOutfile);
 			// FileInputStream user = new FileInputStream(
 			// new File(serverConfig.getTempPath(), compareInput.getCodename() +
 			// ".out"));
 			FileInputStream user = new FileInputStream(
-					new File(serverConfig.getTempPath() + File.separator + serverInput.getSolutionid(),
+					new File(lxc_path + serverConfig.getTempPath() + File.separator + serverInput.getSolutionid(),
 							compareInput.getCodename() + ".out"));
 
 			systemout = new BufferedReader(new InputStreamReader(system, "UTF-8"));
@@ -78,10 +84,11 @@ public class DoCompare {
 			compareOutput = this.StrictlyComparison(systemout, userout);
 			return compareOutput;
 		} else if (ServerInput.MODE.Special == compareInput.getMode()) {
-			File useroutfile = new File(serverConfig.getTempPath(), compareInput.getCodename() + ".out");
+			File useroutfile = new File(lxc_path + serverConfig.getTempPath(), compareInput.getCodename() + ".out");
 			compareOutput = this.SpecialComparison(
-					new File(serverConfig.getTestdataPath(), compareInput.getTestfilename() + ".in"),
-					new File(serverConfig.getTestdataPath(), compareInput.getTestfilename() + ".out"), useroutfile);
+					new File(lxc_path + serverConfig.getTestdataPath(), compareInput.getTestfilename() + ".in"),
+					new File(lxc_path + serverConfig.getTestdataPath(), compareInput.getTestfilename() + ".out"),
+					useroutfile);
 			try {
 				systemout.close();
 				userout.close();
