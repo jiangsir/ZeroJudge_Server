@@ -24,7 +24,7 @@ public class ServerConfig extends Config {
 	@Property(key = "CONSOLE_PATH")
 	private File CONSOLE_PATH = new File("/JudgeServer_CONSOLE/");
 	@Property(key = "JVM_MB")
-	private int JVM_MB = 1600;
+	private int JVM_MB = 2000;
 	@Property(key = "Servername")
 	private String servername = "ZeroJudgeServer";
 	@Property(key = "ServerOS")

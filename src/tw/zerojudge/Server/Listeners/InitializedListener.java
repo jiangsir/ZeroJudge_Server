@@ -24,25 +24,22 @@ public class InitializedListener implements ServletContextListener {
 
 			String osname = System.getProperty("os.name").toLowerCase();
 			if (osname.startsWith("windows")) {
-				ApplicationScope.getServerConfig().setTempPath(
-						new File(System.getenv("TMP")));
+				ApplicationScope.getServerConfig().setTempPath(new File(System.getenv("TMP")));
 				ENV.setCOMMAND(System.getenv("ComSpec"));
-				String[] s = ApplicationScope.getAppRoot().getPath()
-						.split("\\\\");
+				String[] s = ApplicationScope.getAppRoot().getPath().split("\\\\");
 				// ApplicationScope.setAppName(s[s.length - 1]);
 			} else if (osname.startsWith("linux")) {
-				ApplicationScope.getServerConfig().setTempPath(
-						new File(System.getProperty("java.io.tmpdir")));
+				// ApplicationScope.getServerConfig().setTempPath(
+				// new File(System.getProperty("java.io.tmpdir")));
+				ApplicationScope.getServerConfig().setTempPath(new File("/tmp"));
 				String[] s = ApplicationScope.getAppRoot().getPath().split("/");
 				// ApplicationScope.setAppName(s[s.length - 1]);
 			} else if (osname.startsWith("mac")) {
-				ApplicationScope.getServerConfig()
-						.setTempPath(new File("/tmp"));
+				ApplicationScope.getServerConfig().setTempPath(new File("/tmp"));
 				String[] s = ApplicationScope.getAppRoot().getPath().split("/");
 				// ApplicationScope.setAppName(s[s.length - 1]);
 			} else {
-				ApplicationScope.getServerConfig()
-						.setTempPath(new File("/tmp"));
+				ApplicationScope.getServerConfig().setTempPath(new File("/tmp"));
 				ApplicationScope.setAppName("UnknonOSUnknownAppName");
 			}
 

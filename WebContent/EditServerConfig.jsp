@@ -8,27 +8,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>${applicationScope.serverConfig.servername}</title>
-<%-- <jsp:include page="include/CommonHead.jsp" />
- --%>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-<!-- 選擇性佈景主題 -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-<script
-	src=https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js></script>
-<!-- 最新編譯和最佳化的 JavaScript -->
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
-<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css">
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
+<jsp:include page="include/CommonHead.jsp" />
 <script type="text/javascript" src="EditServerConfig.js"></script>
 </head>
 
@@ -104,6 +84,15 @@
                     CPP -&gt; cpp, PASCAL -&gt; pascal。輸入測資為 .in，輸出測資為 .out
  -->
 					</p>
+					<div class="panel panel-warning">
+						<div class="panel-heading">
+							<h3 class="panel-title">編譯器設定注意事項：</h3>
+						</div>
+						<div class="panel-body">在此處「新增程式語言」並不能直接使用，僅僅是增加一個編譯器的設定而已，要能夠真正使用，仍必須進入「裁判機」的系統內建立相對應的
+							LXC 容器，並安裝好編譯器才行。</div>
+					</div>
+
+
 					<!--                <p>
                     <strong>編譯命令： </strong><br /> C++ 編譯指令 g++ -lm -lcrypt -O2 -pipe
                     -DONLINE_JUDGE -o mycode.exe mycode.cpp <br /> 則可以標示為 g++ -lm

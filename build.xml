@@ -72,6 +72,7 @@
 		<chmod file="${CONSOLE}/Bin/*.exe" perm="+x" type="both" />
 		<chmod file="${CONSOLE}/Bin/*.sh" perm="+x" type="both" />
 		<chmod file="${CONSOLE}/Bin/*.class" perm="+x" type="both" />
+        <chmod file="${CONSOLE}/Bin/*.py" perm="+x" type="both" />
 	</target>
 
 	<target name="makewar">

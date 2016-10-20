@@ -118,7 +118,17 @@ public class DoCompile {
 			cmd_compile = cmd_compile.replaceAll("\\$S", serverConfig.getTempPath() + File.separator
 					+ serverInput.getSolutionid() + File.separator + serverInput.getCodename());
 		}
-		cmd_compile = "" + serverConfig.getBinPath() + File.separator + "shell.exe " + "10 "
+
+		// 將 DoCompile 相關檔案同步到 LXC 內。
+		RunCommand rsync_DoCompile = new RunCommand(new String[]{"/bin/sh", "-c",
+				"rsync_DoCompile.py " + serverInput.getLanguage().toUpperCase() + " " + serverConfig.getTempPath()
+						+ File.separator + serverInput.getSolutionid() + File.separator + serverInput.getCodename()
+						+ ".c"},
+				0);
+		rsync_DoCompile.run();
+
+		String lxc_path = "/var/lib/lxc/lxc-" + serverInput.getLanguage().toUpperCase() + "/rootfs/tmp";
+		cmd_compile = lxc_path + serverConfig.getBinPath() + File.separator + "shell.exe " + "10 "
 				+ serverConfig.getJVM_MB() * 1024 * 1024 + " 100000000 \"" + "java -classpath "
 				+ serverConfig.getBinPath() + " base_java\" \"" + cmd_compile + "\"";
 		RunCommand runCompile = new RunCommand(new String[]{"/bin/sh", "-c", cmd_compile}, 0);
