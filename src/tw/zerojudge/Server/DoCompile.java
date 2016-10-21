@@ -107,11 +107,6 @@ public class DoCompile {
 			throw new JudgeException(compileOutput);
 		}
 
-		if ("".equals(serverInput.getCompiler().getCmd_compile().trim())) {
-			logger.info("serverInput.getCompiler().getCmd_compile() 為空！" + serverInput.getLanguage() + " 不需編譯！");
-			return;
-		}
-
 		Compiler compiler = serverInput.getCompiler();
 		String cmd_compile = compiler.getCmd_compile();
 		if (cmd_compile.contains("$S")) {
@@ -120,6 +115,20 @@ public class DoCompile {
 		}
 		if (cmd_compile.contains("$C")) {
 			cmd_compile = cmd_compile.replaceAll("\\$C", serverInput.getCodename());
+		}
+
+		// 將 DoCompile 相關檔案同步到 LXC 內。
+		// cmd= sudo rsync -av /tmp/604 /var/lib/lxc/lxc-C/rootfs/tmp/
+		RunCommand rsync_DoCompile = new RunCommand(new String[]{"/bin/sh", "-c",
+				"sudo " + serverConfig.getBinPath() + File.separator + "rsync_DoInitial.py " + "\""
+						+ serverConfig.getTempPath() + File.separator + serverInput.getSolutionid() + "\""},
+				0);
+		rsync_DoCompile.run();
+
+		// 判斷是否需要編譯，要放在 rsync_DoInitial.py 後面，否則 source 不會進入到 lxc
+		if ("".equals(serverInput.getCompiler().getCmd_compile().trim())) {
+			logger.info("serverInput.getCompiler().getCmd_compile() 為空！" + serverInput.getLanguage() + " 不需編譯！");
+			return;
 		}
 
 		// String lxc_name = "lxc-" + serverInput.getLanguage().toUpperCase();
