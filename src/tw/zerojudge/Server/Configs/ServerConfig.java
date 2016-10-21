@@ -147,7 +147,7 @@ public class ServerConfig extends Config {
 				"var s : string;\r\nbegin\r\nwhile not eof do begin\r\nreadln(s);\r\nwriteln('hello, ',s);\r\nend;\r\nend.");
 		pascal.setCommand_begin("");
 		pascal.setCmd_compile("fpc -o$S/$C.exe -Sg $S/$C.pas");
-		pascal.setCmd_namemangling("nm -A $S.o");
+		pascal.setCmd_namemangling("nm -A $S/$C.o");
 		pascal.setCmd_execute("$S/$C.exe &lt; $T &gt; $S/$C.out");
 		pascal.setCmd_makeobject("");
 		pascal.setTimeextension(1.0);

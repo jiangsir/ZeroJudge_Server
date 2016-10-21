@@ -90,8 +90,7 @@ public class DoInitial {
 			// cmd= sudo rsync -av /tmp/604 /var/lib/lxc/lxc-C/rootfs/tmp/
 			RunCommand rsync_DoCompile = new RunCommand(new String[]{"/bin/sh", "-c",
 					"sudo " + serverConfig.getBinPath() + File.separator + "rsync_DoInitial.py "
-							+ serverInput.getLanguage().toUpperCase() + " " + serverConfig.getTempPath()
-							+ File.separator + serverInput.getSolutionid()},
+							+ serverConfig.getTempPath() + File.separator + serverInput.getSolutionid()},
 					0);
 			rsync_DoCompile.run();
 
