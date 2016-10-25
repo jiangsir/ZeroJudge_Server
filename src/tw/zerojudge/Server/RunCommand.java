@@ -5,7 +5,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Logger;
 
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
@@ -26,6 +29,7 @@ public class RunCommand implements Runnable {
 	public int exitCode = -1;
 	private double timelimit = 0;
 	public boolean isInterrupted = false;
+	Logger logger = Logger.getAnonymousLogger();
 
 	public RunCommand(String[] command, long delay) {
 		this.command = command;
@@ -38,12 +42,38 @@ public class RunCommand implements Runnable {
 	}
 
 	public RunCommand(String command) {
-		this.command = new String[] { "/bin/sh", "-c", command };
+		this.command = new String[]{"/bin/sh", "-c", command};
 		this.delay = 0;
 	}
 
 	public void setTimelimit(double timelimit) {
 		this.timelimit = timelimit;
+	}
+	/**
+	 * 採用 processBuilder
+	 * 
+	 * @throws IOException
+	 */
+	public void start(String cmd) {
+		try {
+			Thread.sleep(delay);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+			return;
+		}
+		if (this.isInterrupted) {
+			return;
+		}
+		long starttime = System.currentTimeMillis();
+		List<String> commandList = new ArrayList<String>();
+		for (String s : cmd.split(" "))
+			commandList.add(s);
+		ProcessBuilder pb = new ProcessBuilder(commandList);
+		try {
+			pb.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void run() {
@@ -57,16 +87,15 @@ public class RunCommand implements Runnable {
 			return;
 		}
 
-		long starttime = new Date().getTime();
+		long starttime = System.currentTimeMillis();
 		Runtime rt = Runtime.getRuntime();
 		Process process;
 		try {
-			System.out.println("command=" + command[2]);
+			logger.info("command=" + command[2]);
 			process = rt.exec(command);
 		} catch (IOException e) {
 			e.printStackTrace();
-			cause.setResourceMessage(
-					ServerOutput.REASON.SYSTEMERROR.toString());
+			cause.setResourceMessage(ServerOutput.REASON.SYSTEMERROR.toString());
 			cause.setPlainMessage("runtime exec IOException!!");
 			return;
 		}
@@ -82,8 +111,7 @@ public class RunCommand implements Runnable {
 			watchcause = watch.getCause();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-			cause.setResourceMessage(
-					ServerOutput.REASON.SYSTEMERROR.toString());
+			cause.setResourceMessage(ServerOutput.REASON.SYSTEMERROR.toString());
 			cause.setPlainMessage("Interrupted Exception!!");
 			return;
 		}
@@ -101,37 +129,30 @@ public class RunCommand implements Runnable {
 		InputStream stderr = process.getErrorStream();
 		try {
 			String s = null;
-			LineNumberReader err = new LineNumberReader(
-					new InputStreamReader(stderr));
-			while ((s = err.readLine()) != null
-					&& this.errorStream.size() < 500) {
+			LineNumberReader err = new LineNumberReader(new InputStreamReader(stderr));
+			while ((s = err.readLine()) != null && this.errorStream.size() < 500) {
 				this.errorStream.add(s);
 			}
 			System.out.println("errorString=" + this.getErrorString());
 			err.close();
-			LineNumberReader in = new LineNumberReader(
-					new InputStreamReader(stdin));
+			LineNumberReader in = new LineNumberReader(new InputStreamReader(stdin));
 			String outstring = null;
-			while ((outstring = in.readLine()) != null
-					&& this.outputStream.size() < 500) {
+			while ((outstring = in.readLine()) != null && this.outputStream.size() < 500) {
 				this.outputStream.add(outstring);
 			}
 			System.out.println("outputString=" + this.getOutputString());
 			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			cause.setResourceMessage(
-					ServerOutput.REASON.SYSTEMERROR.toString());
+			cause.setResourceMessage(ServerOutput.REASON.SYSTEMERROR.toString());
 			cause.setPlainMessage("IOException: " + e.getLocalizedMessage());
 			return;
 		}
 
 		if (process.exitValue() != 0) {
-			cause.setResourceMessage(
-					ServerOutput.REASON.SYSTEMERROR.toString());
-			cause.setPlainMessage("程序已被終止！ exit code=" + this.exitCode
-					+ ", exitValue=" + process.exitValue() + ", errorString="
-					+ this.getErrorString());
+			cause.setResourceMessage(ServerOutput.REASON.SYSTEMERROR.toString());
+			cause.setPlainMessage("程序已被終止！ exit code=" + this.exitCode + ", exitValue=" + process.exitValue()
+					+ ", errorString=" + this.getErrorString());
 			cause.setExitCode(process.exitValue());
 			return;
 		}

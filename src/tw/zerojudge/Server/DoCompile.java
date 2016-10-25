@@ -119,9 +119,15 @@ public class DoCompile {
 
 		// 將 DoCompile 相關檔案同步到 LXC 內。
 		// cmd= sudo rsync -av /tmp/604 /var/lib/lxc/lxc-C/rootfs/tmp/
-		RunCommand rsync_DoCompile = new RunCommand("sudo " + serverConfig.getBinPath() + File.separator
-				+ "rsync_DoInitial.py " + serverConfig.getTempPath() + File.separator + serverInput.getSolutionid());
-		rsync_DoCompile.run();
+		
+		
+		// RunCommand rsync_DoCompile = new RunCommand("sudo " +
+		// serverConfig.getBinPath() + File.separator
+		// + "rsync_DoInitial.py " + serverConfig.getTempPath() + File.separator
+		// + serverInput.getSolutionid());
+		// rsync_DoCompile.run();
+		new RunCommand("").start("sudo " + serverConfig.getBinPath() + File.separator + "rsync_DoInitial.py "
+				+ serverConfig.getTempPath() + File.separator + serverInput.getSolutionid());
 
 		// 判斷是否需要編譯，要放在 rsync_DoInitial.py 後面，否則 source 不會進入到 lxc
 		if ("".equals(serverInput.getCompiler().getCmd_compile().trim())) {
