@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.IOUtils;
+
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;
@@ -71,7 +73,9 @@ public class RunCommand implements Runnable {
 		logger.info("cmd=" + cmd);
 		ProcessBuilder pb = new ProcessBuilder(commandList);
 		try {
-			pb.start();
+			Process p1 = pb.start();
+			String output1 = IOUtils.toString(p1.getInputStream());
+			logger.info("OUTPUT1:n" + output1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
