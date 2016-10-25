@@ -8,6 +8,7 @@ package tw.zerojudge.Server;
 import java.util.logging.Logger;
 
 import tw.zerojudge.Server.Beans.ServerOutput;
+import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Exceptions.JudgeException;
 import tw.zerojudge.Server.Object.ExecuteInput;
 import tw.zerojudge.Server.Object.ExecuteOutput;
@@ -32,7 +33,7 @@ public class DoExecute {
 		String cmd = executeInput.getCommand();
 		// String lxc_name = "lxc-" +
 		// executeInput.getCompiler().getLanguage().toUpperCase();
-		String lxc_attach = "lxc-attach -n lxc-ALL --";
+		String lxc_attach = "lxc-attach -n " + ConfigFactory.getServerConfig().getLxc_NAME() + " --";
 
 		cmd = "sudo " + lxc_attach + " sudo -u nobody " + cmd;
 		logger.info("DoExecute: " + cmd);

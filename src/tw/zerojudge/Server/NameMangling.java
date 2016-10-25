@@ -68,7 +68,7 @@ public class NameMangling implements Runnable {
 			// serverInput.getLanguage().toUpperCase();
 			// String lxc_path = "/var/lib/lxc/" + lxc_name + "/rootfs/tmp";
 			// 執行 lxc 內的 shell.exe 要用 lxc-attach
-			String lxc_attach = "lxc-attach -n lxc-ALL --";
+			String lxc_attach = "lxc-attach -n " + serverConfig.getLxc_NAME() + " --";
 			cmd_nm = "sudo " + lxc_attach + " " + cmd_nm;
 
 			System.out.println("cmd_nm=" + cmd_nm);

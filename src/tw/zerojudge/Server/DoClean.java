@@ -24,7 +24,7 @@ public class DoClean {
 
 	public void run() {
 		// String lxc_name = "lxc-" + this.language.toUpperCase();
-		String lxc_attach = "lxc-attach -n lxc-ALL --";
+		String lxc_attach = "lxc-attach -n " + serverConfig.getLxc_NAME() + " --";
 
 		String do_clean = "sudo " + lxc_attach + " " + "rm -rf " + source_path;
 

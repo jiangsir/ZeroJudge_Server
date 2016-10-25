@@ -125,10 +125,10 @@ public class DoCompile {
 		// + "rsync_DoInitial.py " + serverConfig.getTempPath() + File.separator
 		// + serverInput.getSolutionid());
 		// rsync_DoCompile.run();
-		String lxc_NAME = "lxc-ALL";
+
 		new RunCommand("").start("sudo " + serverConfig.getBinPath() + File.separator + "rsync_DoInitial.py "
 				+ serverConfig.getTempPath() + File.separator + serverInput.getSolutionid() + " "
-				+ serverInput.getProblemid() + " " + serverConfig.getCONSOLE_PATH() + " " + lxc_NAME);
+				+ serverInput.getProblemid() + " " + serverConfig.getCONSOLE_PATH() + " " + serverConfig.getLxc_NAME());
 
 		// 判斷是否需要編譯，要放在 rsync_DoInitial.py 後面，否則 source 不會進入到 lxc
 		if ("".equals(serverInput.getCompiler().getCmd_compile().trim())) {
@@ -146,7 +146,7 @@ public class DoCompile {
 		// -classpath "
 		// + serverConfig.getBinPath() + " base_java\" \"" + cmd_compile + "\"";
 
-		String lxc_attach = "lxc-attach -n lxc-ALL -- sudo -u nobody";
+		String lxc_attach = "lxc-attach -n " + serverConfig.getLxc_NAME() + " -- sudo -u nobody";
 		cmd_compile = "sudo " + lxc_attach + " " + serverConfig.getBinPath() + File.separator + "shell.exe " + "10 "
 				+ serverConfig.getJVM_MB() * 1024 * 1024 + " 100000000 \"" + serverConfig.getBinPath() + File.separator
 				+ "base_c.exe\" \"" + cmd_compile + "\"";
