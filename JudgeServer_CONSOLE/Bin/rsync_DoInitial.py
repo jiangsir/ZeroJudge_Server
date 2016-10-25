@@ -8,14 +8,14 @@ if(len(sys.argv) != 3):
 
 source = sys.argv[1]
 problemid = sys.argv[2]
-path_Testdata = "/JudgeServer_CONSOLE/Testdata/" + problemid
+path_Testdata = "/JudgeServer_CONSOLE/Testdata"
 
 lxc_path = "/var/lib/lxc/lxc-ALL/rootfs/"
 
 print("IN LXC start")
 print(sys.argv[0] + " | " + sys.argv[1])
 
-rsync_Testdata = "rsync -avR " + path_Testdata + " " + lxc_path
+rsync_Testdata = "rsync -avR " + path_Testdata + "/" + problemid + " " + lxc_path
 print(rsync_Testdata)
 os.system(rsync_Testdata)
 
