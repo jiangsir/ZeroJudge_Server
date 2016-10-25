@@ -42,6 +42,10 @@
 							value="${serverConfig.CONSOLE_PATH}" size="100" />
 					</div>
 					<div>
+						LXC 容器名稱：<input name="Lxc_NAME" value="${serverConfig.lxc_NAME}"
+							size="100" />
+					</div>
+					<div>
 						JVM 預留記憶體容量：<input name="JVM_MB" value="${serverConfig.JVM_MB}" />MB<br />
 						<div>若遇到一下狀況，請加大預留記憶體容量：</div>
 						<div>Error occurred during initialization of VM Could not

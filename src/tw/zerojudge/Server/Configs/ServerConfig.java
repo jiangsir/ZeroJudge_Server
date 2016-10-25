@@ -23,6 +23,8 @@ public class ServerConfig extends Config {
 	private Compiler[] Compilers = new Compiler[]{};
 	@Property(key = "CONSOLE_PATH")
 	private File CONSOLE_PATH = new File("/JudgeServer_CONSOLE/");
+	@Property(key = "Lxc_NAME")
+	private String Lxc_NAME = "lxc-ALL";
 	@Property(key = "JVM_MB")
 	private int JVM_MB = 2000;
 	@Property(key = "Servername")
@@ -204,7 +206,7 @@ public class ServerConfig extends Config {
 	}
 
 	@JsonIgnore
-	public KNOWNED_LANGUAGE[] getSUPPORT_LANGUAGES() {
+	public KNOWNED_LANGUAGE[] getKNOWNED_LANGUAGES() {
 		return KNOWNED_LANGUAGE.values();
 	}
 
@@ -214,6 +216,8 @@ public class ServerConfig extends Config {
 	}
 
 	public void setCONSOLE_PATH(String CONSOLE_PATH) {
+		if (CONSOLE_PATH == null)
+			return;
 		this.setCONSOLE_PATH(new File(CONSOLE_PATH));
 	}
 
@@ -267,6 +271,19 @@ public class ServerConfig extends Config {
 		TempPath = tempPath;
 	}
 
+	@JsonIgnore
+	public String getLxc_NAME() {
+		return Lxc_NAME;
+	}
+
+	@JsonIgnore
+	public void setLxc_NAME(String lxc_NAME) {
+		if (lxc_NAME == null) {
+			return;
+		}
+		Lxc_NAME = lxc_NAME;
+	}
+
 	public int getJVM_MB() {
 		return JVM_MB;
 	}
@@ -287,6 +304,9 @@ public class ServerConfig extends Config {
 	}
 
 	public void setServername(String servername) {
+		if (servername == null) {
+			return;
+		}
 		this.servername = servername;
 	}
 
@@ -295,6 +315,8 @@ public class ServerConfig extends Config {
 	}
 
 	public void setServerOS(String serverOS) {
+		if (serverOS == null)
+			return;
 		this.serverOS = serverOS;
 	}
 
@@ -303,6 +325,8 @@ public class ServerConfig extends Config {
 	}
 
 	public void setServerInfo(String serverInfo) {
+		if (serverInfo == null)
+			return;
 		this.serverInfo = serverInfo;
 	}
 

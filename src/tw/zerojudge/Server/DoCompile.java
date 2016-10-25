@@ -125,9 +125,10 @@ public class DoCompile {
 		// + "rsync_DoInitial.py " + serverConfig.getTempPath() + File.separator
 		// + serverInput.getSolutionid());
 		// rsync_DoCompile.run();
+		String lxc_NAME = "lxc-ALL";
 		new RunCommand("").start("sudo " + serverConfig.getBinPath() + File.separator + "rsync_DoInitial.py "
 				+ serverConfig.getTempPath() + File.separator + serverInput.getSolutionid() + " "
-				+ serverInput.getProblemid());
+				+ serverInput.getProblemid() + " " + serverConfig.getCONSOLE_PATH() + " " + lxc_NAME);
 
 		// 判斷是否需要編譯，要放在 rsync_DoInitial.py 後面，否則 source 不會進入到 lxc
 		if ("".equals(serverInput.getCompiler().getCmd_compile().trim())) {

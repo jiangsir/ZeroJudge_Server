@@ -31,6 +31,7 @@ public class EditServerConfigServlet extends HttpServlet {
 		serverConfig.setServerOS(request.getParameter("ServerOS"));
 		serverConfig.setServerInfo(request.getParameter("ServerInfo"));
 		serverConfig.setCONSOLE_PATH(request.getParameter("CONSOLE_PATH"));
+		serverConfig.setLxc_NAME(request.getParameter("Lxc_NAME"));
 		serverConfig.setJVM_MB(request.getParameter("JVM_MB"));
 		serverConfig.setRsyncAccount(request.getParameter("rsyncAccount"));
 		serverConfig.setSshport(request.getParameter("sshport"));
