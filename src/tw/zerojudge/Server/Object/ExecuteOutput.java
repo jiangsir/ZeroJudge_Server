@@ -18,6 +18,7 @@ public class ExecuteOutput extends Throwable {
 	private static final long serialVersionUID = 1L;
 	private ServerOutput.JUDGEMENT judgement = ServerOutput.JUDGEMENT.SE;
 	private String info = "";
+	private String debug = ""; // debug 專用，使用者頁面不會顯示。 debugger 應該看到。
 	private ServerOutput.REASON reason = ServerOutput.REASON.SYSTEMERROR;
 	private int exitstatus = -1;
 	private long timeusage = -1;
@@ -63,6 +64,14 @@ public class ExecuteOutput extends Throwable {
 
 	public void setInfo(String info) {
 		this.info = info;
+	}
+
+	public String getDebug() {
+		return debug;
+	}
+
+	public void setDebug(String debug) {
+		this.debug = debug;
 	}
 
 	public long getTimeusage() {
