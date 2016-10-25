@@ -152,6 +152,8 @@ public class DoCompile {
 				+ "base_c.exe\" \"" + cmd_compile + "\"";
 		RunCommand runCompile = new RunCommand(new String[]{"/bin/sh", "-c", cmd_compile}, 0);
 		runCompile.run();
+		compileOutput.setDebug(
+				"OutputString=" + runCompile.getOutputString() + "\nErrorString=" + runCompile.getErrorString());
 
 		Rusage rusage = new Rusage(runCompile);
 
