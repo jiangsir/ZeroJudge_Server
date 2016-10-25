@@ -11,11 +11,11 @@ lxc_path = "/var/lib/lxc/lxc-ALL/rootfs/"
 
 print("IN LXC start")
 print(sys.argv[0] + " | " + sys.argv[1])
-rsync_CONSOLE = "rsync -av /JudgeServer_CONSOLE " + lxc_path
+rsync_CONSOLE = "rsync -avR /JudgeServer_CONSOLE " + lxc_path
 print(rsync_CONSOLE)
 os.system(rsync_CONSOLE)
 
-rsync_source = "rsync -av " + source + " " + lxc_path 
+rsync_source = "rsync -avR " + source + " " + lxc_path 
 print(rsync_source)
 os.system(rsync_source)
 

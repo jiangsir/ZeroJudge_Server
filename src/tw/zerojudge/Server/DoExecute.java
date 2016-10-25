@@ -34,8 +34,7 @@ public class DoExecute {
 		// executeInput.getCompiler().getLanguage().toUpperCase();
 		String lxc_attach = "lxc-attach -n lxc-ALL --";
 
-		cmd = "sudo " + lxc_attach + " " + cmd;
-		cmd += "sudo -u zero" + cmd; // LXC 內執行指令。
+		cmd = "sudo " + lxc_attach + " sudo -u zero " + cmd;
 		logger.info("DoExecute: " + cmd);
 		RunCommand execute = new RunCommand(new String[]{"/bin/sh", "-c", cmd}, 0);
 		execute.setTimelimit(executeInput.getTimelimit());
