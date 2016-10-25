@@ -68,6 +68,7 @@ public class RunCommand implements Runnable {
 		List<String> commandList = new ArrayList<String>();
 		for (String s : cmd.split(" "))
 			commandList.add(s);
+		logger.info("cmd=" + cmd);
 		ProcessBuilder pb = new ProcessBuilder(commandList);
 		try {
 			pb.start();
