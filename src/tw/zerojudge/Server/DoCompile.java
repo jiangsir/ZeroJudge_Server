@@ -161,6 +161,7 @@ public class DoCompile {
 			compileOutput.setInfo("");
 			compileOutput.setReason(ServerOutput.REASON.FORCED_STOP);
 			compileOutput.setHint("編譯程式被強制結束！");
+			compileOutput.setDebug(runCompile.getErrorString());
 			throw new JudgeException(compileOutput);
 		} else if ("0".equals(WEXITSTATUS)) {
 		} else if ("1".equals(WEXITSTATUS)) {
@@ -170,18 +171,21 @@ public class DoCompile {
 				compileOutput.setInfo("");
 				compileOutput.setReason(ServerOutput.REASON.COMPILE_TOO_LONG);
 				compileOutput.setHint(rusage.getErrmsg());
+				compileOutput.setDebug(runCompile.getErrorString());
 				throw new JudgeException(compileOutput);
 			} else if (rusage.getErrmsg().contains("should be declared in a file named")) {
 				compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);
 				compileOutput.setInfo("");
 				compileOutput.setReason(ServerOutput.REASON.WRONG_JAVA_CLASS);
 				compileOutput.setHint(rusage.getErrmsg());
+				compileOutput.setDebug(runCompile.getErrorString());
 				throw new JudgeException(compileOutput);
 			} else {
 				compileOutput.setJudgement(ServerOutput.JUDGEMENT.CE);
 				compileOutput.setInfo("");
 				compileOutput.setReason(ServerOutput.REASON.COMPILE_ERROR);
 				compileOutput.setHint(rusage.getErrmsg());
+				compileOutput.setDebug(runCompile.getErrorString());
 				throw new JudgeException(compileOutput);
 			}
 		} else {
@@ -189,6 +193,7 @@ public class DoCompile {
 			compileOutput.setInfo("");
 			compileOutput.setReason(ServerOutput.REASON.SYSTEMERROR_WHEN_COMPILE);
 			compileOutput.setHint(rusage.getErrmsg());
+			compileOutput.setDebug(runCompile.getErrorString());
 			throw new JudgeException(compileOutput);
 		}
 	}

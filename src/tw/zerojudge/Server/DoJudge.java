@@ -12,7 +12,6 @@ import tw.zerojudge.Server.Beans.ServerInput;
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;
-import tw.zerojudge.Server.Configs.ServerConfig.KNOWNED_LANGUAGE;
 import tw.zerojudge.Server.Exceptions.JudgeException;
 import tw.zerojudge.Server.Factories.ServerFactory;
 import tw.zerojudge.Server.Object.*;
@@ -50,6 +49,7 @@ public class DoJudge implements Runnable {
 			serverOutputs[0].setJudgement(output.getJudgement());
 			serverOutputs[0].setReason(output.getReason());
 			serverOutputs[0].setHint(output.getHint());
+			serverOutputs[0].setDebug(output.getDebug());
 			return;
 		}
 
@@ -58,12 +58,12 @@ public class DoJudge implements Runnable {
 		} catch (JudgeException e) {
 			e.printStackTrace();
 			CompileOutput compileOutput = (CompileOutput) e.getCause();
-
 			serverOutputs[0] = ServerFactory.newServerOutputFromInput(serverInput);
 			serverOutputs[0].setJudgement(compileOutput.getJudgement());
 			serverOutputs[0].setInfo(compileOutput.getInfo());
 			serverOutputs[0].setReason(compileOutput.getReason());
 			serverOutputs[0].setHint(compileOutput.getHint());
+			serverOutputs[0].setDebug(compileOutput.getDebug());
 			serverOutputs[0].setScore(0);
 			return;
 		}
@@ -78,6 +78,7 @@ public class DoJudge implements Runnable {
 			serverOutputs[0].setInfo(nmOutput.getInfo());
 			serverOutputs[0].setReason(nmOutput.getReason());
 			serverOutputs[0].setHint(nmOutput.getHint());
+			serverOutputs[0].setDebug(nmOutput.getDebug());
 			return;
 		}
 		String source_path = serverConfig.getTempPath() + File.separator + serverInput.getSolutionid();
@@ -164,59 +165,6 @@ public class DoJudge implements Runnable {
 						+ serverConfig.getBinPath() + File.separator + base + "\" \"" + cmd_execute + "\" ";
 			}
 
-			// switch (serverInput.getLanguage()) {
-			// case C :
-			// command = serverConfig.getBinPath() + File.separator + "shell.exe
-			// "
-			// + (int) Math.ceil(executeInput.getTimelimit()) + " "
-			// + executeInput.getMemorylimit() * 1024 * 1024 + " " +
-			// outfilelimit + " \""
-			// + serverConfig.getBinPath() + File.separator + "base_c.exe\" \""
-			// + serverConfig.getTempPath() + File.separator +
-			// serverInput.getSolutionid() + File.separator
-			// + serverInput.getCodename() + ".exe < " +
-			// serverConfig.getTestdataPath() + File.separator
-			// + serverInput.getTestfiles()[i] + ".in > " +
-			// serverConfig.getTempPath() + File.separator
-			// + serverInput.getCodename() + ".out\" ";
-			// break;
-			// case CPP :
-			// break;
-			// case JAVA :
-			// break;
-			// case PASCAL :
-			// command = "" + serverConfig.getBinPath() + File.separator +
-			// "shell.exe "
-			// + (int) Math.ceil(executeInput.getTimelimit()) + " "
-			// + executeInput.getMemorylimit() * 1024 * 1024 + " " +
-			// outfilelimit + " \""
-			// + serverConfig.getBinPath() + File.separator + "base_pas.exe\"
-			// \""
-			// + serverConfig.getTempPath() + File.separator +
-			// serverInput.getSolutionid() + File.separator
-			// + serverInput.getCodename() + ".exe < " +
-			// serverConfig.getTestdataPath() + File.separator
-			// + serverInput.getTestfiles()[i] + ".in > " +
-			// serverConfig.getTempPath() + File.separator
-			// + serverInput.getCodename() + ".out\" ";
-			// break;
-			// default :
-			// command = serverConfig.getBinPath() + File.separator + "shell.exe
-			// "
-			// + (int) Math.ceil(executeInput.getTimelimit()) + " "
-			// + executeInput.getMemorylimit() * 1024 * 1024 + " " +
-			// outfilelimit + " \""
-			// + serverConfig.getBinPath() + File.separator + "base_c.exe\" \""
-			// + serverConfig.getTempPath() + File.separator +
-			// serverInput.getSolutionid() + File.separator
-			// + serverInput.getCodename() + ".exe < " +
-			// serverConfig.getTestdataPath() + File.separator
-			// + serverInput.getTestfiles()[i] + ".in > " +
-			// serverConfig.getTempPath() + File.separator
-			// + serverInput.getCodename() + ".out\" ";
-			// break;
-			// }
-
 			executeInput.setCommand(command);
 			executeInput.setCompiler(serverInput.getCompiler());
 			executeInput.setSession_account(serverInput.getSession_account());
@@ -237,6 +185,7 @@ public class DoJudge implements Runnable {
 				serverOutputs[i].setInfo(executeOutput.getInfo());
 				serverOutputs[i].setReason(executeOutput.getReason());
 				serverOutputs[i].setHint(executeOutput.getHint());
+				serverOutputs[i].setDebug(executeOutput.getDebug());
 				continue;
 			}
 

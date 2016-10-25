@@ -20,6 +20,7 @@ public class NameManglingOutput extends Throwable {
 	private String info = "";
 	private ServerOutput.REASON reason = ServerOutput.REASON.SYSTEMERROR;
 	private String hint = "";
+	private String debug = "";
 
 	public ServerOutput.JUDGEMENT getJudgement() {
 		return judgement;
@@ -51,6 +52,14 @@ public class NameManglingOutput extends Throwable {
 
 	public void setHint(String hint) {
 		this.hint = hint;
+	}
+
+	public String getDebug() {
+		return debug;
+	}
+
+	public void setDebug(String debug) {
+		this.debug = debug;
 	}
 
 }

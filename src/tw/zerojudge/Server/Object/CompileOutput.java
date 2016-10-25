@@ -20,6 +20,7 @@ public class CompileOutput extends Throwable {
 	private String info = "";
 	private ServerOutput.REASON reason = ServerOutput.REASON.SYSTEMERROR;
 	private String hint = "";
+	private String debug = "";
 	private int exitstatus = -1;
 
 	public ServerOutput.JUDGEMENT getJudgement() {
@@ -63,6 +64,14 @@ public class CompileOutput extends Throwable {
 			return;
 		}
 		this.hint += hint + "\n";
+	}
+
+	public String getDebug() {
+		return debug;
+	}
+
+	public void setDebug(String debug) {
+		this.debug = debug;
 	}
 
 }

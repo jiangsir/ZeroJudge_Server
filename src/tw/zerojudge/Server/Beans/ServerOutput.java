@@ -82,6 +82,7 @@ public class ServerOutput {
 	private String info = "";
 	private REASON reason = REASON.SYSTEMERROR;
 	private String hint = null;
+	private String debug = "";
 	private Long timeusage = 0L;
 	private Integer memoryusage = 0;
 	private Integer exefilesize = 0;
@@ -184,6 +185,14 @@ public class ServerOutput {
 			hint = hint.substring(0, max_length - 1);
 			this.hint = hint + "...訊息太長省略。";
 		}
+	}
+
+	public String getDebug() {
+		return debug;
+	}
+
+	public void setDebug(String debug) {
+		this.debug = debug;
 	}
 
 	public void setExefilesize(Integer exefilesize) {

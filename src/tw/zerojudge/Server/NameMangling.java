@@ -13,6 +13,7 @@ import tw.zerojudge.Server.Beans.ServerInput;
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;
+import tw.zerojudge.Server.Configs.ServerConfig.KNOWNED_LANGUAGE;
 import tw.zerojudge.Server.Exceptions.JudgeException;
 import tw.zerojudge.Server.Object.NameManglingOutput;
 import tw.zerojudge.Server.Object.Compiler;
@@ -39,7 +40,7 @@ public class NameMangling implements Runnable {
 		if ("".equals(compiler.getCmd_namemangling())) {
 			return "";
 		}
-		if (serverInput.getCompiler().getLanguage().equals("JAVA")) {
+		if (serverInput.getCompiler().getLanguage().equals(KNOWNED_LANGUAGE.JAVA.name())) {
 			String cmd_nm = compiler.getCmd_namemangling();
 			if (cmd_nm.contains("$S")) {
 				cmd_nm = cmd_nm.replaceAll("\\$S", serverInput.getCodename());
@@ -90,6 +91,7 @@ public class NameMangling implements Runnable {
 						nmoutput.setInfo("");
 						nmoutput.setReason(ServerOutput.REASON.RF);
 						nmoutput.setHint("不允許使用 " + function.trim());
+						nmoutput.setDebug(nm.getErrorString());
 						throw new JudgeException(nmoutput);
 					}
 				}
@@ -117,6 +119,7 @@ public class NameMangling implements Runnable {
 							nmoutput.setInfo("");
 							nmoutput.setReason(ServerOutput.REASON.RF);
 							nmoutput.setHint("不允許使用 " + constant_pool);
+							nmoutput.setDebug(nm.getErrorString());
 							throw new JudgeException(nmoutput);
 						}
 					}
@@ -147,6 +150,7 @@ public class NameMangling implements Runnable {
 							nmoutput.setInfo("");
 							nmoutput.setReason(ServerOutput.REASON.RF);
 							nmoutput.setHint("不允許使用 " + classname);
+							nmoutput.setDebug(nm.getErrorString());
 							throw new JudgeException(nmoutput);
 						}
 					}
