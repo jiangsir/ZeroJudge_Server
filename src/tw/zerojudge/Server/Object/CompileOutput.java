@@ -6,6 +6,8 @@
 package tw.zerojudge.Server.Object;
 
 import tw.zerojudge.Server.Beans.ServerOutput;
+import tw.zerojudge.Server.Configs.ConfigFactory;
+import tw.zerojudge.Server.Configs.ServerConfig;
 
 /**
  * @author jiangsir
@@ -63,7 +65,23 @@ public class CompileOutput extends Throwable {
 		if (hint == null || "null".equals(hint)) {
 			return;
 		}
-		this.hint += hint + "\n";
+		int max_length = 3000;
+
+		ServerConfig serverConfig = ConfigFactory.getServerConfig();
+		if (hint.contains(serverConfig.getBinPath().toString()))
+			hint = hint.replaceAll(serverConfig.getBinPath().toString(), "");
+		if (hint.contains(serverConfig.getCONSOLE_PATH().toString()))
+			hint = hint.replaceAll(serverConfig.getCONSOLE_PATH().toString(), "");
+		if (hint.contains(serverConfig.getTempPath().toString()))
+			hint = hint.replaceAll(serverConfig.getTempPath().toString(), "");
+		if (hint.contains(serverConfig.getTestdataPath().toString()))
+			hint = hint.replaceAll(serverConfig.getTestdataPath().toString(), "");
+
+		if (hint.length() <= max_length) {
+			this.hint = hint;
+		} else {
+			this.hint = hint.substring(0, max_length - 1) + "...提示太長省略。";
+		}
 	}
 
 	public String getDebug() {
