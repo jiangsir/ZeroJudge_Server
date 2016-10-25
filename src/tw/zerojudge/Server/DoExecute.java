@@ -34,7 +34,7 @@ public class DoExecute {
 		// executeInput.getCompiler().getLanguage().toUpperCase();
 		String lxc_attach = "lxc-attach -n lxc-ALL --";
 
-		cmd = "sudo " + lxc_attach + " sudo -u zero " + cmd;
+		cmd = "sudo " + lxc_attach + " sudo -u nobody " + cmd;
 		logger.info("DoExecute: " + cmd);
 		RunCommand execute = new RunCommand(new String[]{"/bin/sh", "-c", cmd}, 0);
 		execute.setTimelimit(executeInput.getTimelimit());
