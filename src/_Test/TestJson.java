@@ -66,7 +66,6 @@ public class TestJson {
 		try {
 			code = FileUtils.readFileToString(new File("javacode.txt"));
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		System.out.println("code=" + code);

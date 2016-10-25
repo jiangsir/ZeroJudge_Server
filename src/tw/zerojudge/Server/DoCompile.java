@@ -134,13 +134,13 @@ public class DoCompile {
 		// String lxc_name = "lxc-" + serverInput.getLanguage().toUpperCase();
 		// String lxc_path = "/var/lib/lxc/" + lxc_name + "/rootfs/tmp";
 		// 執行 lxc 內的 shell.exe 要用 lxc-attach
-		String lxc_attach = "lxc-attach -n lxc-ALL --";
 
 		// cmd_compile = "sudo " + lxc_attach + " " + serverConfig.getBinPath()
 		// + File.separator + "shell.exe " + "10 "
 		// + serverConfig.getJVM_MB() * 1024 * 1024 + " 100000000 \"" + "java
 		// -classpath "
 		// + serverConfig.getBinPath() + " base_java\" \"" + cmd_compile + "\"";
+		String lxc_attach = "lxc-attach -n lxc-ALL -- sudo -u zero";
 		cmd_compile = "sudo " + lxc_attach + " " + serverConfig.getBinPath() + File.separator + "shell.exe " + "10 "
 				+ serverConfig.getJVM_MB() * 1024 * 1024 + " 100000000 \"" + serverConfig.getBinPath() + File.separator
 				+ "base_c.exe\" \"" + cmd_compile + "\"";

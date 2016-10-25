@@ -86,7 +86,7 @@ public class ServerConfig extends Config {
 		c.setLanguage(KNOWNED_LANGUAGE.C.name());
 		c.setSuffix("c");
 		c.setPath("");
-		c.setVersion("gcc -std=c11(Debian 4.9.1-19)");
+		c.setVersion("gcc -std=c11(gcc 5.4.0)");
 		c.setSamplecode(
 				"#include&lt;stdio.h&gt;\r\nint main() {\r\n char s[9999];\r\nwhile( scanf(\"%s\",s)!=EOF ) {\r\n printf(\"hello, %s\\n\",s);\r\n }\r\n return 0;\r\n}");
 		c.setCommand_begin("");
@@ -104,9 +104,9 @@ public class ServerConfig extends Config {
 		cpp.setLanguage(KNOWNED_LANGUAGE.CPP.name());
 		cpp.setSuffix("cpp");
 		cpp.setPath("");
-		cpp.setVersion("g++ -std=c++14(Debian 4.9.1-19)");
+		cpp.setVersion("g++ -std=c++14(gcc 5.4.0)");
 		cpp.setSamplecode(
-				"#include &lt;iostream&gt;\r\nusing namespace std;\r\n\r\nint main() {\r\nstring s;\r\n while(cin &gt;&gt; s){\r\ncout &lt;&lt; \"hello,\"&lt;&lt; s &lt;&lt; endl;\r\n }\r\n return 0;\r\n}");
+				"#include &lt;iostream&gt;\r\nusing namespace std;\r\n\r\nint main() {\r\nstring s;\r\n while(cin &gt;&gt; s){\r\ncout &lt;&lt; \"hello, \"&lt;&lt; s &lt;&lt; endl;\r\n }\r\n return 0;\r\n}");
 		cpp.setCommand_begin("");
 		cpp.setCmd_compile("g++ -std=c++14 -lm -lcrypt -O2 -pipe -DONLINE_JUDGE -o $S/$C.exe $S/$C.cpp");
 		cpp.setCmd_namemangling("nm -A $S/$C.exe");
@@ -122,7 +122,7 @@ public class ServerConfig extends Config {
 		java.setLanguage(KNOWNED_LANGUAGE.JAVA.name());
 		java.setSuffix("java");
 		java.setPath("");
-		java.setVersion("OpenJDK java version 1.7.0_65");
+		java.setVersion("OpenJDK java version 1.8.0");
 		java.setSamplecode(
 				"import java.util.Scanner;\r\npublic class JAVA {\r\n\tpublic static void main(String[] args) {\r\n\t\tScanner cin= new Scanner(System.in);\r\n\t\tString s;\r\n\t\twhile (cin.hasNext()) {\r\n\t\t\ts=cin.nextLine();\r\n\t\t\tSystem.out.println(\"hello, \" + s);\r\n\t\t}\r\n\t}\r\n}");
 		java.setCommand_begin("");
@@ -142,7 +142,7 @@ public class ServerConfig extends Config {
 		pascal.setLanguage(KNOWNED_LANGUAGE.PASCAL.name());
 		pascal.setSuffix("pas");
 		pascal.setPath("");
-		pascal.setVersion("Free Pascal Compiler version 2.6.4");
+		pascal.setVersion("Free Pascal Compiler version 3.0.0");
 		pascal.setSamplecode(
 				"var s : string;\r\nbegin\r\nwhile not eof do begin\r\nreadln(s);\r\nwriteln('hello, ',s);\r\nend;\r\nend.");
 		pascal.setCommand_begin("");
@@ -162,7 +162,7 @@ public class ServerConfig extends Config {
 		python.setSuffix("py");
 		python.setPath("");
 		python.setVersion("Python 3.5.2");
-		python.setSamplecode("import sys\r\nfor s in sys.stdin:\r\n    print('hello '+s)");
+		python.setSamplecode("import sys\r\nfor s in sys.stdin:\r\n    print('hello, '+s)");
 		python.setCommand_begin("");
 		python.setCmd_compile("");
 		python.setCmd_namemangling("");

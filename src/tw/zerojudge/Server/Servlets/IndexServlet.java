@@ -28,6 +28,8 @@ public class IndexServlet extends HttpServlet {
 	ObjectMapper mapper = new ObjectMapper();
 	Logger logger = Logger.getAnonymousLogger();
 
+	// TODO 在 LXC 內部執行的時候，用 sudo -u zero 來執行。
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
