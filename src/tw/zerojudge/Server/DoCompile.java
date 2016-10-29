@@ -126,7 +126,7 @@ public class DoCompile {
 		// + serverInput.getSolutionid());
 		// rsync_DoCompile.run();
 
-		new RunCommand("").start("sudo " + serverConfig.getBinPath() + File.separator + "rsync_DoInitial.py "
+		new RunCommand("").start("sudo " + serverConfig.getBinPath() + File.separator + "rsync_DoCompile.py "
 				+ serverConfig.getTempPath() + File.separator + serverInput.getSolutionid() + " "
 				+ serverInput.getProblemid() + " " + serverConfig.getCONSOLE_PATH() + " " + serverConfig.getLxc_NAME());
 
@@ -146,8 +146,8 @@ public class DoCompile {
 		// -classpath "
 		// + serverConfig.getBinPath() + " base_java\" \"" + cmd_compile + "\"";
 
-		String lxc_attach = "lxc-attach -n " + serverConfig.getLxc_NAME() + " -- sudo -u nobody";
-		cmd_compile = "sudo " + lxc_attach + " " + serverConfig.getBinPath() + File.separator + "shell.exe " + "10 "
+		String lxc_attach = "sudo lxc-attach -n " + serverConfig.getLxc_NAME() + " -- sudo -u nobody ";
+		cmd_compile = lxc_attach + serverConfig.getBinPath() + File.separator + "shell.exe " + "10 "
 				+ serverConfig.getJVM_MB() * 1024 * 1024 + " 100000000 \"" + serverConfig.getBinPath() + File.separator
 				+ "base_c.exe\" \"" + cmd_compile + "\"";
 		RunCommand runCompile = new RunCommand(new String[]{"/bin/sh", "-c", cmd_compile}, 0);

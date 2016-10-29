@@ -289,6 +289,8 @@ public class DoCompare {
 		// + "Special_"
 		// + compareInput.getProblemid()
 		// + ".exe";
+
+		String lxc_path = "";
 		File special_source = new File(serverConfig.getSpecialPath(compareInput.getProblemid()),
 				"Special_" + compareInput.getProblemid() + ".cpp");
 		File special_exe = new File(special_source.toString().replaceAll(".cpp", ".exe"));
@@ -304,7 +306,7 @@ public class DoCompare {
 			throw new JudgeException(compareOutput);
 		} else if (!special_exe.exists()) {
 			try {
-				new DoSpecialCompile(special_source, special_exe).run();
+				new DoSpecialCompile(special_source, special_exe, serverInput).run();
 			} catch (JudgeException e) {
 				e.printStackTrace();
 				CompileOutput compileOutput = (CompileOutput) e.getCause();
