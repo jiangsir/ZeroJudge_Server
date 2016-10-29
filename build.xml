@@ -69,6 +69,8 @@
 		</exec>
 
 		<chmod file="${CONSOLE}/Testdata/**" perm="a+w" type="both" />
+		<chmod file="${CONSOLE}/Special/**" perm="a+w" type="both" />
+		<chmod file="${CONSOLE}/Executable/**" perm="a+w" type="both" />
 		<chmod file="${CONSOLE}/Bin/*.exe" perm="+x" type="both" />
 		<chmod file="${CONSOLE}/Bin/*.sh" perm="+x" type="both" />
 		<chmod file="${CONSOLE}/Bin/*.class" perm="+x" type="both" />
