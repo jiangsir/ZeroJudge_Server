@@ -26,6 +26,11 @@ rsync_Special = "rsync -avR " + path_Special + "/" + problemid + " " + lxc_path
 print(rsync_Special)
 os.system(rsync_Special)
 
+chown = "chown -R nobody:nogroup " + lxc_path + path_Special + "/" + problemid
+print(chown)
+os.system(chown)
+
+
 rsync_CONSOLE = "rsync -avR --exclude=" + path_Testdata + " " + path_CONSOLE + " " + lxc_path
 print(rsync_CONSOLE)
 os.system(rsync_CONSOLE)

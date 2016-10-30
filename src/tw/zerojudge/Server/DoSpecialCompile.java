@@ -53,7 +53,7 @@ public class DoSpecialCompile {
 		cmd_compile = lxc_attach + serverConfig.getBinPath() + File.separator + "shell.exe "
 				+ "10 640000000 100000000 \"" + serverConfig.getBinPath() + File.separator + "base_c.exe\" \""
 				+ cmd_compile + "\"";
-		logger.info("SpecialCompile" + cmd_compile);
+		logger.info("SpecialCompile=" + cmd_compile);
 		RunCommand runCompile = new RunCommand(cmd_compile);
 		runCompile.run();
 
