@@ -317,7 +317,8 @@ public class DoCompare {
 				throw new JudgeException(compareOutput);
 			}
 		}
-		String cmd_special = serverConfig.getBinPath() + File.separator + "shell.exe "
+		String lxc_attach = "sudo lxc-attach -n " + serverConfig.getLxc_NAME() + " -- sudo -u nobody ";
+		String cmd_special = lxc_attach + serverConfig.getBinPath() + File.separator + "shell.exe "
 				+ (int) Math.ceil(compareInput.getTimelimit()) + " " + compareInput.getMemorylimit() * 1024 * 1024 + " "
 				+ 100 * 1024 * 1024 + " \"" + serverConfig.getBinPath() + File.separator + "base_cpp.exe\" \""
 				+ special_exe + " \"" + systeminfile + "\"" + " \"" + systemoutfile + "\"" + " \"" + useroutfile + "\""
