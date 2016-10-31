@@ -8,6 +8,7 @@ package tw.zerojudge.Server;
 import java.util.ArrayList;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import tw.zerojudge.Server.Beans.ServerInput;
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;
@@ -20,11 +21,13 @@ import tw.zerojudge.Server.Object.*;
  */
 public class DoSpecialExecute {
 	ExecuteInput executeInput;
+	ServerInput serverInput;
 	ServerConfig serverConfig = ConfigFactory.getServerConfig();
 	ObjectMapper mapper = new ObjectMapper();
 
-	public DoSpecialExecute(ExecuteInput executeInput) {
+	public DoSpecialExecute(ExecuteInput executeInput, ServerInput serverInput) {
 		this.executeInput = executeInput;
+		this.serverInput = serverInput;
 	}
 
 	public ExecuteOutput run() throws JudgeException {
@@ -37,12 +40,11 @@ public class DoSpecialExecute {
 		if (special_execute.getCause().getExitCode() != 0) {
 			output.setJudgement(ServerOutput.JUDGEMENT.SE);
 			output.setReason(ServerOutput.REASON.SYSTEMERROR_WHEN_COMPARE);
-			output.setHint("Special Judge 裁判程式無法執行！("
-					+ special_execute.getCause().getPlainMessage() + ")");
+			output.setHint("Special Judge 裁判程式無法執行！(" + special_execute.getCause().getPlainMessage() + ")");
 			throw new JudgeException(output);
 		}
 		output = this.getRusage(special_execute, output);
-		output = this.getResult(special_execute, output);
+		output = this.getResult(special_execute, output, serverInput);
 		return output;
 	}
 
@@ -61,8 +63,8 @@ public class DoSpecialExecute {
 	 * @return
 	 * @throws JudgeException
 	 */
-	private ExecuteOutput getResult(RunCommand special_execute,
-			ExecuteOutput output) throws JudgeException {
+	private ExecuteOutput getResult(RunCommand special_execute, ExecuteOutput output, ServerInput serverInput)
+			throws JudgeException {
 		ArrayList<String> outputStream = special_execute.getOutputStream();
 		// ExecuteOutput output = new ExecuteOutput();
 		String returnline = "";
@@ -76,17 +78,14 @@ public class DoSpecialExecute {
 		for (int i = 0; i < linecount; i++) {
 			returnline = outputStream.get(i);
 			if (returnline.startsWith(SPECIAL_RESULT.$JUDGE_RESULT + "=")) {
-				JUDGE_RESULT = returnline
-						.substring(returnline.indexOf("=") + 1);
+				JUDGE_RESULT = returnline.substring(returnline.indexOf("=") + 1);
 			} else if (returnline.startsWith(SPECIAL_RESULT.$CASES + "=")) {
 				CASES = returnline.substring(returnline.indexOf("=") + 1);
 			} else if (returnline.startsWith(SPECIAL_RESULT.$LINECOUNT + "=")) {
 				LINECOUNT = returnline.substring(returnline.indexOf("=") + 1);
 			} else if (returnline.startsWith(SPECIAL_RESULT.$USEROUT + "=")) {
-				USEROUT = returnline.substring(returnline.indexOf("=") + 1)
-						+ "\n";
-				while (i < linecount - 1
-						&& !outputStream.get(i + 1).trim().startsWith("$")) {
+				USEROUT = returnline.substring(returnline.indexOf("=") + 1) + "\n";
+				while (i < linecount - 1 && !outputStream.get(i + 1).trim().startsWith("$")) {
 					USEROUT += outputStream.get(++i).trim() + "\n";
 				}
 				if (USEROUT.length() > 2000) {
@@ -94,10 +93,8 @@ public class DoSpecialExecute {
 					USEROUT += "... " + SPECIAL_RESULT.$USEROUT + "太長省略!";
 				}
 			} else if (returnline.startsWith(SPECIAL_RESULT.$SYSTEMOUT + "=")) {
-				SYSTEMOUT = returnline.substring(returnline.indexOf("=") + 1)
-						+ "\n";
-				while (i < linecount - 1
-						&& !outputStream.get(i + 1).trim().startsWith("$")) {
+				SYSTEMOUT = returnline.substring(returnline.indexOf("=") + 1) + "\n";
+				while (i < linecount - 1 && !outputStream.get(i + 1).trim().startsWith("$")) {
 					SYSTEMOUT += outputStream.get(++i).trim() + "\n";
 				}
 				if (SYSTEMOUT.length() > 2000) {
@@ -105,11 +102,9 @@ public class DoSpecialExecute {
 					SYSTEMOUT += "... " + SPECIAL_RESULT.$SYSTEMOUT + "太長省略!";
 				}
 			} else if (returnline.startsWith(SPECIAL_RESULT.$MESSAGE + "=")) {
-				MESSAGE = returnline.substring(returnline.indexOf("=") + 1)
-						.trim() + "\n";
+				MESSAGE = returnline.substring(returnline.indexOf("=") + 1).trim() + "\n";
 
-				while (i < linecount - 1
-						&& !outputStream.get(i + 1).trim().startsWith("$")) {
+				while (i < linecount - 1 && !outputStream.get(i + 1).trim().startsWith("$")) {
 					MESSAGE += outputStream.get(++i).trim() + "\n";
 				}
 				if (MESSAGE.length() >= 2000) {
@@ -125,8 +120,7 @@ public class DoSpecialExecute {
 			e.printStackTrace();
 			output.setJudgement(ServerOutput.JUDGEMENT.SE);
 			output.setReason(ServerOutput.REASON.SYSTEMERROR_WHEN_COMPARE);
-			output.setHint("Special Judge 回報不正確！("
-					+ special_execute.getOutputString() + ")");
+			output.setHint("Special Judge 回報不正確！(" + special_execute.getOutputString() + ")");
 			throw new JudgeException(output);
 		}
 
@@ -148,12 +142,12 @@ public class DoSpecialExecute {
 			if (!"".equals(MESSAGE)) {
 				output.setHint(output.getHint() + MESSAGE);
 			}
-			// if (!"".equals(USEROUT) && compareInput.isShowdetail()) {
-			// output.setHint(output.getHint() + "您的答案為：" + USEROUT);
-			// }
-			// if (!"".equals(SYSTEMOUT) && compareInput.isShowdetail()) {
-			// output.setHint(output.getHint() + "正確答案為：" + SYSTEMOUT);
-			// }
+			if (!"".equals(USEROUT) && serverInput.isDetailvisible()) {
+				output.setHint(output.getHint() + "您的答案為：" + USEROUT);
+			}
+			if (!"".equals(SYSTEMOUT) && serverInput.isDetailvisible()) {
+				output.setHint(output.getHint() + "正確答案為：" + SYSTEMOUT);
+			}
 
 			throw new JudgeException(output);
 		}
@@ -169,8 +163,7 @@ public class DoSpecialExecute {
 	 * @return
 	 * @throws JudgeException
 	 */
-	private ExecuteOutput getRusage(RunCommand special_execute,
-			ExecuteOutput output) throws JudgeException {
+	private ExecuteOutput getRusage(RunCommand special_execute, ExecuteOutput output) throws JudgeException {
 		long timeusage = -1;
 		int memoryusage = -1;
 
@@ -178,17 +171,14 @@ public class DoSpecialExecute {
 		System.out.println("rusage.getTime()=" + rusage.getTime());
 		System.out.println("rusage.getMem()=" + rusage.getMem());
 		if (rusage.getTime() >= 0) {
-			timeusage = (long) ((rusage.getTime() + rusage.getBasetime())
-					* 1000);
+			timeusage = (long) ((rusage.getTime() + rusage.getBasetime()) * 1000);
 			output.setTimeusage(timeusage);
 		}
 		if (rusage.getMem() >= 0 && rusage.getBasemem() >= 0) {
-			memoryusage = (rusage.getMem() - rusage.getBasemem())
-					* rusage.getPagesize() / 1024;
+			memoryusage = (rusage.getMem() - rusage.getBasemem()) * rusage.getPagesize() / 1024;
 			output.setMemoryusage(memoryusage);
 		}
-		if (timeusage > 0
-				&& timeusage >= executeInput.getTimelimit() * 1000 * 0.95) {
+		if (timeusage > 0 && timeusage >= executeInput.getTimelimit() * 1000 * 0.95) {
 			output.setJudgement(ServerOutput.JUDGEMENT.TLE);
 			output.setTimeusage((long) (executeInput.getTimelimit() * 1000));
 			System.out.println("Execute output=" + output.getTimeusage());
@@ -197,8 +187,7 @@ public class DoSpecialExecute {
 			throw new JudgeException(output);
 		}
 
-		if (memoryusage > 0
-				&& memoryusage >= executeInput.getMemorylimit() * 1024) {
+		if (memoryusage > 0 && memoryusage >= executeInput.getMemorylimit() * 1024) {
 			output.setJudgement(ServerOutput.JUDGEMENT.MLE);
 			output.setReason(ServerOutput.REASON.SPECIALJUDGE_EXECUTE_MLE);
 			output.setHint(special_execute.getErrorString());
@@ -217,17 +206,14 @@ public class DoSpecialExecute {
 			output.setHint("您的程式無法正常執行。\n" + special_execute.getErrorString());
 			throw new JudgeException(output);
 		} else if ("0".equals(rusage.getWEXITSTATUS())) {
-			System.out
-					.println("output.getTimeusage()=" + output.getTimeusage());
-			System.out.println(
-					"output.getMemoryusage()=" + output.getMemoryusage());
+			System.out.println("output.getTimeusage()=" + output.getTimeusage());
+			System.out.println("output.getMemoryusage()=" + output.getMemoryusage());
 			return output;
 		} else if ("1".equals(rusage.getWEXITSTATUS())) {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("code:" + rusage.getWEXITSTATUS());
 			output.setReason(ServerOutput.REASON.RE);
-			output.setHint("您的程式被監控系統中斷，可能是程式無法正常結束所導致。\n"
-					+ special_execute.getErrorString());
+			output.setHint("您的程式被監控系統中斷，可能是程式無法正常結束所導致。\n" + special_execute.getErrorString());
 			throw new JudgeException(output);
 		} else if ("127".equals(rusage.getWEXITSTATUS())) {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
@@ -246,22 +232,19 @@ public class DoSpecialExecute {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("SIGABRT");
 			output.setReason(ServerOutput.REASON.RE);
-			output.setHint(
-					"系統呼叫了 abort 函式！\n" + special_execute.getErrorString());
+			output.setHint("系統呼叫了 abort 函式！\n" + special_execute.getErrorString());
 			throw new JudgeException(output);
 		} else if ("135".equals(rusage.getWEXITSTATUS())) {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("SIGBUS");
 			output.setReason(ServerOutput.REASON.RE);
-			output.setHint(
-					"嘗試定址不相符的記憶體位址。\n" + special_execute.getErrorString());
+			output.setHint("嘗試定址不相符的記憶體位址。\n" + special_execute.getErrorString());
 			throw new JudgeException(output);
 		} else if ("136".equals(rusage.getWEXITSTATUS())) {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("SIGFPE");
 			output.setReason(ServerOutput.REASON.RE);
-			output.setHint(
-					"溢位或者除以0的錯誤!! \n" + special_execute.getErrorString());
+			output.setHint("溢位或者除以0的錯誤!! \n" + special_execute.getErrorString());
 			throw new JudgeException(output);
 		} else if ("137".equals(rusage.getWEXITSTATUS())) {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
@@ -285,15 +268,13 @@ public class DoSpecialExecute {
 			output.setJudgement(ServerOutput.JUDGEMENT.OLE);
 			output.setInfo("SIGXFSZ");
 			output.setReason(ServerOutput.REASON.OLE);
-			output.setHint(
-					"輸出檔大小超過規定上限 !! \n" + special_execute.getErrorString());
+			output.setHint("輸出檔大小超過規定上限 !! \n" + special_execute.getErrorString());
 			throw new JudgeException(output);
 		} else {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
 			output.setInfo("code:" + rusage.getWEXITSTATUS());
 			output.setReason(ServerOutput.REASON.RE);
-			output.setHint("執行時期未定義錯誤，code = " + rusage.getWEXITSTATUS() + " \n"
-					+ special_execute.getErrorString());
+			output.setHint("執行時期未定義錯誤，code = " + rusage.getWEXITSTATUS() + " \n" + special_execute.getErrorString());
 			throw new JudgeException(output);
 		}
 

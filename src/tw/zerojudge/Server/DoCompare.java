@@ -12,9 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-
-import org.apache.commons.io.FileUtils;
-
 import tw.zerojudge.Server.Beans.ServerInput;
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
@@ -290,7 +287,6 @@ public class DoCompare {
 		// + compareInput.getProblemid()
 		// + ".exe";
 
-		String lxc_path = "";
 		File special_source = new File(serverConfig.getSpecialPath(compareInput.getProblemid()),
 				"Special_" + compareInput.getProblemid() + ".cpp");
 		File special_exe = new File(special_source.toString().replaceAll(".cpp", ".exe"));
@@ -331,13 +327,11 @@ public class DoCompare {
 		executeInput.setSession_account(serverInput.getSession_account());
 
 		try {
-			ExecuteOutput executeOutput = new DoSpecialExecute(executeInput).run();
+			ExecuteOutput executeOutput = new DoSpecialExecute(executeInput, serverInput).run();
 			compareOutput.setJudgement(executeOutput.getJudgement());
 			compareOutput.setInfo(executeOutput.getInfo());
 			compareOutput.setReason(executeOutput.getReason());
 			compareOutput.setHint(executeOutput.getHint());
-			System.out.println("executeOutput.getTimeusage(1)=" + executeOutput.getTimeusage());
-			System.out.println("executeOutput.getMemoryusage(1)=" + executeOutput.getMemoryusage());
 			compareOutput.setTimeusage(executeOutput.getTimeusage());
 			compareOutput.setMemoryusage(executeOutput.getMemoryusage());
 			return compareOutput;
@@ -350,8 +344,6 @@ public class DoCompare {
 			compareOutput.setHint(executeOutput.getHint());
 			compareOutput.setTimeusage(executeOutput.getTimeusage());
 			compareOutput.setMemoryusage(executeOutput.getMemoryusage());
-			System.out.println("executeOutput.getTimeusage(2)=" + executeOutput.getTimeusage());
-			System.out.println("executeOutput.getMemoryusage(2)=" + executeOutput.getMemoryusage());
 			throw new JudgeException(compareOutput);
 		}
 
