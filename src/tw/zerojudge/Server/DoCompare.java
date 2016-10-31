@@ -47,9 +47,9 @@ public class DoCompare {
 		// String lxc_name = "lxc-" + serverInput.getLanguage().toUpperCase();
 		String lxc_path = "/var/lib/lxc/" + serverConfig.getLxc_NAME() + "/rootfs/";
 
-		File source_path = new File(serverConfig.getTempPath() + File.separator + serverInput.getSolutionid());
-		String cmd_moveout = "sudo scp " + lxc_path + new File(source_path, compareInput.getCodename() + ".out") + " "
-				+ source_path;
+		File source_tmppath = new File(serverConfig.getTempPath() + File.separator + serverInput.getSolutionid());
+		String cmd_moveout = "sudo scp " + lxc_path + new File(source_tmppath, compareInput.getCodename() + ".out")
+				+ " " + source_tmppath;
 		RunCommand runCommand = new RunCommand(cmd_moveout);
 		runCommand.run();
 
@@ -87,7 +87,7 @@ public class DoCompare {
 			compareOutput = this.StrictlyComparison(systemout, userout);
 			return compareOutput;
 		} else if (ServerInput.MODE.Special == compareInput.getMode()) {
-			File useroutfile = new File(serverConfig.getTempPath(), compareInput.getCodename() + ".out");
+			File useroutfile = new File(source_tmppath, compareInput.getCodename() + ".out");
 			compareOutput = this.SpecialComparison(
 					new File(serverConfig.getTestdataPath(), compareInput.getTestfilename() + ".in"),
 					new File(serverConfig.getTestdataPath(), compareInput.getTestfilename() + ".out"), useroutfile);
