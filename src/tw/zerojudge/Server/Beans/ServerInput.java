@@ -227,11 +227,11 @@ public class ServerInput {
 	public boolean getErrmsg_visible() {
 		return errmsg_visible;
 	}
-	@JsonIgnore
+
 	public void setErrmsg_visible(boolean errmsg_visible) {
 		this.errmsg_visible = errmsg_visible;
 	}
-
+	@JsonIgnore
 	public void setErrmsg_visible(Integer errmsg_visible) {
 		if (errmsg_visible.intValue() == 0) {
 			this.setErrmsg_visible(false);
