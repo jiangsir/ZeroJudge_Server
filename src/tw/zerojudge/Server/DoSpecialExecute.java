@@ -6,6 +6,8 @@
 package tw.zerojudge.Server;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import org.codehaus.jackson.map.ObjectMapper;
 
 import tw.zerojudge.Server.Beans.ServerInput;
@@ -24,6 +26,7 @@ public class DoSpecialExecute {
 	ServerInput serverInput;
 	ServerConfig serverConfig = ConfigFactory.getServerConfig();
 	ObjectMapper mapper = new ObjectMapper();
+	Logger logger = Logger.getAnonymousLogger();
 
 	public DoSpecialExecute(ExecuteInput executeInput, ServerInput serverInput) {
 		this.executeInput = executeInput;
@@ -148,7 +151,9 @@ public class DoSpecialExecute {
 			if (!"".equals(SYSTEMOUT) && serverInput.isDetailvisible()) {
 				output.setHint(output.getHint() + "正確答案為：" + SYSTEMOUT);
 			}
-
+			logger.info("output.judgement=" + output.getJudgement());
+			logger.info("output.reason=" + output.getReason());
+			logger.info("output.hint=" + output.getHint());
 			throw new JudgeException(output);
 		}
 		output.setJudgement(ServerOutput.JUDGEMENT.SE);
@@ -168,8 +173,6 @@ public class DoSpecialExecute {
 		int memoryusage = -1;
 
 		Rusage rusage = new Rusage(special_execute);
-		System.out.println("rusage.getTime()=" + rusage.getTime());
-		System.out.println("rusage.getMem()=" + rusage.getMem());
 		if (rusage.getTime() >= 0) {
 			timeusage = (long) ((rusage.getTime() + rusage.getBasetime()) * 1000);
 			output.setTimeusage(timeusage);
@@ -181,7 +184,6 @@ public class DoSpecialExecute {
 		if (timeusage > 0 && timeusage >= executeInput.getTimelimit() * 1000 * 0.95) {
 			output.setJudgement(ServerOutput.JUDGEMENT.TLE);
 			output.setTimeusage((long) (executeInput.getTimelimit() * 1000));
-			System.out.println("Execute output=" + output.getTimeusage());
 			output.setReason(ServerOutput.REASON.SPECIALJUDGE_EXECUTE_TLE);
 			output.setHint(special_execute.getErrorString());
 			throw new JudgeException(output);
@@ -206,8 +208,6 @@ public class DoSpecialExecute {
 			output.setHint("您的程式無法正常執行。\n" + special_execute.getErrorString());
 			throw new JudgeException(output);
 		} else if ("0".equals(rusage.getWEXITSTATUS())) {
-			System.out.println("output.getTimeusage()=" + output.getTimeusage());
-			System.out.println("output.getMemoryusage()=" + output.getMemoryusage());
 			return output;
 		} else if ("1".equals(rusage.getWEXITSTATUS())) {
 			output.setJudgement(ServerOutput.JUDGEMENT.RE);
