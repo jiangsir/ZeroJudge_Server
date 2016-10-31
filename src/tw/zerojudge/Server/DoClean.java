@@ -5,8 +5,7 @@
  */
 package tw.zerojudge.Server;
 
-import java.io.File;
-
+import tw.zerojudge.Server.Beans.ServerInput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;
 
@@ -16,17 +15,16 @@ import tw.zerojudge.Server.Configs.ServerConfig;
  */
 public class DoClean {
 	ServerConfig serverConfig = ConfigFactory.getServerConfig();
-	private String source_path;
-
-	public DoClean(String source_path) {
-		this.source_path = source_path;
+	ServerInput serverInput;
+	public DoClean(ServerInput serverInput) {
+		this.serverInput = serverInput;
 	}
 
 	public void run() {
 		// String lxc_name = "lxc-" + this.language.toUpperCase();
 		String lxc_attach = "lxc-attach -n " + serverConfig.getLxc_NAME() + " --";
 
-		String do_clean = "sudo " + lxc_attach + " " + "rm -rf " + source_path;
+		String do_clean = "sudo " + lxc_attach + " " + "rm -rf " + serverInput.getSource_TempPath().toString();
 
 		new RunCommand(do_clean).run();
 	}

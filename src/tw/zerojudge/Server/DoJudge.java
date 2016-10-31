@@ -81,7 +81,8 @@ public class DoJudge implements Runnable {
 			serverOutputs[0].setDebug(nmOutput.getDebug());
 			return;
 		}
-		String source_path = serverConfig.getTempPath() + File.separator + serverInput.getSolutionid();
+		// File source_tmppath = new File(serverConfig.getTempPath() +
+		// File.separator + serverInput.getSolutionid());
 
 		for (int i = 0; i < serverInput.getTestfiles().length; i++) {
 
@@ -100,7 +101,7 @@ public class DoJudge implements Runnable {
 
 			String cmd_execute = compiler.getCmd_execute();
 			if (cmd_execute.contains("$S")) {
-				cmd_execute = cmd_execute.replaceAll("\\$S", source_path);
+				cmd_execute = cmd_execute.replaceAll("\\$S", serverInput.getSource_TempPath().toString());
 			}
 			if (cmd_execute.contains("$C")) {
 				cmd_execute = cmd_execute.replaceAll("\\$C", serverInput.getCodename());
@@ -225,7 +226,7 @@ public class DoJudge implements Runnable {
 
 		}
 		if (serverConfig.getIsCleanTmpFile()) {
-			new DoClean(source_path).run();
+			new DoClean(serverInput).run();
 		}
 	}
 

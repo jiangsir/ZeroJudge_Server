@@ -8,6 +8,9 @@ package tw.zerojudge.Server.Beans;
 import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;
 import tw.zerojudge.Server.Object.Compiler;
+
+import java.io.File;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
@@ -253,6 +256,10 @@ public class ServerInput {
 
 	public void setTestjudge_outdata(String testjudgeOutdata) {
 		testjudge_outdata = testjudgeOutdata;
+	}
+	@JsonIgnore
+	public File getSource_TempPath() {
+		return new File(ConfigFactory.getServerConfig().getTempPath() + File.separator + this.getSolutionid());
 	}
 
 }
