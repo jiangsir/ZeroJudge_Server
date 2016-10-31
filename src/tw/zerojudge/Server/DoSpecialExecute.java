@@ -115,6 +115,7 @@ public class DoSpecialExecute {
 					MESSAGE += "... " + SPECIAL_RESULT.$MESSAGE + "太長省略!";
 				}
 			}
+			logger.info("USEROUT=" + USEROUT + ", SYSOUT=" + SYSTEMOUT);
 		}
 		ServerOutput.JUDGEMENT RESULT;
 		try {
@@ -145,6 +146,7 @@ public class DoSpecialExecute {
 			if (!"".equals(MESSAGE)) {
 				output.setHint(output.getHint() + MESSAGE);
 			}
+			logger.info("USEROUT=" + USEROUT + ", SYSTEMOUT=" + SYSTEMOUT);
 			if (!"".equals(USEROUT) && serverInput.isDetailvisible()) {
 				output.setHint(output.getHint() + "您的答案為：" + USEROUT);
 			}
