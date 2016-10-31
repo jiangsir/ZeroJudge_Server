@@ -195,7 +195,7 @@ public class DoJudge implements Runnable {
 			compareInput.setMode(serverInput.getMode());
 			compareInput.setProblemid(serverInput.getProblemid());
 			compareInput.setSession_account(serverInput.getSession_account());
-			compareInput.setShowdetail(serverInput.isDetailvisible());
+			compareInput.setShowdetail(serverInput.getErrmsg_visible());
 			compareInput.setTimelimit(executeInput.getTimelimit());
 			compareInput.setMemorylimit(executeInput.getMemorylimit());
 			compareInput.setTimeusage(executeOutput.getTimeusage());

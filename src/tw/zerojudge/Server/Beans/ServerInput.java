@@ -37,7 +37,7 @@ public class ServerInput {
 
 	private MODE mode = MODE.Tolerant;
 
-	private boolean detailvisible;
+	private boolean errmsg_visible;
 
 	public static enum PRIORITY {
 		Submit, Prejudge, Testjudge, TESTCODE, MANUALJUDGE, Rejudge;
@@ -224,12 +224,20 @@ public class ServerInput {
 	 * 
 	 * @return
 	 */
-	public boolean isDetailvisible() {
-		return detailvisible;
+	public boolean getErrmsg_visible() {
+		return errmsg_visible;
 	}
 
-	public void setDetailvisible(boolean detailvisible) {
-		this.detailvisible = detailvisible;
+	public void setErrmsg_visible(boolean errmsg_visible) {
+		this.errmsg_visible = errmsg_visible;
+	}
+
+	public void setErrmsg_visible(Integer errmsg_visible) {
+		if (errmsg_visible.intValue() == 0) {
+			this.setErrmsg_visible(false);
+		} else {
+			this.setErrmsg_visible(true);
+		}
 	}
 
 	//
