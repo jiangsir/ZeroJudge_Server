@@ -412,7 +412,6 @@ public class ServerConfig extends Config {
 			e.printStackTrace();
 			this.setAllowIPset(StringTool.String2IpAddressList(allowIPset));
 		} catch (JsonMappingException e) {
-			e.printStackTrace();
 			this.setAllowIPset(StringTool.String2IpAddressList(allowIPset));
 		} catch (IOException e) {
 			e.printStackTrace();
