@@ -181,7 +181,7 @@
 														size="5" maxlength="5" /> (可以讓某些語言較長的執行時間,標準時間 * 寬限值)<br />
 														執行指令：<input name="cmd_execute" type="text"
 														id="cmd_execute"
-														value="${compiler.cmd_execute}" size="80" />
+														value="${fn:escapeXml(compiler.cmd_execute)}" size="80" />
 														<br /> make object 指令：<input name="cmd_makeobject"
 														type="text" id="cmd_makeobject"
 														value="${compiler.cmd_makeobject}" size="80" /> <br />
@@ -197,7 +197,7 @@
 														<p>
 															範例程式碼：<br />
 															<textarea name="samplecode" rows="8" id="samplecode"
-																style="width: 80%">${compiler.samplecode}</textarea>
+																style="width: 80%">${fn:escapeXml(compiler.samplecode)}</textarea>
 														</p></td>
 												</tr>
 											</table>

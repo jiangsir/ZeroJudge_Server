@@ -45,8 +45,6 @@ public class InitializedListener implements ServletContextListener {
 				ApplicationScope.setAppName("UnknonOSUnknownAppName");
 			}
 
-			ServerConfig serverConfig = ApplicationScope.getServerConfig();
-			ConfigFactory.writeServerConfig(serverConfig);
 			logger.info(ApplicationScope.getAppName() + " 初始化完成！");
 		} catch (Exception e) {
 			e.printStackTrace();
