@@ -7,6 +7,8 @@ import javax.servlet.annotation.WebListener;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import tw.zerojudge.Server.Configs.ApplicationScope;
+import tw.zerojudge.Server.Configs.ConfigFactory;
+import tw.zerojudge.Server.Configs.ServerConfig;
 import tw.zerojudge.Server.Utils.ENV;
 
 @WebListener
@@ -43,6 +45,8 @@ public class InitializedListener implements ServletContextListener {
 				ApplicationScope.setAppName("UnknonOSUnknownAppName");
 			}
 
+			ServerConfig serverConfig = ApplicationScope.getServerConfig();
+			ConfigFactory.writeServerConfig(serverConfig);
 			logger.info(ApplicationScope.getAppName() + " 初始化完成！");
 		} catch (Exception e) {
 			e.printStackTrace();
