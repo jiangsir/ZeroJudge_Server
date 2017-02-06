@@ -180,7 +180,8 @@
 														id="timeextension" value="${compiler.timeextension}"
 														size="5" maxlength="5" /> (可以讓某些語言較長的執行時間,標準時間 * 寬限值)<br />
 														執行指令：<input name="cmd_execute" type="text"
-														id="cmd_execute" value="${compiler.cmd_execute}" size="80" />
+														id="cmd_execute"
+														value="${compiler.cmd_execute}" size="80" />
 														<br /> make object 指令：<input name="cmd_makeobject"
 														type="text" id="cmd_makeobject"
 														value="${compiler.cmd_makeobject}" size="80" /> <br />

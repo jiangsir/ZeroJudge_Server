@@ -90,11 +90,11 @@ public class ServerConfig extends Config {
 		c.setPath("");
 		c.setVersion("gcc -std=c11(gcc 5.4.0)");
 		c.setSamplecode(
-				"#include&lt;stdio.h&gt;\r\nint main() {\r\n char s[9999];\r\nwhile( scanf(\"%s\",s)!=EOF ) {\r\n printf(\"hello, %s\\n\",s);\r\n }\r\n return 0;\r\n}");
+				"#include<stdio.h>\r\nint main() {\r\n char s[9999];\r\nwhile( scanf(\"%s\",s)!=EOF ) {\r\n printf(\"hello, %s\\n\",s);\r\n }\r\n return 0;\r\n}");
 		c.setCommand_begin("");
 		c.setCmd_compile("gcc $S/$C.c -std=c11 -lm -lcrypt -O2 -pipe -DONLINE_JUDGE -o $S/$C.exe");
 		c.setCmd_namemangling("nm -A $S/$C.exe");
-		c.setCmd_execute("$S/$C.exe &lt; $T &gt; $S/$C.out");
+		c.setCmd_execute("$S/$C.exe < $T > $S/$C.out");
 		c.setCmd_makeobject("g++ $S/$C.c -o $S/$C.o");
 		c.setTimeextension(1.0);
 		c.setCommand_end("");
@@ -108,11 +108,11 @@ public class ServerConfig extends Config {
 		cpp.setPath("");
 		cpp.setVersion("g++ -std=c++14(gcc 5.4.0)");
 		cpp.setSamplecode(
-				"#include &lt;iostream&gt;\r\nusing namespace std;\r\n\r\nint main() {\r\nstring s;\r\n while(cin &gt;&gt; s){\r\ncout &lt;&lt; \"hello, \"&lt;&lt; s &lt;&lt; endl;\r\n }\r\n return 0;\r\n}");
+				"#include <iostream>\r\nusing namespace std;\r\n\r\nint main() {\r\nstring s;\r\n while(cin >> s){\r\ncout << \"hello, \"<< s << endl;\r\n }\r\n return 0;\r\n}");
 		cpp.setCommand_begin("");
 		cpp.setCmd_compile("g++ -std=c++14 -lm -lcrypt -O2 -pipe -DONLINE_JUDGE -o $S/$C.exe $S/$C.cpp");
 		cpp.setCmd_namemangling("nm -A $S/$C.exe");
-		cpp.setCmd_execute("$S/$C.exe &lt; $T &gt; $S/$C.out");
+		cpp.setCmd_execute("$S/$C.exe < $T > $S/$C.out");
 		cpp.setCmd_makeobject("g++ $S/$C.cpp -o $S/$C.o");
 		cpp.setTimeextension(1.0);
 		cpp.setCommand_end("");
@@ -130,7 +130,7 @@ public class ServerConfig extends Config {
 		java.setCommand_begin("");
 		java.setCmd_compile("javac -encoding UTF-8 $S/$C.java");
 		java.setCmd_namemangling("javap -classpath $S -verbose $C");
-		java.setCmd_execute("java -Dfile.encoding=utf-8 -classpath $S $C &lt; $T &gt; $S/$C.out");
+		java.setCmd_execute("java -Dfile.encoding=utf-8 -classpath $S $C < $T > $S/$C.out");
 		java.setCmd_makeobject("");
 		java.setTimeextension(3.0);
 		java.setCommand_end("");
@@ -150,7 +150,7 @@ public class ServerConfig extends Config {
 		pascal.setCommand_begin("");
 		pascal.setCmd_compile("fpc -o$S/$C.exe -Sg $S/$C.pas");
 		pascal.setCmd_namemangling("nm -A $S/$C.o");
-		pascal.setCmd_execute("$S/$C.exe &lt; $T &gt; $S/$C.out");
+		pascal.setCmd_execute("$S/$C.exe < $T > $S/$C.out");
 		pascal.setCmd_makeobject("");
 		pascal.setTimeextension(1.0);
 		pascal.setCommand_end("");
@@ -168,7 +168,7 @@ public class ServerConfig extends Config {
 		python.setCommand_begin("");
 		python.setCmd_compile("");
 		python.setCmd_namemangling("");
-		python.setCmd_execute("python3 $S/$C.py &lt; $T &gt; $S/$C.out");
+		python.setCmd_execute("python3 $S/$C.py < $T > $S/$C.out");
 		python.setCmd_makeobject("");
 		python.setTimeextension(3.0);
 		python.setCommand_end("");
