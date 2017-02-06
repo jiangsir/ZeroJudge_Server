@@ -27,6 +27,10 @@ public class DoClean {
 		String do_clean = "sudo " + lxc_attach + " " + "rm -rf " + serverInput.getSource_TempPath().toString();
 
 		new RunCommand(do_clean).run();
+
+		String do_clean_outside = "sudo rm -rf " + serverInput.getSource_TempPath().toString();
+		new RunCommand(do_clean_outside).run();
+
 	}
 
 }
