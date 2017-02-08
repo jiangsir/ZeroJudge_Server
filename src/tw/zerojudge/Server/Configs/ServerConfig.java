@@ -48,7 +48,7 @@ public class ServerConfig extends Config {
 		 */
 		private static final long serialVersionUID = -6735127017873261251L;
 		{
-			add(new IpAddress("192.168.0.0/0"));
+			add(new IpAddress("127.0.0.1"));
 		}
 	};
 	@Property(key = "isCleanTmpFile")
