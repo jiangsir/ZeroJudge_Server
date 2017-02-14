@@ -40,8 +40,9 @@ public class PerformanceFilter implements Filter {
 		request.setAttribute("ms", begin);
 		chain.doFilter(request, response);
 		HttpServletRequest req = (HttpServletRequest) request;
-		logger.info(this.getClass().getName() + ": " + req.getMethod() + " " + req.getRequestURL()
-				+ req.getServletPath() + (req.getQueryString() == null ? "" : "?" + req.getQueryString()) + ", 共耗時 "
+		logger.info(this.getClass().getName() + ": " + req.getMethod() + " RequestURL=" + req.getRequestURL()
+				+ " ServletPath=" + req.getServletPath()
+				+ (req.getQueryString() == null ? "" : "?" + req.getQueryString()) + ", 共耗時 "
 				+ (System.currentTimeMillis() - begin) + " ms.");
 	}
 
