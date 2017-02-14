@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Servlet Filter implementation class PerformanceFilter
  */
-@WebFilter(filterName = "PerformanceFilter", urlPatterns = { "/*" }, asyncSupported = true)
+@WebFilter(filterName = "PerformanceFilter", urlPatterns = {"/*"}, asyncSupported = true)
 public class PerformanceFilter implements Filter {
 	Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -34,18 +34,14 @@ public class PerformanceFilter implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
 		long begin = System.currentTimeMillis();
 		request.setAttribute("ms", begin);
 		chain.doFilter(request, response);
 		HttpServletRequest req = (HttpServletRequest) request;
-		logger.info(req.getMethod()
-				+ " "
-				+ req.getRequestURL()
-				+ req.getServletPath()
-				+ (req.getQueryString() == null ? "" : "?"
-						+ req.getQueryString()) + ", 共耗時 "
+		logger.info(this.getClass().getName() + ": " + req.getMethod() + " " + req.getRequestURL()
+				+ req.getServletPath() + (req.getQueryString() == null ? "" : "?" + req.getQueryString()) + ", 共耗時 "
 				+ (System.currentTimeMillis() - begin) + " ms.");
 	}
 
