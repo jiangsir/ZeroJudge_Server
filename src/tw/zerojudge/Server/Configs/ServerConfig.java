@@ -26,7 +26,7 @@ public class ServerConfig extends Config {
 	@Property(key = "Lxc_NAME")
 	private String Lxc_NAME = "lxc-ALL";
 	@Property(key = "JVM_MB")
-	private int JVM_MB = 2000;
+	private int JVM_MB = 3000;
 	@Property(key = "Servername")
 	private String servername = "ZeroJudgeServer";
 	@Property(key = "ServerOS")
