@@ -10,6 +10,11 @@
 <head>
 <jsp:include page="include/CommonHead.jsp" />
 <script type="text/javascript" src="EditServerConfig.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		$("div.panel-collapse:first").collapse();
+	});
+</script>
 </head>
 
 <body>
@@ -81,13 +86,6 @@
 					</div>
 				</div>
 				<div role="tabpanel" class="tab-pane" id="compilers">
-					<p>
-						<strong>使用代號：</strong><br /> $S： 代表程式檔路徑，實際的路徑由系統決定。<br /> $C：
-						代表程式名稱，每個程式碼實際的名稱由系統決定。<br /> $T： 代表測資名稱，系統將自動替換為實際路徑。<br />
-						<!--                    副檔名：程式檔副檔名預設為小寫的語言名稱，如 C -&gt; .c,
-                    CPP -&gt; cpp, PASCAL -&gt; pascal。輸入測資為 .in，輸出測資為 .out
- -->
-					</p>
 					<div class="panel panel-warning">
 						<div class="panel-heading">
 							<h3 class="panel-title">編譯器設定注意事項：</h3>
@@ -123,7 +121,7 @@
 							<div class="panel panel-default">
 								<div class="panel-heading" role="tab" id="headingOne">
 									<div class="row" id="compiler">
-										<div class="col-lg-6">
+										<div class="col-lg-12">
 											<div class="input-group">
 												<span class="input-group-addon"> <input
 													type="checkbox" name="compiler_enable"
@@ -158,8 +156,15 @@
 									class="panel-collapse collapse" role="tabpanel"
 									aria-labelledby="heading${varstatus.count}">
 									<div class="panel-body">
-										<div id="compiler" style="background-color: #eeeeee">
-											<table style="width: 100%; border: 1px 1px 1px 1px;">
+										<div id="compiler">
+											<p>
+												<strong>使用代號：</strong><br /> $S： 代表程式檔路徑，實際的路徑由系統決定。<br />
+												$C： 代表程式名稱，每個程式碼實際的名稱由系統決定。<br /> $T： 代表測資名稱，系統將自動替換為實際路徑。<br />
+												<!--                    副檔名：程式檔副檔名預設為小寫的語言名稱，如 C -&gt; .c,
+                    CPP -&gt; cpp, PASCAL -&gt; pascal。輸入測資為 .in，輸出測資為 .out
+ -->
+											</p>
+											<table>
 												<tr>
 													<td width="50%">程式語言：<input name="compiler_language"
 														type="text" value="${compiler.language}" /> <%-- 程式語言: <select name="compiler_language"
