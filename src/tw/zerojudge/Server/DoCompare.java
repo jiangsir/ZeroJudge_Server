@@ -9,13 +9,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+
+import org.apache.commons.io.FileUtils;
+
 import tw.zerojudge.Server.Beans.ServerInput;
 import tw.zerojudge.Server.Beans.ServerOutput;
 import tw.zerojudge.Server.Configs.ConfigFactory;
 import tw.zerojudge.Server.Configs.ServerConfig;
+import tw.zerojudge.Server.Configs.ServerConfig.KNOWNED_LANGUAGE;
 import tw.zerojudge.Server.Exceptions.JudgeException;
 import tw.zerojudge.Server.Object.CompareInput;
 import tw.zerojudge.Server.Object.CompareOutput;
@@ -44,11 +49,8 @@ public class DoCompare {
 		compareOutput.setTimeusage(compareInput.getTimeusage());
 		compareOutput.setMemoryusage(compareInput.getMemoryusage());
 		System.out.println("compareOutput.getTimeusage()=" + compareOutput.getTimeusage());
-		// String lxc_name = "lxc-" + serverInput.getLanguage().toUpperCase();
 		String lxc_path = "/var/lib/lxc/" + serverConfig.getLxc_NAME() + "/rootfs/";
 
-		// File source_tmppath = new File(serverConfig.getTempPath() +
-		// File.separator + serverInput.getSolutionid());
 		String cmd_moveout = "sudo scp " + lxc_path
 				+ new File(serverInput.getSource_TempPath(), compareInput.getCodename() + ".out") + " "
 				+ serverInput.getSource_TempPath().toString();
@@ -283,44 +285,54 @@ public class DoCompare {
 	private CompareOutput SpecialComparison(File systeminfile, File systemoutfile, File useroutfile)
 			throws JudgeException {
 
-		// String judgecmd = serverConfig.getSpecialPath(compareInput
-		// .getProblemid())
-		// + "Special_"
-		// + compareInput.getProblemid()
-		// + ".exe";
-
-		File special_source = new File(serverConfig.getSpecialPath(compareInput.getProblemid()),
-				"Special_" + compareInput.getProblemid() + ".cpp");
-		File special_exe = new File(special_source.toString().replaceAll(".cpp", ".exe"));
-		// if (!judgefile.exists()) {
-		// judgecmd = serverConfig.getSpecialPath() + File.separator
-		// + compareInput.getProblemid() + File.separator + "Special_"
-		// + compareInput.getProblemid() + ".class";
-		// judgefile = new File(judgecmd);
-		if (!special_source.exists()) {
-			compareOutput.setJudgement(ServerOutput.JUDGEMENT.SE);
-			compareOutput.setReason(ServerOutput.REASON.SPECIAL_JUDGE_NOT_FOUND);
-			compareOutput.setHint("Special Judge 原始程式不存在！" + special_source);
-			throw new JudgeException(compareOutput);
-		} else if (!special_exe.exists()) {
-			try {
-				new DoSpecialCompile(special_source, special_exe, serverInput).run();
-			} catch (JudgeException e) {
-				e.printStackTrace();
-				CompileOutput compileOutput = (CompileOutput) e.getCause();
-				compareOutput.setJudgement(compileOutput.getJudgement());
-				compareOutput.setInfo(compileOutput.getInfo());
-				compareOutput.setReason(compileOutput.getReason());
-				compareOutput.setHint(compileOutput.getHint());
-				throw new JudgeException(compareOutput);
+		File SpecialPath = serverConfig.getSpecialPath(compareInput.getProblemid());
+		File[] SpecialJudgeFiles = SpecialPath.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return name.startsWith("Special_" + compareInput.getProblemid());
+			}
+		});
+		File special_source = null;
+		for (File file : SpecialJudgeFiles) {
+			if (special_source == null || FileUtils.isFileNewer(file, special_source.lastModified())) {
+				special_source = file;
 			}
 		}
+		String path = special_source.getPath();
+		ServerConfig.KNOWNED_LANGUAGE special_language = ServerConfig.KNOWNED_LANGUAGE
+				.valueOf(path.substring(path.lastIndexOf(".") + 1, path.length() - 1).toUpperCase());
+
+		String SpecialJudge_exe = "";
+		if (special_language == KNOWNED_LANGUAGE.CPP) {
+			File special_exe = new File(special_source.toString().replaceAll(".cpp", ".exe"));
+			if (!special_source.exists()) {
+				compareOutput.setJudgement(ServerOutput.JUDGEMENT.SE);
+				compareOutput.setReason(ServerOutput.REASON.SPECIAL_JUDGE_NOT_FOUND);
+				compareOutput.setHint("Special Judge 原始程式不存在！" + special_source);
+				throw new JudgeException(compareOutput);
+			} else if (!special_exe.exists()) {
+				try {
+					new DoSpecialCompile(special_source, special_exe, serverInput).run();
+				} catch (JudgeException e) {
+					e.printStackTrace();
+					CompileOutput compileOutput = (CompileOutput) e.getCause();
+					compareOutput.setJudgement(compileOutput.getJudgement());
+					compareOutput.setInfo(compileOutput.getInfo());
+					compareOutput.setReason(compileOutput.getReason());
+					compareOutput.setHint(compileOutput.getHint());
+					throw new JudgeException(compareOutput);
+				}
+			}
+			SpecialJudge_exe = special_exe.getPath();
+		} else if (special_language == KNOWNED_LANGUAGE.PYTHON) {
+			SpecialJudge_exe = "python3 " + special_source;
+		}
+
 		String lxc_attach = "sudo lxc-attach -n " + serverConfig.getLxc_NAME() + " -- sudo -u nobody ";
 		String cmd_special = lxc_attach + serverConfig.getBinPath() + File.separator + "shell.exe "
 				+ (int) Math.ceil(compareInput.getTimelimit()) + " " + compareInput.getMemorylimit() * 1024 * 1024 + " "
 				+ 100 * 1024 * 1024 + " \"" + serverConfig.getBinPath() + File.separator + "base_cpp.exe\" \""
-				+ special_exe + " \"" + systeminfile + "\"" + " \"" + systemoutfile + "\"" + " \"" + useroutfile + "\""
-				+ "\"";
+				+ SpecialJudge_exe + " \"" + systeminfile + "\"" + " \"" + systemoutfile + "\"" + " \"" + useroutfile
+				+ "\"" + "\"";
 		ExecuteInput executeInput = new ExecuteInput();
 		executeInput.setCommand(cmd_special);
 		executeInput.setMemorylimit(compareInput.getMemorylimit());
