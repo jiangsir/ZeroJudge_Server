@@ -299,7 +299,7 @@ public class DoCompare {
 		}
 		String path = special_source.getPath();
 		ServerConfig.KNOWNED_LANGUAGE special_language = ServerConfig.KNOWNED_LANGUAGE
-				.valueOf(path.substring(path.lastIndexOf(".") + 1, path.length() - 1).toUpperCase());
+				.valueOf(path.substring(path.lastIndexOf(".") + 1, path.length()).toUpperCase());
 
 		String SpecialJudge_exe = "";
 		if (special_language == KNOWNED_LANGUAGE.CPP) {
