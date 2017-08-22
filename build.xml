@@ -37,7 +37,7 @@
 		<format property="now" pattern="yyyy-MM-dd" />
 	</tstamp>
 
-	<target depends="move_CONSOLE, makewar" name="run" description="">
+	<target depends="move_CONSOLE, makewar, callpy" name="run" description="">
 		<echo message="完成！" />
 	</target>
 
@@ -105,4 +105,11 @@
 		</war>
 
 	</target>
+	<target name="callpy" description=" 呼叫 py 執行後續部署">
+		<echo message="* 呼叫 py 執行後續部署" />
+		<exec dir="${basedir}" executable="python3" failonerror="true">
+			<arg line="build.py ${appname}" />
+		</exec>
+	</target>
+
 </project>
