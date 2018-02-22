@@ -13,6 +13,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 
@@ -284,13 +285,16 @@ public class DoCompare {
 	 */
 	private CompareOutput SpecialComparison(File systeminfile, File systemoutfile, File useroutfile)
 			throws JudgeException {
-
+		Logger.getAnonymousLogger().info(
+				"systeminfile=" + systeminfile + ", systemoutfile=" + systemoutfile + ", useroutfile=" + useroutfile);
 		File SpecialPath = serverConfig.getSpecialPath(compareInput.getProblemid());
 		File[] SpecialJudgeFiles = SpecialPath.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.startsWith("Special_" + compareInput.getProblemid());
 			}
 		});
+		Logger.getAnonymousLogger().info("LINE1");
+
 		File special_source = null;
 		for (File file : SpecialJudgeFiles) {
 			if (special_source == null || FileUtils.isFileNewer(file, special_source.lastModified())) {
@@ -300,6 +304,7 @@ public class DoCompare {
 		String path = special_source.getPath();
 		ServerConfig.KNOWNED_LANGUAGE special_language = ServerConfig.KNOWNED_LANGUAGE
 				.valueOf(path.substring(path.lastIndexOf(".") + 1, path.length()).toUpperCase());
+		Logger.getAnonymousLogger().info("LINE2");
 
 		String SpecialJudge_exe = "";
 		if (special_language == KNOWNED_LANGUAGE.CPP) {
@@ -326,6 +331,7 @@ public class DoCompare {
 		} else if (special_language == KNOWNED_LANGUAGE.PYTHON) {
 			SpecialJudge_exe = "python3 " + special_source;
 		}
+		Logger.getAnonymousLogger().info("LINE3");
 
 		String lxc_attach = "sudo lxc-attach -n " + serverConfig.getLxc_NAME() + " -- sudo -u nobody ";
 		String cmd_special = lxc_attach + serverConfig.getBinPath() + File.separator + "shell.exe "
@@ -339,6 +345,7 @@ public class DoCompare {
 		executeInput.setTimelimit(compareInput.getTimelimit());
 		executeInput.setCodename(serverInput.getCodename());
 		executeInput.setSession_account(serverInput.getSession_account());
+		Logger.getAnonymousLogger().info("LINE4");
 
 		try {
 			ExecuteOutput executeOutput = new DoSpecialExecute(executeInput, serverInput).run();
