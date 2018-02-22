@@ -99,7 +99,7 @@
 			<fileset dir="${basedir}/WebContent">
 				<include name="**/*.*" />
 			</fileset>
-
+            <fileset dir="${basedir}" includes="src/**" />
 			<lib dir="${basedir}/WebContent/WEB-INF/lib" />
 			<classes dir="${basedir}/WebContent/WEB-INF/classes" />
 		</war>
