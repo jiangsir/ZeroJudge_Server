@@ -289,13 +289,24 @@ public class DoCompare {
 				"systeminfile=" + systeminfile + ", systemoutfile=" + systemoutfile + ", useroutfile=" + useroutfile);
 		File SpecialPath = serverConfig.getSpecialPath(compareInput.getProblemid());
 		Logger.getAnonymousLogger().info("SpecialPath=" + SpecialPath);
+		if (SpecialPath == null || !SpecialPath.exists() || !SpecialPath.isDirectory()) {
+			compareOutput.setJudgement(ServerOutput.JUDGEMENT.SE);
+			compareOutput.setReason(ServerOutput.REASON.SPECIAL_JUDGE_NOT_FOUND);
+			compareOutput.setHint("Special Judge 資料夾不存在！ SpecialPath=" + SpecialPath);
+			throw new JudgeException(compareOutput);
+		}
 		File[] SpecialJudgeFiles = SpecialPath.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.startsWith("Special_" + compareInput.getProblemid());
 			}
 		});
 		Logger.getAnonymousLogger().info("LINE1");
-
+		if (SpecialJudgeFiles == null || SpecialJudgeFiles.length == 0) {
+			compareOutput.setJudgement(ServerOutput.JUDGEMENT.SE);
+			compareOutput.setReason(ServerOutput.REASON.SPECIAL_JUDGE_NOT_FOUND);
+			compareOutput.setHint("Special Judge 資料夾內無正確檔案！");
+			throw new JudgeException(compareOutput);
+		}
 		File special_source = null;
 		Logger.getAnonymousLogger().info("SpecialJudgeFiles=" + SpecialJudgeFiles);
 		for (File file : SpecialJudgeFiles) {
@@ -305,6 +316,7 @@ public class DoCompare {
 			}
 		}
 		Logger.getAnonymousLogger().info("special_source=" + special_source);
+
 		String path = special_source.getPath();
 		ServerConfig.KNOWNED_LANGUAGE special_language = ServerConfig.KNOWNED_LANGUAGE
 				.valueOf(path.substring(path.lastIndexOf(".") + 1, path.length()).toUpperCase());
