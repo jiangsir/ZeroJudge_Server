@@ -296,7 +296,7 @@ public class DoCompare {
 		Logger.getAnonymousLogger().info("LINE1");
 
 		File special_source = null;
-		Logger.getAnonymousLogger().info("SpecialJudgeFiles=" + SpecialJudgeFiles.length);
+		Logger.getAnonymousLogger().info("SpecialJudgeFiles=" + SpecialJudgeFiles);
 		for (File file : SpecialJudgeFiles) {
 			Logger.getAnonymousLogger().info("SpecialJudgeFiles:file=" + file);
 			if (special_source == null || FileUtils.isFileNewer(file, special_source.lastModified())) {
