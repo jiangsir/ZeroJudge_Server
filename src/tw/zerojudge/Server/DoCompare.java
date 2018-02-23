@@ -288,6 +288,7 @@ public class DoCompare {
 		Logger.getAnonymousLogger().info(
 				"systeminfile=" + systeminfile + ", systemoutfile=" + systemoutfile + ", useroutfile=" + useroutfile);
 		File SpecialPath = serverConfig.getSpecialPath(compareInput.getProblemid());
+		Logger.getAnonymousLogger().info("SpecialPath=" + SpecialPath);
 		File[] SpecialJudgeFiles = SpecialPath.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.startsWith("Special_" + compareInput.getProblemid());
