@@ -296,11 +296,14 @@ public class DoCompare {
 		Logger.getAnonymousLogger().info("LINE1");
 
 		File special_source = null;
+		Logger.getAnonymousLogger().info("SpecialJudgeFiles=" + SpecialJudgeFiles.length);
 		for (File file : SpecialJudgeFiles) {
+			Logger.getAnonymousLogger().info("SpecialJudgeFiles:file=" + file);
 			if (special_source == null || FileUtils.isFileNewer(file, special_source.lastModified())) {
 				special_source = file;
 			}
 		}
+		Logger.getAnonymousLogger().info("special_source=" + special_source);
 		String path = special_source.getPath();
 		ServerConfig.KNOWNED_LANGUAGE special_language = ServerConfig.KNOWNED_LANGUAGE
 				.valueOf(path.substring(path.lastIndexOf(".") + 1, path.length()).toUpperCase());
